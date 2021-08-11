@@ -4,3 +4,9 @@
 </script>
 
 <Form formData={FormData} />
+
+<style global lang="postcss">
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+</style>

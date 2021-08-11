@@ -15,10 +15,10 @@
     }
 </script>
 
-<section class="text {field.getClasses()}">
-    <label>
+<section class="text mt-5 mb-5 {field.getClasses()}">
+    <label class="block text-gray-700 text-sm font-bold mb-2">
         {field.label}
-        <input type=text placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} />
+        <input type=text placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" />
     </label>    
 </section>
 <Errors errors={errors} />
