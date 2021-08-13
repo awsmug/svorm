@@ -72,9 +72,6 @@ body {
   width: 100%;
   z-index: 3; }
 
-label.svelte-1251773 {
-  cursor: pointer; }
-
 label.svelte-wryltr {
   cursor: pointer; }
 
@@ -83,3 +80,6 @@ input[type="radio"].svelte-wryltr {
   opacity: 0;
   width: 0;
   height: 0; }
+
+label.svelte-1251773 {
+  cursor: pointer; }

@@ -3,8 +3,8 @@ import type Form from "./Form";
 
 export default class Navigation {
     readonly form            : Form;
-    private  recentFieldsets : [] = [];
     private  currentFieldset : Fieldset;
+    private  recentFieldsets : string[] = [];   
     private  lastAction      : string;
 
     /**

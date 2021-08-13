@@ -91,12 +91,12 @@ export default class ValidationMedhods {
         return false;
     }
 
-    static inArray( value: any, values: [] ) : boolean {
+    static inArray( value: any, values: any[] ) : boolean {
         return values.includes( value );
     }
 }
 
 
-function inArray( value: any, values: [] ) : boolean {
+function inArray( value: any, values: any[] ) : boolean {
     return values.includes( value );
 }
