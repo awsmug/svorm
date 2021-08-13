@@ -1,10 +1,9 @@
-import type Field from "./Field";
 import type Fieldset from "./Fieldset";
 import type Form from "./Form";
 
 export default class Navigation {
     readonly form            : Form;
-    readonly recentFieldsets : [] = [];
+    private  recentFieldsets : [] = [];
     private  currentFieldset : Fieldset;
     private  lastAction      : string;
 

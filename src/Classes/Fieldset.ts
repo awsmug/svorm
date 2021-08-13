@@ -20,7 +20,7 @@ export default class Fieldset implements HasFieldsetData {
     readonly classes       : [];
     readonly fieldsClasses : [];    
     readonly conditions    : HasConditionData[];
-    readonly submission    : HasSubmissionData;    
+    readonly submission    : HasSubmissionData | undefined;    
 
     readonly nextFieldset: string;
     readonly prevFieldset: string;    
@@ -44,7 +44,7 @@ export default class Fieldset implements HasFieldsetData {
         this.classes        = undefined === fieldset.classes ? []: fieldset.classes;
         this.fieldsClasses  = undefined === fieldset.fieldsClasses ? []: fieldset.fieldsClasses;
         this.conditions     = undefined === fieldset.conditions ? []: fieldset.conditions;
-        this.submission     = undefined === fieldset.submission ? []: fieldset.submission;
+        this.submission     = fieldset.submission;
 
         this.nextFieldset = fieldset.nextFieldset;
         this.prevFieldset = fieldset.prevFieldset;

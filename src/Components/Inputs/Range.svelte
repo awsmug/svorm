@@ -2,7 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from "../../Classes/Field";
-    import Errors from "./Errors.svelte";
+    import Errors from "../Errors.svelte";
     
     export let field: Field;
 
@@ -15,10 +15,11 @@
     }
 </script>
 
-<section class="range {field.getClasses()}">
+<div class="{field.getClasses(['input', 'input-range'])}">
     <label for="{field.name}">
         {field.label}:  {field.value} {#if field.params.unit !== undefined}{field.params.unit}{/if}
     </label>
     <input name="{field.name}" type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step}  />    
-</section>
+</div>
+
 <Errors errors={errors} />

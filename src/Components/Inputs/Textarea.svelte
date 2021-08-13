@@ -2,7 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
-    import Errors from './Errors.svelte';
+    import Errors from '../Errors.svelte';
 
     export let field: Field;
 
@@ -15,10 +15,11 @@
     }
 </script>
 
-<div class="textarea">
+<div class="{field.getClasses(['input', 'input-textarea'])}">
     <label>
         {field.label}
         <textarea placeholder={field.placeholder} bind:value={field.value} on:blur={setValue}></textarea>
-    </label>    
+    </label>
 </div>
+
 <Errors errors={errors} />

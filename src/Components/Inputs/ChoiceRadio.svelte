@@ -2,7 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from "../../Classes/Field";
-    import Errors from './Errors.svelte';
+    import Errors from '../Errors.svelte';
 
     export let field: Field;
 
@@ -23,14 +23,15 @@
     <legend>{field.label}</legend>
 {/if}
 
-<section class="radio-choice {field.getClasses()}">
+<div class="{field.getClasses(['input', 'input-choice-radio'])}">
     {#each field.choices as choice}
         <label>
             <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} />
             {choice.label}
         </label>
     {/each}
-</section>
+</div>
+
 <Errors errors={errors} />
 
 <style>

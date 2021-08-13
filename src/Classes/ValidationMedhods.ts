@@ -93,5 +93,10 @@ export default class ValidationMedhods {
 
     static inArray( value: any, values: [] ) : boolean {
         return values.includes( value );
-    }   
+    }
+}
+
+
+function inArray( value: any, values: [] ) : boolean {
+    return values.includes( value );
 }

@@ -2,7 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
-    import Errors from './Errors.svelte';
+    import Errors from '../Errors.svelte';
 
     export let field: Field;
 
@@ -23,7 +23,7 @@
     <legend>{field.label}</legend>
 {/if}
 
-<section class="image-choice {field.getClasses()}">
+<div class="{field.getClasses(['input', 'input-choice-image'])}">
     {#each field.choices as choice}
         <label class="{choice.value === field.value ? 'selected': ''}">
             <img src={choice.image} alt={choice.label} />
@@ -31,7 +31,8 @@
             <div class="image-text">{choice.label}</div>
         </label>
     {/each}    
-</section>
+</div>
+
 <Errors errors={errors} />
 
 <style>

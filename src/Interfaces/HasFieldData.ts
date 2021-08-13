@@ -9,7 +9,7 @@ export default interface HasFieldData {
     readonly label       : string;
     readonly choices     : [];
     readonly params      : [];
-    readonly classes     : [];
+    readonly classes     : string[];
     readonly required    : boolean;
     readonly validations : [];
 }

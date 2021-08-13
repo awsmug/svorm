@@ -13,10 +13,10 @@
         form = e.detail;
     }
 
-    $: showNavbar = form.navigation.getCurrentFieldset().name !== 'start';
+    $: showNavbar = true;
 </script>
 
-<form name={form.name} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 {form.getClasses()}" on:submit|preventDefault>
+<form name={form.name} class={form.getClasses()} on:submit|preventDefault>
     <div class="fieldsets">
         {#each form.fieldsets as fieldset}
             {#if fieldset.name === form.navigation.getCurrentFieldset().name }

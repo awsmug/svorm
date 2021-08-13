@@ -1,6 +1,8 @@
 import type HasFieldData from '../Interfaces/HasFieldData';
+import type HasHelpData from '../Interfaces/HasHelpData';
 import type Fieldset from './Fieldset';
-import Validation from './Validation';
+import Help from './Help';
+import Validator from './Validator';
 
 /**
  * Field class.
@@ -12,14 +14,15 @@ export default class Field implements HasFieldData {
     readonly name        : string;
     readonly type        : string;    
     readonly label       : string;
+    readonly help        : HasHelpData;
     readonly choices     : [];
     readonly params      : [];
-    readonly classes     : [];
+    readonly classes     : string[];
     readonly required    : boolean;
     readonly validations : [];
 
     private  value       : any;
-    private  errors      : [] = [];
+    private  errors      : string[] = [];
 
     /**
      * Initializing field.
@@ -37,11 +40,12 @@ export default class Field implements HasFieldData {
         this.name         = field.name;
         this.type         = field.type;
         this.label        = field.label;
+        this.help         = field.help === undefined ? undefined : new Help( field.help );
         this.choices      = field.choices === undefined ? []: field.choices;
         this.params       = field.params === undefined ? []: field.params;
         this.classes      = field.classes === undefined ? []: field.classes;
         this.required     = field.required === undefined ? false: true;        
-        this.validations  = field.validations === undefined ? []: field.validations;
+        this.validations  = field.validations === undefined ? []: field.validations;        
 
         this.value        = field.value;
     }
@@ -97,12 +101,12 @@ export default class Field implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getClasses(): string {
+    public getClasses( additionalClasses: string[] = []): string {
         if ( this.classes.length > 0  ) {
-            return this.classes.join(' ');
+            return additionalClasses.concat( this.classes ).join(' ') ;
         }
-
-        return '';
+        
+        return additionalClasses.join(' ');
     }
 
     /**
@@ -112,8 +116,8 @@ export default class Field implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public validate() : [] {
-        let validation = new Validation( this.value, this.validations );
+    public validate() : string[] {
+        let validation = new Validator( this.value, this.validations );
         this.errors = validation.check();
         
         if ( this.errors.length > 0 ) {

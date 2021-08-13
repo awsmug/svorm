@@ -1,0 +1,85 @@
+/**
+ * Basic form CSS
+ **/
+fieldset {
+    .fields {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        > div {
+            display: block;          
+
+            input, select {
+                width:100%
+            }
+        }  
+        
+        /**
+        * Input element sizes
+        **/
+        .w1of1 {
+            width: 100%;
+        }
+        .w1of2 {
+            width: 50%;
+        }
+        .w1of3 {
+            width: 33.333333%;
+        }
+        .w2of3 {
+            width: 66.666666%;
+        }
+        .w1of4 {
+            width: 25%;
+        }
+        .w3of4 {
+            width: 75%;
+        }
+        .w1of5 {
+            width: 20%;
+        }
+        .w2of5 {
+            width: 40%;
+        }
+        .w3of5 {
+            width: 60%;
+        }
+        .w4of5 {
+            width: 80%;
+        }
+    } 
+
+    
+}
+
+/**
+ * Basic styling CSS
+ */
+ body {
+     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+     fieldset {
+        .fields {
+            > div {
+                padding: 0.25rem;
+                box-sizing: border-box;
+                margin: 0.5rem 0 0.5rem;
+
+                label {
+                    display:block;
+                    margin-bottom: 0.25rem;
+                }
+                
+                input, select {
+                    border: 1px solid lightgrey;
+                    border-radius: 0.25rem;
+                    padding: 0.5rem;
+                    line-height: 1rem;
+                }
+            }
+        }
+     }
+ }
+
+

@@ -4,12 +4,13 @@
 
     import type Fieldset from '../Classes/Fieldset';
 
-    import Text from './Fields/Text.svelte';
-    import Textarea from './Fields/Textarea.svelte';
-    import Range from './Fields/Range.svelte';
-    import SelectChoice from './Fields/SelectChoice.svelte';
-    import RadioChoice from './Fields/RadioChoice.svelte';
-    import ImageChoice from './Fields/ImageChoice.svelte'; 
+    import Text from './Inputs/Text.svelte';
+    import Textarea from './Inputs/Textarea.svelte';
+    import Range from './Inputs/Range.svelte';
+    import ChoiceSelect from './Inputs/ChoiceSelect.svelte';
+    import ChoiceRadio from './Inputs/ChoiceRadio.svelte';
+    import ChoiceImage from './Inputs/ChoiceImage.svelte'; 
+    import Help from './Inputs/Help.svelte';
     import Percentage from './Percentage.svelte';
     
     export let fieldset: Fieldset;
@@ -39,7 +40,7 @@
     let percentageCurrent = fieldset.form.navigation.getCurrentFieldset().percentage;
 </script>
 
-<fieldset class="{fieldset.getClasses()}">
+<fieldset class={fieldset.getClasses()}>
     <legend>{fieldset.label}</legend>
     <Percentage start={percentageStart} percentage={percentageCurrent} />
     <div class="fields {fieldset.getFieldsClasses()}" out:fade={{duration:500}} in:fade={{duration:500,delay:500}}>
@@ -50,22 +51,14 @@
                 <Textarea field={field} on:update={update}  />
             {:else if field.type === 'Range'}
                 <Range field={field} on:update={update}  />
-            {:else if field.type === 'SelectChoice'}
-                <SelectChoice field={field} on:update={update} />
-            {:else if field.type === 'RadioChoice'}
-                <RadioChoice field={field} on:update={update} />
-            {:else if field.type === 'ImageChoice'}
-                <ImageChoice field={field} on:update={update} />
+            {:else if field.type === 'ChoiceSelect'}
+                <ChoiceSelect field={field} on:update={update} />
+            {:else if field.type === 'ChoiceRadio'}
+                <ChoiceRadio field={field} on:update={update} />
+            {:else if field.type === 'ChoiceImage'}
+                <ChoiceImage field={field} on:update={update} />
             {/if}
+            <Help field={field} />
         {/each}
     </div>
 </fieldset>
-
-<style>
-    fieldset {
-        flex: 1 0 auto;
-        overflow: hidden;
-        position: relative;
-        top: 0;
-    }
-</style>

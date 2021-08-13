@@ -1,3 +1,4 @@
+import type HasValidationData from '../Interfaces/HasValidationData';
 import ValidationMedhods from './ValidationMedhods';
 
 /**
@@ -5,7 +6,7 @@ import ValidationMedhods from './ValidationMedhods';
  * 
  * @since 1.0.0
  */
-export default class Validation {
+export default class Validator {
     private errors: string[];
 
     /**
@@ -19,7 +20,7 @@ export default class Validation {
      */
     constructor(
         private value: any,
-        private validations: []
+        private validations: HasValidationData[]
     ){}
 
     /**
@@ -27,11 +28,13 @@ export default class Validation {
      * 
      * @since 1.0.0
      */
-    public check() : [] {
-        let errors = [];
+    public check() : string[] {
+        let errors : string[] = [];
 
         // Running each validation
         this.validations.forEach( validation => {
+            let valueAsNumber = ( (validation.value as unknown) as number );
+
             // Assigning Validation functions
             switch( validation.type ) {
                 case 'string':
@@ -40,22 +43,22 @@ export default class Validation {
                     }
                     break;
                 case 'min':
-                    if ( ! ValidationMedhods.min( this.value, validation.value ) ) {
+                    if ( ! ValidationMedhods.min( this.value, valueAsNumber ) ) {
                         errors.push( validation.error );
                     }
                     break;
                 case 'max':
-                    if ( ! ValidationMedhods.max( this.value, validation.value ) ) {
+                    if ( ! ValidationMedhods.max( this.value, valueAsNumber ) ) {
                         errors.push( validation.error );
                     }
                     break;
                 case 'minLength':
-                    if ( ! ValidationMedhods.minLength( this.value, validation.value ) ) {
+                    if ( ! ValidationMedhods.minLength( this.value, valueAsNumber ) ) {
                         errors.push( validation.error );
                     }
                     break;
                 case 'maxLength':
-                    if ( ! ValidationMedhods.maxLength( this.value, validation.value ) ) {
+                    if ( ! ValidationMedhods.maxLength( this.value, valueAsNumber ) ) {
                         errors.push( validation.error );
                     }
                     break;
