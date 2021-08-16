@@ -947,6 +947,7 @@ var app = (function () {
          * @since 1.0.0
          */
         constructor(fieldset, field) {
+            this.validated = false;
             this.errors = [];
             this.fieldset = fieldset;
             this.name = field.name;
@@ -1039,10 +1040,13 @@ var app = (function () {
             this.errors = validation.check();
             if (this.errors.length > 0) {
                 this.addClass('error');
+                this.removeClass('validated');
             }
             else {
                 this.removeClass('error');
+                this.addClass('validated');
             }
+            this.wasValidated = true;
             return this.errors;
         }
         /**
@@ -1067,6 +1071,16 @@ var app = (function () {
                 return true;
             }
             return false;
+        }
+        /**
+         * Has the field already ben validated
+         *
+         * @return True if field has been validated, false if not.
+         *
+         * @since 1.0.0
+         */
+        hasBeenValidated() {
+            return this.validated;
         }
     }
 

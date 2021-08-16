@@ -14,7 +14,7 @@ export default class Field implements HasFieldData {
     readonly name        : string;
     readonly type        : string;    
     readonly label       : string;
-    readonly placeholder: string;
+    readonly placeholder : string;
     readonly help        : HasHelpData;
     readonly choices     : [];
     readonly params      : [];
@@ -23,6 +23,7 @@ export default class Field implements HasFieldData {
     readonly validations : [];
 
     private  value       : any;
+    private  validated   : boolean = false;    
     private  errors      : string[] = [];
 
     /**
@@ -138,9 +139,13 @@ export default class Field implements HasFieldData {
         
         if ( this.errors.length > 0 ) {
             this.addClass( 'error' );
+            this.removeClass( 'validated' )
         } else {
             this.removeClass( 'error' );
+            this.addClass( 'validated' );
         }
+
+        this.wasValidated = true;
 
         return this.errors;
     }
@@ -169,5 +174,16 @@ export default class Field implements HasFieldData {
         }
 
         return false;
+    }
+
+    /**
+     * Has the field already ben validated
+     * 
+     * @return True if field has been validated, false if not.
+     * 
+     * @since 1.0.0
+     */
+    public hasBeenValidated() : boolean {
+        return this.validated;
     }
 }
