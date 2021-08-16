@@ -2,6 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
+    import Help from './Help.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -32,6 +33,8 @@
         </label>
     {/each}    
 </div>
+
+<Help field={field} />
 
 <Errors errors={errors} />
 

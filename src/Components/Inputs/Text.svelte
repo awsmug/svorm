@@ -2,6 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
+    import Help from './Help.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -18,7 +19,16 @@
 
 <div class="{field.getClasses( classes )}">
     <label for="{field.name}">{field.label}</label>
-    <div><input type=text name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} /></div>
+    <div><input type=text name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} /></div>    
+    {#if field.hasValidationErrors() }
+        <div class="errortext">
+            <ul>
+            {#each field.getValidationErors() as errortext}
+                <li>{errortext}</li>    
+            {/each}
+            </ul>
+        </div>
+    {/if}
 </div>
 
-<Errors errors={errors} />
+<Help field={field} />

@@ -42,6 +42,11 @@ export default class Validator {
                         errors.push( validation.error );
                     }
                     break;
+                case 'email':
+                    if ( ! ValidationMedhods.email( this.value ) ) {
+                        errors.push( validation.error );
+                    }
+                    break;
                 case 'min':
                     if ( ! ValidationMedhods.min( this.value, valueAsNumber ) ) {
                         errors.push( validation.error );

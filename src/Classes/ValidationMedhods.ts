@@ -12,12 +12,25 @@ export default class ValidationMedhods {
      * 
      * @since 1.0.0
      */
-    static string( value: any ) {
+     static string( value: any ) {
         if ( typeof value === 'string' || value instanceof String ) {
             return true;
         }
 
         return false;
+    }
+    
+    /**
+     * Is value of tye string?
+     * 
+     * @param value Value which have to be checked.
+     * @return boolean True if is of type string, false if not.
+     * 
+     * @since 1.0.0
+     */
+    static email( value: any ) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test( String(value).toLowerCase() );
     }
 
     /**
@@ -31,6 +44,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static min( value: number, min: number ) {
+        if( value === undefined ) return false;
         return ! ( value < min );
     }
 
@@ -45,6 +59,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static max( value: number, max: number ) {
+        if( value === undefined ) return false;
         return ! ( value > max );
     }
 
@@ -59,6 +74,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static minLength( value: string, min: number ) {
+        if( value === undefined ) return false;        
         return ! ( value.length < min );
     }
 
@@ -73,6 +89,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static maxLength( value: string, max: number ) {
+        if( value === undefined ) return false;
         return ! ( value.length > max );
     }
 
@@ -94,9 +111,4 @@ export default class ValidationMedhods {
     static inArray( value: any, values: any[] ) : boolean {
         return values.includes( value );
     }
-}
-
-
-function inArray( value: any, values: any[] ) : boolean {
-    return values.includes( value );
 }

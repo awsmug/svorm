@@ -24,6 +24,10 @@
 </script>
 
 <nav>
-    <button on:click={ () => navigate('prev') } disabled={disabledPrev}>&lt; Zurück</button>
+    {#if ! disabledPrev }
+    <button on:click={ () => navigate('prev') } disabled={disabledPrev}>Zurück</button>
+    {/if}
+    {#if ! disabledNext }    
     <button on:click={ () => navigate('next') } disabled={disabledNext}>Weiter</button>
+    {/if}
 </nav>

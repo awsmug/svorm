@@ -14,6 +14,7 @@ export default class Field implements HasFieldData {
     readonly name        : string;
     readonly type        : string;    
     readonly label       : string;
+    readonly placeholder: string;
     readonly help        : HasHelpData;
     readonly choices     : [];
     readonly params      : [];
@@ -40,6 +41,7 @@ export default class Field implements HasFieldData {
         this.name         = field.name;
         this.type         = field.type;
         this.label        = field.label;
+        this.placeholder  = field.placeholder;
         this.help         = field.help === undefined ? undefined : new Help( field.help );
         this.choices      = field.choices === undefined ? []: field.choices;
         this.params       = field.params === undefined ? []: field.params;
@@ -91,7 +93,21 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public addClass( className: string ) : void {
+        this.removeClass( className ); // Remove maybe existing class
         this.classes.push( className );
+    }
+
+    /**
+     * Add a CSS class to field.
+     * 
+     * @param className CSS class name.
+     * 
+     * @since 1.0.0
+     */
+    public removeClass( className: string ) : void {
+        this.classes = this.classes.filter( function( value ){ 
+            return value !== className;
+        });
     }
 
     /**
@@ -123,9 +139,7 @@ export default class Field implements HasFieldData {
         if ( this.errors.length > 0 ) {
             this.addClass( 'error' );
         } else {
-            this.classes.forEach( ( value, i ) => {
-                if ( value === 'error' ) this.classes.splice( i, 1 );
-            });
+            this.removeClass( 'error' );
         }
 
         return this.errors;

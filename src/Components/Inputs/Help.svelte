@@ -4,5 +4,8 @@
 </script>
 
 {#if field.help !== undefined }
-    <div class="input-help">{@html field.help.content}</div>
+    <div class="input-help">
+        <div class="input-help-triangle"></div>
+        <div class="input-help-content">{@html field.help.content}</div>
+    </div>
 {/if}

@@ -2,6 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from "../../Classes/Field";
+    import Help from './Help.svelte';
     import Errors from "../Errors.svelte";
     
     export let field: Field;
@@ -21,5 +22,7 @@
     </label>
     <input name="{field.name}" type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step}  />    
 </div>
+
+<Help field={field} />
 
 <Errors errors={errors} />

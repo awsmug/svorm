@@ -10,7 +10,6 @@
     import ChoiceSelect from './Inputs/ChoiceSelect.svelte';
     import ChoiceRadio from './Inputs/ChoiceRadio.svelte';
     import ChoiceImage from './Inputs/ChoiceImage.svelte'; 
-    import Help from './Inputs/Help.svelte';
     import Percentage from './Percentage.svelte';
     
     export let fieldset: Fieldset;
@@ -42,7 +41,9 @@
 
 <fieldset class={fieldset.getClasses()}>
     <legend>{fieldset.label}</legend>
-    <Percentage start={percentageStart} percentage={percentageCurrent} />
+    {#if fieldset.percentage !== undefined}
+        <Percentage start={percentageStart} percentage={percentageCurrent} />
+    {/if}
     <div class="fields {fieldset.getFieldsClasses()}" out:fade={{duration:500}} in:fade={{duration:500,delay:500}}>
         {#each fields as field}
             {#if field.type === 'Text'}
@@ -57,8 +58,11 @@
                 <ChoiceRadio field={field} on:update={update} />
             {:else if field.type === 'ChoiceImage'}
                 <ChoiceImage field={field} on:update={update} />
-            {/if}
-            <Help field={field} />
+            {:else if field.type === 'Headline'}
+                <h2>{field.value}</h2>
+            {:else if field.type === 'Paragraph'}
+                <p>{field.value}</p>
+            {/if}            
         {/each}
     </div>
 </fieldset>

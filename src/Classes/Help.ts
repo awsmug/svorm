@@ -19,7 +19,6 @@ export default class Help implements HasHelpData {
      public constructor(
         help: HasHelpData,
     ){
-        console.log( help );
         this.type    = help.type;
         this.content = help.content;
     }
