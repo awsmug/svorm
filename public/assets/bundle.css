@@ -1,6 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.percentage.svelte-h0i7g2 {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 1; }
+
+.percentage-bar.svelte-h0i7g2 {
+  position: absolute;
+  width: 0%;
+  z-index: 2; }
+
+.percentage-text.svelte-h0i7g2 {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  z-index: 3; }
+
+label.svelte-1251773 {
+  cursor: pointer; }
+
+label.svelte-wryltr {
+  cursor: pointer; }
+
+input[type="radio"].svelte-wryltr {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0; }
+
 /**
  * Basic form CSS
  **/
@@ -15,6 +45,10 @@ fieldset .fields {
     display: block; }
     fieldset .fields > div input, fieldset .fields > div select {
       width: 100%; }
+    fieldset .fields > div.validated input, fieldset .fields > div.validated select {
+      background-position: right;
+      background-repeat: no-repeat;
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24"><path fill="lightgrey" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 17l-5-5.299 1.399-1.43 3.574 3.736 6.572-7.007 1.455 1.403-8 8.597z"/></svg>'); }
   fieldset .fields .w1of1 {
     width: 100%; }
   fieldset .fields .w1of2 {
@@ -53,33 +87,3 @@ body {
       border-radius: 0.25rem;
       padding: 0.5rem;
       line-height: 1rem; }
-
-.percentage.svelte-h0i7g2 {
-  position: relative;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  z-index: 1; }
-
-.percentage-bar.svelte-h0i7g2 {
-  position: absolute;
-  width: 0%;
-  z-index: 2; }
-
-.percentage-text.svelte-h0i7g2 {
-  position: relative;
-  text-align: center;
-  width: 100%;
-  z-index: 3; }
-
-label.svelte-wryltr {
-  cursor: pointer; }
-
-input[type="radio"].svelte-wryltr {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0; }
-
-label.svelte-1251773 {
-  cursor: pointer; }

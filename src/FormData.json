@@ -11,7 +11,7 @@
                 {
                     "name": "salutation",
                     "label": "Anrede",
-                    "type": "SelectChoice",
+                    "type": "ChoiceSelect",
                     "classes": [ "w1of1" ], 
                     "choices": [
                         {

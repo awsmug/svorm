@@ -1673,14 +1673,14 @@ var app = (function () {
     			t2 = space();
     			create_component(errors_1.$$.fragment);
     			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
-    			add_location(label, file$a, 12, 4, 353);
+    			add_location(label, file$a, 13, 4, 378);
     			attr_dev(input, "type", "text");
     			attr_dev(input, "name", input_name_value = /*field*/ ctx[0].name);
     			attr_dev(input, "placeholder", input_placeholder_value = /*field*/ ctx[0].placeholder);
-    			add_location(input, file$a, 13, 9, 410);
-    			add_location(div0, file$a, 13, 4, 405);
-    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(['input', 'input-text']));
-    			add_location(div1, file$a, 11, 0, 291);
+    			add_location(input, file$a, 14, 9, 435);
+    			add_location(div0, file$a, 14, 4, 430);
+    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div1, file$a, 12, 0, 330);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1699,8 +1699,8 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[3]),
-    					listen_dev(input, "blur", /*setValue*/ ctx[2], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[4]),
+    					listen_dev(input, "blur", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -1725,7 +1725,7 @@ var app = (function () {
     				set_input_value(input, /*field*/ ctx[0].value);
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(['input', 'input-text']))) {
+    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div1, "class", div1_class_value);
     			}
 
@@ -1769,6 +1769,7 @@ var app = (function () {
     	
     	let { field } = $$props;
     	const dispatch = createEventDispatcher();
+    	let classes = ['input', 'input-text'];
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
@@ -1794,12 +1795,14 @@ var app = (function () {
     		Errors,
     		field,
     		dispatch,
+    		classes,
     		setValue,
     		errors
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
     		if ('errors' in $$props) $$invalidate(1, errors = $$props.errors);
     	};
 
@@ -1813,7 +1816,7 @@ var app = (function () {
     		}
     	};
 
-    	return [field, errors, setValue, input_input_handler];
+    	return [field, errors, classes, setValue, input_input_handler];
     }
 
     class Text extends SvelteComponentDev {
@@ -5151,7 +5154,7 @@ var app = (function () {
     	}
     }
 
-    var name="test-form";var start="start";var classes=["test-form"];var fieldsets=[{label:"Basisdaten",name:"start",percentage:0,fields:[{name:"salutation",label:"Anrede",type:"SelectChoice",classes:["w1of1"],choices:[{label:"Herr",value:"mr"},{label:"Frau",value:"mrs"}],help:{type:"question",content:"<div>Das ist ein Hilfetext</div>"},required:true},{name:"name",label:"Name",type:"Text",classes:["w1of1"],placeholder:"Nachname",required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:30,error:"Maximal 30 Zeichen"}]},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
+    var name="test-form";var start="start";var classes=["test-form"];var fieldsets=[{label:"Basisdaten",name:"start",percentage:0,fields:[{name:"salutation",label:"Anrede",type:"ChoiceSelect",classes:["w1of1"],choices:[{label:"Herr",value:"mr"},{label:"Frau",value:"mrs"}],help:{type:"question",content:"<div>Das ist ein Hilfetext</div>"},required:true},{name:"name",label:"Name",type:"Text",classes:["w1of1"],placeholder:"Nachname",required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:30,error:"Maximal 30 Zeichen"}]},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
 
     /* src/App.svelte generated by Svelte v3.42.1 */
 

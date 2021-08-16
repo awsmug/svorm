@@ -11,9 +11,21 @@ fieldset {
             display: block;          
 
             input, select {
-                width:100%
+                width:100%;
             }
-        }  
+
+            &.validated {
+                input, select {
+                    background-position: right;
+                    background-repeat: no-repeat;
+                    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24"><path fill="lightgrey" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 17l-5-5.299 1.399-1.43 3.574 3.736 6.572-7.007 1.455 1.403-8 8.597z"/></svg>'); 
+                }
+            }
+
+            &.error {
+                
+            }
+        }
         
         /**
         * Input element sizes
@@ -76,7 +88,10 @@ fieldset {
                     border-radius: 0.25rem;
                     padding: 0.5rem;
                     line-height: 1rem;
+
+                    
                 }
+
             }
         }
      }

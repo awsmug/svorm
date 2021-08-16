@@ -7,6 +7,7 @@
     export let field: Field;
 
     const dispatch = createEventDispatcher();
+    let classes : string[] = ['input', 'input-text'];
 
     $: errors = field.getValidationErors();
 
@@ -15,7 +16,7 @@
     }
 </script>
 
-<div class="{field.getClasses(['input', 'input-text'])}">
+<div class="{field.getClasses( classes )}">
     <label for="{field.name}">{field.label}</label>
     <div><input type=text name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} /></div>
 </div>
