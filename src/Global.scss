@@ -65,7 +65,6 @@ fieldset {
      font-size: 1rem;
 
      form {
-         background-color: #ffe29a;
          padding: 1rem;
      }
 
@@ -112,6 +111,7 @@ fieldset {
                     border-bottom: 0.125rem solid lightgrey;
                     padding: 0.5rem;
                     line-height: 1rem;
+                    font-family: 'Courier New', Courier, monospace;
 
                     &:focus,
                     &:-internal-autofill-selected {
@@ -131,6 +131,35 @@ fieldset {
                     input {
                         border-left: 0.125rem solid red;
                         border-bottom: 0.125rem solid red;
+                    }
+                }
+
+                .errors {
+                    ul {
+                        list-style-type: none;
+                        display: flex;
+                        padding: 0;
+                        margin: 0;
+
+                        li {
+                            .error-triangle {
+                                width: 0px;
+                                height: 0px;
+                                -webkit-transform:rotate(360deg);
+                                border-style: solid;
+                                border-width: 0 1rem 1rem 1rem;
+                                border-color: transparent transparent red transparent;
+                                margin-left: 1rem;
+                            }
+
+                            .error-content {
+                                background-color: red;
+                                color:white;
+                                margin-right:0.5rem;
+                                padding: 0.5rem;
+                                font-size: 0.8rem;
+                            }
+                        }
                     }
                 }
             }

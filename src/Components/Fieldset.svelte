@@ -59,9 +59,9 @@
             {:else if field.type === 'ChoiceImage'}
                 <ChoiceImage field={field} on:update={update} />
             {:else if field.type === 'Headline'}
-                <h2>{field.value}</h2>
+                <h2>{field.getValue()}</h2>
             {:else if field.type === 'Paragraph'}
-                <p>{field.value}</p>
+                <p>{field.getValue()}</p>
             {/if}            
         {/each}
     </div>

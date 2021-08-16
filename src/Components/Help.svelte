@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type Field from '../../Classes/Field';
+    import type Field from '../Classes/Field';
     export let field: Field;
 </script>
 

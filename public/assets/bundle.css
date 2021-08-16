@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /**
  * Basic form CSS
  **/
@@ -40,7 +43,6 @@ body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 1rem; }
   body form {
-    background-color: #ffe29a;
     padding: 1rem; }
   body fieldset {
     border: 0;
@@ -73,7 +75,8 @@ body {
         border-left: 0.125rem solid lightgrey;
         border-bottom: 0.125rem solid lightgrey;
         padding: 0.5rem;
-        line-height: 1rem; }
+        line-height: 1rem;
+        font-family: 'Courier New', Courier, monospace; }
         body fieldset .fields .input input:focus, body fieldset .fields .input input:-internal-autofill-selected, body fieldset .fields .input select:focus, body fieldset .fields .input select:-internal-autofill-selected {
           outline: none; }
       body fieldset .fields .input.validated input {
@@ -82,6 +85,25 @@ body {
       body fieldset .fields .input.error input {
         border-left: 0.125rem solid red;
         border-bottom: 0.125rem solid red; }
+      body fieldset .fields .input .errors ul {
+        list-style-type: none;
+        display: flex;
+        padding: 0;
+        margin: 0; }
+        body fieldset .fields .input .errors ul li .error-triangle {
+          width: 0px;
+          height: 0px;
+          -webkit-transform: rotate(360deg);
+          border-style: solid;
+          border-width: 0 1rem 1rem 1rem;
+          border-color: transparent transparent red transparent;
+          margin-left: 1rem; }
+        body fieldset .fields .input .errors ul li .error-content {
+          background-color: red;
+          color: white;
+          margin-right: 0.5rem;
+          padding: 0.5rem;
+          font-size: 0.8rem; }
     body fieldset .fields .input-help {
       margin: -0.5rem 0 0.5rem; }
       body fieldset .fields .input-help .input-help-triangle {
@@ -115,9 +137,6 @@ body {
       font-size: 0.9rem;
       min-width: 10rem; }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 .percentage.svelte-h0i7g2 {
   position: relative;
   width: 100%;
@@ -136,6 +155,9 @@ body {
   width: 100%;
   z-index: 3; }
 
+label.svelte-1251773 {
+  cursor: pointer; }
+
 label.svelte-wryltr {
   cursor: pointer; }
 
@@ -144,6 +166,3 @@ input[type="radio"].svelte-wryltr {
   opacity: 0;
   width: 0;
   height: 0; }
-
-label.svelte-1251773 {
-  cursor: pointer; }
