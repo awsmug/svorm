@@ -13,7 +13,9 @@ fieldset .fields {
         **/ }
   fieldset .fields .input {
     display: block; }
-    fieldset .fields .input input, fieldset .fields .input select {
+    fieldset .fields .input input[type=text],
+    fieldset .fields .input textarea,
+    fieldset .fields .input select {
       width: 100%; }
   fieldset .fields .w1of1 {
     width: 100%; }
@@ -70,19 +72,31 @@ body {
         font-weight: 600;
         margin-bottom: 0.25rem;
         margin: 0 0.25rem 0.25rem 0.5rem; }
-      body fieldset .fields .input input, body fieldset .fields .input select {
+        body fieldset .fields .input label .icon-question,
+        body fieldset .fields .input label .icon-info {
+          cursor: pointer;
+          display: inline;
+          padding-top: 5px; }
+          body fieldset .fields .input label .icon-question svg,
+          body fieldset .fields .input label .icon-info svg {
+            width: 18px;
+            height: 18px; }
+          body fieldset .fields .input label .icon-question:hover,
+          body fieldset .fields .input label .icon-info:hover {
+            color: #2d7d15; }
+      body fieldset .fields .input input[type=text], body fieldset .fields .input select {
         border: none;
         border-left: 0.125rem solid lightgrey;
         border-bottom: 0.125rem solid lightgrey;
         padding: 0.5rem;
         line-height: 1rem;
         font-family: 'Courier New', Courier, monospace; }
-        body fieldset .fields .input input:focus, body fieldset .fields .input input:-internal-autofill-selected, body fieldset .fields .input select:focus, body fieldset .fields .input select:-internal-autofill-selected {
+        body fieldset .fields .input input[type=text]:focus, body fieldset .fields .input input[type=text]:-internal-autofill-selected, body fieldset .fields .input select:focus, body fieldset .fields .input select:-internal-autofill-selected {
           outline: none; }
-      body fieldset .fields .input.validated input {
+      body fieldset .fields .input.validated input[type=text] {
         border-left: 0.125rem solid #2d7d15;
         border-bottom: 0.125rem solid #2d7d15; }
-      body fieldset .fields .input.error input {
+      body fieldset .fields .input.error input[type=text] {
         border-left: 0.125rem solid red;
         border-bottom: 0.125rem solid red; }
       body fieldset .fields .input .errors ul {

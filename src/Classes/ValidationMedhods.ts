@@ -108,7 +108,29 @@ export default class ValidationMedhods {
         return false;
     }
 
+    /**
+     * Is value in array?
+     * 
+     * @param value Needle.
+     * @param value Haystack.
+     * @return boolean True if found, false if not.
+     * 
+     * @since 1.0.0
+     */
     static inArray( value: any, values: any[] ) : boolean {
         return values.includes( value );
+    }
+
+    /**
+     * Checks if value is checked
+     * 
+     * @param value Value of the field.
+     * @return boolean True if is checked, false if not.
+     * 
+     * @since 1.0.0
+     */
+    static isChecked( value: any ) : boolean {
+        console.log( value );
+        return value == true ? true : false;
     }
 }

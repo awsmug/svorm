@@ -10,7 +10,7 @@
             "fields": [
                 {
                     "name": "email1",
-                    "label": "Email",
+                    "label": "Ihre Email-Adresse",
                     "type": "Text",
                     "classes": [ "w1of1" ], 
                     "required": true,
@@ -147,6 +147,19 @@
                             "value": "Saarland"
                         }
                     ]               
+                },
+                {
+                    "name": "privacy",
+                    "label": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
+                    "type": "Checkbox",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "isChecked",
+                            "error": "Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."
+                        }
+                    ]
                 }
             ]
         },

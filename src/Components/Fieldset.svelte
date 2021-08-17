@@ -7,6 +7,7 @@
     import Text from './Inputs/Text.svelte';
     import Textarea from './Inputs/Textarea.svelte';
     import Range from './Inputs/Range.svelte';
+    import Checkbox from './Inputs/Checkbox.svelte'; 
     import ChoiceSelect from './Inputs/ChoiceSelect.svelte';
     import ChoiceRadio from './Inputs/ChoiceRadio.svelte';
     import ChoiceImage from './Inputs/ChoiceImage.svelte'; 
@@ -52,12 +53,14 @@
                 <Textarea field={field} on:update={update}  />
             {:else if field.type === 'Range'}
                 <Range field={field} on:update={update}  />
+            {:else if field.type === 'Checkbox'}
+                <Checkbox field={field} on:update={update} />
             {:else if field.type === 'ChoiceSelect'}
                 <ChoiceSelect field={field} on:update={update} />
             {:else if field.type === 'ChoiceRadio'}
                 <ChoiceRadio field={field} on:update={update} />
             {:else if field.type === 'ChoiceImage'}
-                <ChoiceImage field={field} on:update={update} />
+                <ChoiceImage field={field} on:update={update} />       
             {:else if field.type === 'Headline'}
                 <h2>{field.getValue()}</h2>
             {:else if field.type === 'Paragraph'}

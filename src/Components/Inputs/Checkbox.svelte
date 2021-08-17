@@ -7,9 +7,13 @@
     import Errors from '../Errors.svelte';
 
     export let field: Field;
+    
+    if( field.value == undefined ) {
+        field.value = false;
+    }
 
     const dispatch = createEventDispatcher();    
-    let   classes  : string[] = ['input', 'input-text'];
+    let   classes  : string[] = ['input', 'input-checkbox'];
 
     $: field.getValidationErors();
 
@@ -23,13 +27,13 @@
     }
 </script>
 
-<div class={field.getClasses( classes )}>
-    <label for={field.name}>
-        {field.label} 
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </label>
-    <div class="input-text-field">
-        <input type=text name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+<div class={field.getClasses( classes )}>        
+    <div class="input-checkbox-field">
+        <label for={field.name}>
+            <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+            {field.label}
+            <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+        </label>
     </div>
     <Errors field={field} />
 </div>

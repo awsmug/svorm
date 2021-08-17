@@ -3,13 +3,15 @@
 
     import type Field from "../../Classes/Field";
     import Help from '../Help.svelte';
+    import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
 
-    let dispatch = createEventDispatcher();
-    
-    $: errors = field.getValidationErors();
+    const dispatch = createEventDispatcher();
+    let   classes  : string[] = ['input', 'input-text'];
+
+    $: field.getValidationErors();
 
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
@@ -18,22 +20,31 @@
             field.fieldset.form.navigation.nextFieldset();
         }
     }
+
+    let showHelp = false;
+    const toggleHelp = () => {
+        showHelp = ! showHelp;
+    }
 </script>
 
 {#if field.label !== undefined}
-    <legend>{field.label}</legend>
+    <legend>
+        {field.label}
+        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+    </legend>
 {/if}
 
-<div class="{field.getClasses(['input', 'input-choice-radio'])}">
+<div class="{field.getClasses(classes)}">
     {#each field.choices as choice}
         <label>
-            <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} />
+            <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
             {choice.label}
         </label>
     {/each}
+    <Errors field="{field}" />
 </div>
 
-<Help field={field} />
+<Help field={field} show={showHelp} />
 
 <style>
     label {        

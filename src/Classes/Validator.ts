@@ -72,6 +72,12 @@ export default class Validator {
                         errors.push( validation.error );
                     }
                     break;
+                case 'isChecked':
+                    console.log( this );
+                    if ( ! ValidationMedhods.isChecked( this.value ) ) {
+                        errors.push( validation.error );
+                    }
+                    break;                    
                 default:
                     errors.push( 'Validations-Typ "' + validation.type + '" existiert nicht."' );
                     break;

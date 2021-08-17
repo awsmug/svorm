@@ -22,7 +22,7 @@ export default class Field implements HasFieldData {
     readonly required    : boolean;
     readonly validations : [];
 
-    private  value       : any;
+    public   value       : any;
     private  validated   : boolean = false;    
     private  errors      : string[] = [];
 

@@ -130,6 +130,9 @@ var app = (function () {
     function element(name) {
         return document.createElement(name);
     }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
     function text(data) {
         return document.createTextNode(data);
     }
@@ -516,6 +519,111 @@ var app = (function () {
             }
         };
     }
+    function create_bidirectional_transition(node, fn, params, intro) {
+        let config = fn(node, params);
+        let t = intro ? 0 : 1;
+        let running_program = null;
+        let pending_program = null;
+        let animation_name = null;
+        function clear_animation() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function init(program, duration) {
+            const d = (program.b - t);
+            duration *= Math.abs(d);
+            return {
+                a: t,
+                b: program.b,
+                d,
+                duration,
+                start: program.start,
+                end: program.start + duration,
+                group: program.group
+            };
+        }
+        function go(b) {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            const program = {
+                start: now() + delay,
+                b
+            };
+            if (!b) {
+                // @ts-ignore todo: improve typings
+                program.group = outros;
+                outros.r += 1;
+            }
+            if (running_program || pending_program) {
+                pending_program = program;
+            }
+            else {
+                // if this is an intro, and there's a delay, we need to do
+                // an initial tick and/or apply CSS animation immediately
+                if (css) {
+                    clear_animation();
+                    animation_name = create_rule(node, t, b, duration, delay, easing, css);
+                }
+                if (b)
+                    tick(0, 1);
+                running_program = init(program, duration);
+                add_render_callback(() => dispatch(node, b, 'start'));
+                loop(now => {
+                    if (pending_program && now > pending_program.start) {
+                        running_program = init(pending_program, duration);
+                        pending_program = null;
+                        dispatch(node, running_program.b, 'start');
+                        if (css) {
+                            clear_animation();
+                            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
+                        }
+                    }
+                    if (running_program) {
+                        if (now >= running_program.end) {
+                            tick(t = running_program.b, 1 - t);
+                            dispatch(node, running_program.b, 'end');
+                            if (!pending_program) {
+                                // we're done
+                                if (running_program.b) {
+                                    // intro — we can tidy up immediately
+                                    clear_animation();
+                                }
+                                else {
+                                    // outro — needs to be coordinated
+                                    if (!--running_program.group.r)
+                                        run_all(running_program.group.c);
+                                }
+                            }
+                            running_program = null;
+                        }
+                        else if (now >= running_program.start) {
+                            const p = now - running_program.start;
+                            t = running_program.a + running_program.d * easing(p / running_program.duration);
+                            tick(t, 1 - t);
+                        }
+                    }
+                    return !!(running_program || pending_program);
+                });
+            }
+        }
+        return {
+            run(b) {
+                if (is_function(config)) {
+                    wait().then(() => {
+                        // @ts-ignore
+                        config = config();
+                        go(b);
+                    });
+                }
+                else {
+                    go(b);
+                }
+            },
+            end() {
+                clear_animation();
+                running_program = pending_program = null;
+            }
+        };
+    }
     function create_component(block) {
         block && block.c();
     }
@@ -852,8 +960,29 @@ var app = (function () {
             }
             return false;
         }
+        /**
+         * Is value in array?
+         *
+         * @param value Needle.
+         * @param value Haystack.
+         * @return boolean True if found, false if not.
+         *
+         * @since 1.0.0
+         */
         static inArray(value, values) {
             return values.includes(value);
+        }
+        /**
+         * Checks if value is checked
+         *
+         * @param value Value of the field.
+         * @return boolean True if is checked, false if not.
+         *
+         * @since 1.0.0
+         */
+        static isChecked(value) {
+            console.log(value);
+            return value == true ? true : false;
         }
     }
 
@@ -920,6 +1049,12 @@ var app = (function () {
                         break;
                     case 'inArray':
                         if (!ValidationMedhods.inArray(this.value, validation.values)) {
+                            errors.push(validation.error);
+                        }
+                        break;
+                    case 'isChecked':
+                        console.log(this);
+                        if (!ValidationMedhods.isChecked(this.value)) {
                             errors.push(validation.error);
                         }
                         break;
@@ -1461,16 +1596,18 @@ var app = (function () {
     }
 
     /* src/Components/Help.svelte generated by Svelte v3.42.1 */
+    const file$d = "src/Components/Help.svelte";
 
-    const file$b = "src/Components/Help.svelte";
-
-    // (5:0) {#if field.help !== undefined }
-    function create_if_block$8(ctx) {
+    // (7:0) {#if field.help !== undefined && show }
+    function create_if_block$9(ctx) {
     	let div2;
     	let div0;
     	let t;
     	let div1;
     	let raw_value = /*field*/ ctx[0].help.content + "";
+    	let div1_id_value;
+    	let div2_transition;
+    	let current;
 
     	const block = {
     		c: function create() {
@@ -1479,11 +1616,12 @@ var app = (function () {
     			t = space();
     			div1 = element("div");
     			attr_dev(div0, "class", "input-help-triangle");
-    			add_location(div0, file$b, 6, 8, 118);
+    			add_location(div0, file$d, 8, 8, 201);
+    			attr_dev(div1, "id", div1_id_value = "" + (/*field*/ ctx[0].name + "-help"));
     			attr_dev(div1, "class", "input-help-content");
-    			add_location(div1, file$b, 7, 8, 166);
+    			add_location(div1, file$d, 9, 8, 249);
     			attr_dev(div2, "class", "input-help");
-    			add_location(div2, file$b, 5, 4, 85);
+    			add_location(div2, file$d, 7, 4, 152);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -1491,11 +1629,252 @@ var app = (function () {
     			append_dev(div2, t);
     			append_dev(div2, div1);
     			div1.innerHTML = raw_value;
+    			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && raw_value !== (raw_value = /*field*/ ctx[0].help.content + "")) div1.innerHTML = raw_value;		},
+    			if ((!current || dirty & /*field*/ 1) && raw_value !== (raw_value = /*field*/ ctx[0].help.content + "")) div1.innerHTML = raw_value;
+    			if (!current || dirty & /*field*/ 1 && div1_id_value !== (div1_id_value = "" + (/*field*/ ctx[0].name + "-help"))) {
+    				attr_dev(div1, "id", div1_id_value);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, true);
+    				div2_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
+    			div2_transition.run(0);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
+    			if (detaching && div2_transition) div2_transition.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$9.name,
+    		type: "if",
+    		source: "(7:0) {#if field.help !== undefined && show }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$e(ctx) {
+    	let if_block_anchor;
+    	let current;
+    	let if_block = /*field*/ ctx[0].help !== undefined && /*show*/ ctx[1] && create_if_block$9(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*field*/ ctx[0].help !== undefined && /*show*/ ctx[1]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*field, show*/ 3) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block$9(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$e.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$e($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Help', slots, []);
+    	
+    	let { field } = $$props;
+    	let { show } = $$props;
+    	const writable_props = ['field', 'show'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Help> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$$set = $$props => {
+    		if ('field' in $$props) $$invalidate(0, field = $$props.field);
+    		if ('show' in $$props) $$invalidate(1, show = $$props.show);
+    	};
+
+    	$$self.$capture_state = () => ({ fade, field, show });
+
+    	$$self.$inject_state = $$props => {
+    		if ('field' in $$props) $$invalidate(0, field = $$props.field);
+    		if ('show' in $$props) $$invalidate(1, show = $$props.show);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [field, show];
+    }
+
+    class Help extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$e, create_fragment$e, safe_not_equal, { field: 0, show: 1 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Help",
+    			options,
+    			id: create_fragment$e.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*field*/ ctx[0] === undefined && !('field' in props)) {
+    			console.warn("<Help> was created without expected prop 'field'");
+    		}
+
+    		if (/*show*/ ctx[1] === undefined && !('show' in props)) {
+    			console.warn("<Help> was created without expected prop 'show'");
+    		}
+    	}
+
+    	get field() {
+    		throw new Error("<Help>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set field(value) {
+    		throw new Error("<Help>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show() {
+    		throw new Error("<Help>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show(value) {
+    		throw new Error("<Help>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/Components/HelpIcon.svelte generated by Svelte v3.42.1 */
+    const file$c = "src/Components/HelpIcon.svelte";
+
+    // (10:0) {#if field.help !== undefined }
+    function create_if_block$8(ctx) {
+    	let div;
+    	let if_block0_anchor;
+    	let div_class_value;
+    	let mounted;
+    	let dispose;
+    	let if_block0 = /*field*/ ctx[0].help.type == 'question' && create_if_block_2$1(ctx);
+    	let if_block1 = /*field*/ ctx[0].help.type == 'info' && create_if_block_1$3(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			if (if_block0) if_block0.c();
+    			if_block0_anchor = empty();
+    			if (if_block1) if_block1.c();
+    			attr_dev(div, "class", div_class_value = "icon-" + /*field*/ ctx[0].help.type);
+    			add_location(div, file$c, 10, 4, 233);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			if (if_block0) if_block0.m(div, null);
+    			append_dev(div, if_block0_anchor);
+    			if (if_block1) if_block1.m(div, null);
+
+    			if (!mounted) {
+    				dispose = listen_dev(div, "click", /*toggleHelp*/ ctx[1], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*field*/ ctx[0].help.type == 'question') {
+    				if (if_block0) ; else {
+    					if_block0 = create_if_block_2$1(ctx);
+    					if_block0.c();
+    					if_block0.m(div, if_block0_anchor);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*field*/ ctx[0].help.type == 'info') {
+    				if (if_block1) ; else {
+    					if_block1 = create_if_block_1$3(ctx);
+    					if_block1.c();
+    					if_block1.m(div, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (dirty & /*field*/ 1 && div_class_value !== (div_class_value = "icon-" + /*field*/ ctx[0].help.type)) {
+    				attr_dev(div, "class", div_class_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -1503,14 +1882,96 @@ var app = (function () {
     		block,
     		id: create_if_block$8.name,
     		type: "if",
-    		source: "(5:0) {#if field.help !== undefined }",
+    		source: "(10:0) {#if field.help !== undefined }",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$c(ctx) {
+    // (13:8) {#if field.help.type == 'question' }
+    function create_if_block_2$1(ctx) {
+    	let svg;
+    	let path;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			svg = svg_element("svg");
+    			path = svg_element("path");
+    			t = space();
+    			attr_dev(path, "d", "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247zm2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z");
+    			add_location(path, file$c, 14, 12, 559);
+    			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg, "width", "8");
+    			attr_dev(svg, "height", "16");
+    			attr_dev(svg, "fill", "currentColor");
+    			attr_dev(svg, "class", "bi bi-question-circle-fill");
+    			attr_dev(svg, "viewBox", "0 0 16 16");
+    			add_location(svg, file$c, 13, 8, 409);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, svg, anchor);
+    			append_dev(svg, path);
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(svg);
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$1.name,
+    		type: "if",
+    		source: "(13:8) {#if field.help.type == 'question' }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (17:13) {#if field.help.type == 'info' }
+    function create_if_block_1$3(ctx) {
+    	let svg;
+    	let path;
+
+    	const block = {
+    		c: function create() {
+    			svg = svg_element("svg");
+    			path = svg_element("path");
+    			attr_dev(path, "d", "M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z");
+    			add_location(path, file$c, 18, 12, 1310);
+    			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg, "width", "16");
+    			attr_dev(svg, "height", "16");
+    			attr_dev(svg, "fill", "currentColor");
+    			attr_dev(svg, "class", "bi bi-exclamation-circle-fill");
+    			attr_dev(svg, "viewBox", "0 0 16 16");
+    			add_location(svg, file$c, 17, 8, 1156);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, svg, anchor);
+    			append_dev(svg, path);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(svg);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$3.name,
+    		type: "if",
+    		source: "(17:13) {#if field.help.type == 'info' }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$d(ctx) {
     	let if_block_anchor;
     	let if_block = /*field*/ ctx[0].help !== undefined && create_if_block$8(ctx);
 
@@ -1550,7 +2011,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$c.name,
+    		id: create_fragment$d.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1559,22 +2020,33 @@ var app = (function () {
     	return block;
     }
 
-    function instance$c($$self, $$props, $$invalidate) {
+    function instance$d($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Help', slots, []);
+    	validate_slots('HelpIcon', slots, []);
     	
     	let { field } = $$props;
+    	const dispatch = createEventDispatcher();
+
+    	const toggleHelp = () => {
+    		dispatch('toggleHelp');
+    	};
+
     	const writable_props = ['field'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Help> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<HelpIcon> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$$set = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
     	};
 
-    	$$self.$capture_state = () => ({ field });
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		field,
+    		dispatch,
+    		toggleHelp
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
@@ -1584,41 +2056,41 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [field];
+    	return [field, toggleHelp];
     }
 
-    class Help extends SvelteComponentDev {
+    class HelpIcon extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$c, create_fragment$c, safe_not_equal, { field: 0 });
+    		init(this, options, instance$d, create_fragment$d, safe_not_equal, { field: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Help",
+    			tagName: "HelpIcon",
     			options,
-    			id: create_fragment$c.name
+    			id: create_fragment$d.name
     		});
 
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
     		if (/*field*/ ctx[0] === undefined && !('field' in props)) {
-    			console.warn("<Help> was created without expected prop 'field'");
+    			console.warn("<HelpIcon> was created without expected prop 'field'");
     		}
     	}
 
     	get field() {
-    		throw new Error("<Help>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<HelpIcon>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set field(value) {
-    		throw new Error("<Help>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<HelpIcon>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
     /* src/Components/Errors.svelte generated by Svelte v3.42.1 */
 
-    const file$a = "src/Components/Errors.svelte";
+    const file$b = "src/Components/Errors.svelte";
 
     function get_each_context$5(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -1647,9 +2119,9 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(ul, file$a, 6, 4, 109);
+    			add_location(ul, file$b, 6, 4, 109);
     			attr_dev(div, "class", "errors");
-    			add_location(div, file$a, 5, 0, 84);
+    			add_location(div, file$b, 5, 0, 84);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1720,10 +2192,10 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div0, "class", "error-triangle");
-    			add_location(div0, file$a, 9, 12, 191);
+    			add_location(div0, file$b, 9, 12, 191);
     			attr_dev(div1, "class", "error-content");
-    			add_location(div1, file$a, 10, 12, 238);
-    			add_location(li, file$a, 8, 8, 174);
+    			add_location(div1, file$b, 10, 12, 238);
+    			add_location(li, file$b, 8, 8, 174);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -1752,7 +2224,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$b(ctx) {
+    function create_fragment$c(ctx) {
     	let show_if = /*field*/ ctx[0].hasValidationErrors();
     	let if_block_anchor;
     	let if_block = show_if && create_if_block$7(ctx);
@@ -1795,7 +2267,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$b.name,
+    		id: create_fragment$c.name,
     		type: "component",
     		source: "",
     		ctx
@@ -1804,7 +2276,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$b($$self, $$props, $$invalidate) {
+    function instance$c($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Errors', slots, []);
     	
@@ -1835,13 +2307,13 @@ var app = (function () {
     class Errors extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$b, create_fragment$b, safe_not_equal, { field: 0 });
+    		init(this, options, instance$c, create_fragment$c, safe_not_equal, { field: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Errors",
     			options,
-    			id: create_fragment$b.name
+    			id: create_fragment$c.name
     		});
 
     		const { ctx } = this.$$;
@@ -1862,27 +2334,37 @@ var app = (function () {
     }
 
     /* src/Components/Inputs/Text.svelte generated by Svelte v3.42.1 */
-    const file$9 = "src/Components/Inputs/Text.svelte";
+    const file$a = "src/Components/Inputs/Text.svelte";
 
-    function create_fragment$a(ctx) {
+    function create_fragment$b(ctx) {
     	let div1;
     	let label;
     	let t0_value = /*field*/ ctx[0].label + "";
     	let t0;
-    	let label_for_value;
     	let t1;
+    	let helpicon;
+    	let label_for_value;
+    	let t2;
     	let div0;
     	let input;
     	let input_name_value;
     	let input_placeholder_value;
-    	let t2;
+    	let input_aria_describedby_value;
+    	let t3;
     	let errors;
     	let div1_class_value;
-    	let t3;
+    	let t4;
     	let help;
     	let current;
     	let mounted;
     	let dispose;
+
+    	helpicon = new HelpIcon({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
 
     	errors = new Errors({
     			props: { field: /*field*/ ctx[0] },
@@ -1890,7 +2372,10 @@ var app = (function () {
     		});
 
     	help = new Help({
-    			props: { field: /*field*/ ctx[0] },
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
@@ -1900,21 +2385,29 @@ var app = (function () {
     			label = element("label");
     			t0 = text(t0_value);
     			t1 = space();
+    			create_component(helpicon.$$.fragment);
+    			t2 = space();
     			div0 = element("div");
     			input = element("input");
-    			t2 = space();
-    			create_component(errors.$$.fragment);
     			t3 = space();
+    			create_component(errors.$$.fragment);
+    			t4 = space();
     			create_component(help.$$.fragment);
     			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
-    			add_location(label, file$9, 14, 4, 404);
+    			add_location(label, file$a, 19, 4, 523);
     			attr_dev(input, "type", "text");
     			attr_dev(input, "name", input_name_value = /*field*/ ctx[0].name);
     			attr_dev(input, "placeholder", input_placeholder_value = /*field*/ ctx[0].placeholder);
-    			add_location(input, file$9, 15, 9, 461);
-    			add_location(div0, file$9, 15, 4, 456);
-    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[1]));
-    			add_location(div1, file$9, 13, 0, 356);
+
+    			attr_dev(input, "aria-describedby", input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			add_location(input, file$a, 24, 8, 689);
+    			attr_dev(div0, "class", "input-text-field");
+    			add_location(div0, file$a, 23, 4, 650);
+    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div1, file$a, 18, 0, 477);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1923,20 +2416,22 @@ var app = (function () {
     			insert_dev(target, div1, anchor);
     			append_dev(div1, label);
     			append_dev(label, t0);
-    			append_dev(div1, t1);
+    			append_dev(label, t1);
+    			mount_component(helpicon, label, null);
+    			append_dev(div1, t2);
     			append_dev(div1, div0);
     			append_dev(div0, input);
     			set_input_value(input, /*field*/ ctx[0].value);
-    			append_dev(div1, t2);
+    			append_dev(div1, t3);
     			mount_component(errors, div1, null);
-    			insert_dev(target, t3, anchor);
+    			insert_dev(target, t4, anchor);
     			mount_component(help, target, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[3]),
-    					listen_dev(input, "blur", /*setValue*/ ctx[2], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[5]),
+    					listen_dev(input, "blur", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -1944,6 +2439,9 @@ var app = (function () {
     		},
     		p: function update(ctx, [dirty]) {
     			if ((!current || dirty & /*field*/ 1) && t0_value !== (t0_value = /*field*/ ctx[0].label + "")) set_data_dev(t0, t0_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
 
     			if (!current || dirty & /*field*/ 1 && label_for_value !== (label_for_value = /*field*/ ctx[0].name)) {
     				attr_dev(label, "for", label_for_value);
@@ -1957,6 +2455,12 @@ var app = (function () {
     				attr_dev(input, "placeholder", input_placeholder_value);
     			}
 
+    			if (!current || dirty & /*field*/ 1 && input_aria_describedby_value !== (input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(input, "aria-describedby", input_aria_describedby_value);
+    			}
+
     			if (dirty & /*field*/ 1 && input.value !== /*field*/ ctx[0].value) {
     				set_input_value(input, /*field*/ ctx[0].value);
     			}
@@ -1965,29 +2469,33 @@ var app = (function () {
     			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
     			errors.$set(errors_changes);
 
-    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[1]))) {
+    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div1, "class", div1_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
     			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
     			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
+    			destroy_component(helpicon);
     			destroy_component(errors);
-    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(t4);
     			destroy_component(help, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -1996,7 +2504,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$a.name,
+    		id: create_fragment$b.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2005,7 +2513,7 @@ var app = (function () {
     	return block;
     }
 
-    function instance$a($$self, $$props, $$invalidate) {
+    function instance$b($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Text', slots, []);
     	
@@ -2015,6 +2523,12 @@ var app = (function () {
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -2035,16 +2549,20 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
     		classes,
-    		setValue
+    		setValue,
+    		showHelp,
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
-    		if ('classes' in $$props) $$invalidate(1, classes = $$props.classes);
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2057,19 +2575,19 @@ var app = (function () {
     		}
     	};
 
-    	return [field, classes, setValue, input_input_handler];
+    	return [field, showHelp, classes, setValue, toggleHelp, input_input_handler];
     }
 
     class Text extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$a, create_fragment$a, safe_not_equal, { field: 0 });
+    		init(this, options, instance$b, create_fragment$b, safe_not_equal, { field: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Text",
     			options,
-    			id: create_fragment$a.name
+    			id: create_fragment$b.name
     		});
 
     		const { ctx } = this.$$;
@@ -2090,65 +2608,102 @@ var app = (function () {
     }
 
     /* src/Components/Inputs/Textarea.svelte generated by Svelte v3.42.1 */
-    const file$8 = "src/Components/Inputs/Textarea.svelte";
+    const file$9 = "src/Components/Inputs/Textarea.svelte";
 
-    function create_fragment$9(ctx) {
-    	let div;
+    function create_fragment$a(ctx) {
+    	let div1;
     	let label;
     	let t0_value = /*field*/ ctx[0].label + "";
     	let t0;
-    	let label_for_value;
     	let t1;
+    	let helpicon;
+    	let label_for_value;
+    	let t2;
+    	let div0;
     	let textarea;
     	let textarea_name_value;
     	let textarea_placeholder_value;
-    	let div_class_value;
-    	let t2;
+    	let textarea_aria_describedby_value;
+    	let t3;
+    	let errors;
+    	let div1_class_value;
+    	let t4;
     	let help;
     	let current;
     	let mounted;
     	let dispose;
 
-    	help = new Help({
+    	helpicon = new HelpIcon({
     			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
+
+    	errors = new Errors({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
     	const block = {
     		c: function create() {
-    			div = element("div");
+    			div1 = element("div");
     			label = element("label");
     			t0 = text(t0_value);
     			t1 = space();
-    			textarea = element("textarea");
+    			create_component(helpicon.$$.fragment);
     			t2 = space();
+    			div0 = element("div");
+    			textarea = element("textarea");
+    			t3 = space();
+    			create_component(errors.$$.fragment);
+    			t4 = space();
     			create_component(help.$$.fragment);
     			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
-    			add_location(label, file$8, 14, 4, 414);
+    			add_location(label, file$9, 19, 4, 527);
     			attr_dev(textarea, "name", textarea_name_value = /*field*/ ctx[0].name);
     			attr_dev(textarea, "placeholder", textarea_placeholder_value = /*field*/ ctx[0].placeholder);
-    			add_location(textarea, file$8, 15, 4, 467);
-    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-textarea']));
-    			add_location(div, file$8, 13, 0, 348);
+
+    			attr_dev(textarea, "aria-describedby", textarea_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			add_location(textarea, file$9, 23, 9, 658);
+    			add_location(div0, file$9, 23, 4, 653);
+    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div1, file$9, 18, 0, 481);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, label);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, label);
     			append_dev(label, t0);
-    			append_dev(div, t1);
-    			append_dev(div, textarea);
+    			append_dev(label, t1);
+    			mount_component(helpicon, label, null);
+    			append_dev(div1, t2);
+    			append_dev(div1, div0);
+    			append_dev(div0, textarea);
     			set_input_value(textarea, /*field*/ ctx[0].value);
-    			insert_dev(target, t2, anchor);
+    			append_dev(div1, t3);
+    			mount_component(errors, div1, null);
+    			insert_dev(target, t4, anchor);
     			mount_component(help, target, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[2]),
-    					listen_dev(textarea, "blur", /*setValue*/ ctx[1], false, false, false)
+    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[5]),
+    					listen_dev(textarea, "blur", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -2156,6 +2711,9 @@ var app = (function () {
     		},
     		p: function update(ctx, [dirty]) {
     			if ((!current || dirty & /*field*/ 1) && t0_value !== (t0_value = /*field*/ ctx[0].label + "")) set_data_dev(t0, t0_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
 
     			if (!current || dirty & /*field*/ 1 && label_for_value !== (label_for_value = /*field*/ ctx[0].name)) {
     				attr_dev(label, "for", label_for_value);
@@ -2169,30 +2727,47 @@ var app = (function () {
     				attr_dev(textarea, "placeholder", textarea_placeholder_value);
     			}
 
+    			if (!current || dirty & /*field*/ 1 && textarea_aria_describedby_value !== (textarea_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(textarea, "aria-describedby", textarea_aria_describedby_value);
+    			}
+
     			if (dirty & /*field*/ 1) {
     				set_input_value(textarea, /*field*/ ctx[0].value);
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-textarea']))) {
-    				attr_dev(div, "class", div_class_value);
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
+    				attr_dev(div1, "class", div1_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(div1);
+    			destroy_component(helpicon);
+    			destroy_component(errors);
+    			if (detaching) detach_dev(t4);
     			destroy_component(help, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -2201,7 +2776,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$9.name,
+    		id: create_fragment$a.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2210,17 +2785,22 @@ var app = (function () {
     	return block;
     }
 
-    function instance$9($$self, $$props, $$invalidate) {
-    	let errors;
+    function instance$a($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Textarea', slots, []);
     	
     	let { field } = $$props;
     	const dispatch = createEventDispatcher();
-    	let showHelp = false;
+    	let classes = ['input', 'input-textarea'];
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -2241,18 +2821,20 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
-    		showHelp,
+    		classes,
     		setValue,
-    		errors
+    		showHelp,
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
-    		if ('showHelp' in $$props) showHelp = $$props.showHelp;
-    		if ('errors' in $$props) errors = $$props.errors;
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2261,23 +2843,23 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*field*/ 1) {
-    			errors = field.getValidationErors();
+    			field.getValidationErors();
     		}
     	};
 
-    	return [field, setValue, textarea_input_handler];
+    	return [field, showHelp, classes, setValue, toggleHelp, textarea_input_handler];
     }
 
     class Textarea extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$9, create_fragment$9, safe_not_equal, { field: 0 });
+    		init(this, options, instance$a, create_fragment$a, safe_not_equal, { field: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Textarea",
     			options,
-    			id: create_fragment$9.name
+    			id: create_fragment$a.name
     		});
 
     		const { ctx } = this.$$;
@@ -2298,9 +2880,9 @@ var app = (function () {
     }
 
     /* src/Components/Inputs/Range.svelte generated by Svelte v3.42.1 */
-    const file$7 = "src/Components/Inputs/Range.svelte";
+    const file$8 = "src/Components/Inputs/Range.svelte";
 
-    // (16:38) {#if field.params.unit !== undefined}
+    // (21:38) {#if field.params.unit !== undefined}
     function create_if_block$6(ctx) {
     	let t_value = /*field*/ ctx[0].params.unit + "";
     	let t;
@@ -2324,14 +2906,14 @@ var app = (function () {
     		block,
     		id: create_if_block$6.name,
     		type: "if",
-    		source: "(16:38) {#if field.params.unit !== undefined}",
+    		source: "(21:38) {#if field.params.unit !== undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    function create_fragment$8(ctx) {
+    function create_fragment$9(ctx) {
     	let div;
     	let label;
     	let t0_value = /*field*/ ctx[0].label + "";
@@ -2340,30 +2922,42 @@ var app = (function () {
     	let t2_value = /*field*/ ctx[0].value + "";
     	let t2;
     	let t3;
-    	let label_for_value;
     	let t4;
+    	let helpicon;
+    	let label_for_value;
+    	let t5;
     	let input;
     	let input_name_value;
     	let input_min_value;
     	let input_max_value;
     	let input_step_value;
-    	let div_class_value;
-    	let t5;
-    	let help;
     	let t6;
-    	let errors_1;
+    	let errors;
+    	let div_class_value;
+    	let t7;
+    	let help;
     	let current;
     	let mounted;
     	let dispose;
     	let if_block = /*field*/ ctx[0].params.unit !== undefined && create_if_block$6(ctx);
 
-    	help = new Help({
+    	helpicon = new HelpIcon({
     			props: { field: /*field*/ ctx[0] },
     			$$inline: true
     		});
 
-    	errors_1 = new Errors({
-    			props: { errors: /*errors*/ ctx[1] },
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
+
+    	errors = new Errors({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
@@ -2377,21 +2971,23 @@ var app = (function () {
     			t3 = space();
     			if (if_block) if_block.c();
     			t4 = space();
-    			input = element("input");
+    			create_component(helpicon.$$.fragment);
     			t5 = space();
-    			create_component(help.$$.fragment);
+    			input = element("input");
     			t6 = space();
-    			create_component(errors_1.$$.fragment);
+    			create_component(errors.$$.fragment);
+    			t7 = space();
+    			create_component(help.$$.fragment);
     			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
-    			add_location(label, file$7, 14, 4, 397);
+    			add_location(label, file$8, 19, 4, 522);
     			attr_dev(input, "name", input_name_value = /*field*/ ctx[0].name);
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", input_min_value = /*field*/ ctx[0].params.min);
     			attr_dev(input, "max", input_max_value = /*field*/ ctx[0].params.max);
     			attr_dev(input, "step", input_step_value = /*field*/ ctx[0].params.step);
-    			add_location(input, file$7, 17, 4, 541);
-    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-range']));
-    			add_location(div, file$7, 13, 0, 334);
+    			add_location(input, file$8, 23, 4, 726);
+    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div, file$8, 18, 0, 478);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2404,19 +3000,22 @@ var app = (function () {
     			append_dev(label, t2);
     			append_dev(label, t3);
     			if (if_block) if_block.m(label, null);
-    			append_dev(div, t4);
+    			append_dev(label, t4);
+    			mount_component(helpicon, label, null);
+    			append_dev(div, t5);
     			append_dev(div, input);
     			set_input_value(input, /*field*/ ctx[0].value);
-    			insert_dev(target, t5, anchor);
+    			append_dev(div, t6);
+    			mount_component(errors, div, null);
+    			insert_dev(target, t7, anchor);
     			mount_component(help, target, anchor);
-    			insert_dev(target, t6, anchor);
-    			mount_component(errors_1, target, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[2]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[2])
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[5]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[5]),
+    					listen_dev(input, "blur", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -2432,12 +3031,16 @@ var app = (function () {
     				} else {
     					if_block = create_if_block$6(ctx);
     					if_block.c();
-    					if_block.m(label, null);
+    					if_block.m(label, t4);
     				}
     			} else if (if_block) {
     				if_block.d(1);
     				if_block = null;
     			}
+
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
 
     			if (!current || dirty & /*field*/ 1 && label_for_value !== (label_for_value = /*field*/ ctx[0].name)) {
     				attr_dev(label, "for", label_for_value);
@@ -2463,35 +3066,39 @@ var app = (function () {
     				set_input_value(input, /*field*/ ctx[0].value);
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-range']))) {
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div, "class", div_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
-    			const errors_1_changes = {};
-    			if (dirty & /*errors*/ 2) errors_1_changes.errors = /*errors*/ ctx[1];
-    			errors_1.$set(errors_1_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
-    			transition_in(errors_1.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
-    			transition_out(errors_1.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     			if (if_block) if_block.d();
-    			if (detaching) detach_dev(t5);
+    			destroy_component(helpicon);
+    			destroy_component(errors);
+    			if (detaching) detach_dev(t7);
     			destroy_component(help, detaching);
-    			if (detaching) detach_dev(t6);
-    			destroy_component(errors_1, detaching);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -2499,7 +3106,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$8.name,
+    		id: create_fragment$9.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2508,17 +3115,22 @@ var app = (function () {
     	return block;
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Range', slots, []);
     	
     	let { field } = $$props;
     	const dispatch = createEventDispatcher();
-    	let errors = [];
+    	let classes = ['input', 'input-range'];
 
     	const setValue = () => {
-    		$$invalidate(1, errors = field.validate());
     		dispatch('update', field.fieldset.form);
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -2539,35 +3151,45 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
-    		errors,
-    		setValue
+    		classes,
+    		setValue,
+    		showHelp,
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
-    		if ('errors' in $$props) $$invalidate(1, errors = $$props.errors);
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [field, errors, input_change_input_handler];
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*field*/ 1) {
+    			field.getValidationErors();
+    		}
+    	};
+
+    	return [field, showHelp, classes, setValue, toggleHelp, input_change_input_handler];
     }
 
     class Range extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$8, create_fragment$8, safe_not_equal, { field: 0 });
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, { field: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "Range",
     			options,
-    			id: create_fragment$8.name
+    			id: create_fragment$9.name
     		});
 
     		const { ctx } = this.$$;
@@ -2587,19 +3209,298 @@ var app = (function () {
     	}
     }
 
+    /* src/Components/Inputs/Checkbox.svelte generated by Svelte v3.42.1 */
+    const file$7 = "src/Components/Inputs/Checkbox.svelte";
+
+    function create_fragment$8(ctx) {
+    	let div1;
+    	let div0;
+    	let label;
+    	let input;
+    	let input_name_value;
+    	let input_placeholder_value;
+    	let input_aria_describedby_value;
+    	let t0;
+    	let t1_value = /*field*/ ctx[0].label + "";
+    	let t1;
+    	let t2;
+    	let helpicon;
+    	let label_for_value;
+    	let t3;
+    	let errors;
+    	let div1_class_value;
+    	let t4;
+    	let help;
+    	let current;
+    	let mounted;
+    	let dispose;
+
+    	helpicon = new HelpIcon({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
+
+    	errors = new Errors({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			label = element("label");
+    			input = element("input");
+    			t0 = space();
+    			t1 = text(t1_value);
+    			t2 = space();
+    			create_component(helpicon.$$.fragment);
+    			t3 = space();
+    			create_component(errors.$$.fragment);
+    			t4 = space();
+    			create_component(help.$$.fragment);
+    			attr_dev(input, "type", "checkbox");
+    			attr_dev(input, "name", input_name_value = /*field*/ ctx[0].name);
+    			attr_dev(input, "placeholder", input_placeholder_value = /*field*/ ctx[0].placeholder);
+
+    			attr_dev(input, "aria-describedby", input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			add_location(input, file$7, 24, 12, 674);
+    			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
+    			add_location(label, file$7, 23, 8, 637);
+    			attr_dev(div0, "class", "input-checkbox-field");
+    			add_location(div0, file$7, 22, 4, 594);
+    			attr_dev(div1, "class", div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div1, file$7, 21, 0, 540);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, label);
+    			append_dev(label, input);
+    			input.checked = /*field*/ ctx[0].value;
+    			append_dev(label, t0);
+    			append_dev(label, t1);
+    			append_dev(label, t2);
+    			mount_component(helpicon, label, null);
+    			append_dev(div1, t3);
+    			mount_component(errors, div1, null);
+    			insert_dev(target, t4, anchor);
+    			mount_component(help, target, anchor);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input, "change", /*input_change_handler*/ ctx[5]),
+    					listen_dev(input, "blur", /*setValue*/ ctx[3], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (!current || dirty & /*field*/ 1 && input_name_value !== (input_name_value = /*field*/ ctx[0].name)) {
+    				attr_dev(input, "name", input_name_value);
+    			}
+
+    			if (!current || dirty & /*field*/ 1 && input_placeholder_value !== (input_placeholder_value = /*field*/ ctx[0].placeholder)) {
+    				attr_dev(input, "placeholder", input_placeholder_value);
+    			}
+
+    			if (!current || dirty & /*field*/ 1 && input_aria_describedby_value !== (input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(input, "aria-describedby", input_aria_describedby_value);
+    			}
+
+    			if (dirty & /*field*/ 1) {
+    				input.checked = /*field*/ ctx[0].value;
+    			}
+
+    			if ((!current || dirty & /*field*/ 1) && t1_value !== (t1_value = /*field*/ ctx[0].label + "")) set_data_dev(t1, t1_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
+
+    			if (!current || dirty & /*field*/ 1 && label_for_value !== (label_for_value = /*field*/ ctx[0].name)) {
+    				attr_dev(label, "for", label_for_value);
+    			}
+
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div1_class_value !== (div1_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
+    				attr_dev(div1, "class", div1_class_value);
+    			}
+
+    			const help_changes = {};
+    			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
+    			help.$set(help_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			transition_in(errors.$$.fragment, local);
+    			transition_in(help.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			transition_out(errors.$$.fragment, local);
+    			transition_out(help.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			destroy_component(helpicon);
+    			destroy_component(errors);
+    			if (detaching) detach_dev(t4);
+    			destroy_component(help, detaching);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$8.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$8($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Checkbox', slots, []);
+    	
+    	let { field } = $$props;
+
+    	if (field.value == undefined) {
+    		field.value = false;
+    	}
+
+    	const dispatch = createEventDispatcher();
+    	let classes = ['input', 'input-checkbox'];
+
+    	const setValue = () => {
+    		dispatch('update', field.fieldset.form);
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
+    	};
+
+    	const writable_props = ['field'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Checkbox> was created with unknown prop '${key}'`);
+    	});
+
+    	function input_change_handler() {
+    		field.value = this.checked;
+    		$$invalidate(0, field);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('field' in $$props) $$invalidate(0, field = $$props.field);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		Help,
+    		HelpIcon,
+    		Errors,
+    		field,
+    		dispatch,
+    		classes,
+    		setValue,
+    		showHelp,
+    		toggleHelp
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('field' in $$props) $$invalidate(0, field = $$props.field);
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*field*/ 1) {
+    			field.getValidationErors();
+    		}
+    	};
+
+    	return [field, showHelp, classes, setValue, toggleHelp, input_change_handler];
+    }
+
+    class Checkbox extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, { field: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Checkbox",
+    			options,
+    			id: create_fragment$8.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*field*/ ctx[0] === undefined && !('field' in props)) {
+    			console.warn("<Checkbox> was created without expected prop 'field'");
+    		}
+    	}
+
+    	get field() {
+    		throw new Error("<Checkbox>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set field(value) {
+    		throw new Error("<Checkbox>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
     /* src/Components/Inputs/ChoiceSelect.svelte generated by Svelte v3.42.1 */
     const file$6 = "src/Components/Inputs/ChoiceSelect.svelte";
 
     function get_each_context$4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[5] = list[i];
+    	child_ctx[7] = list[i];
     	return child_ctx;
     }
 
-    // (16:8) {#each field.choices as choice}
+    // (25:8) {#each field.choices as choice}
     function create_each_block$4(ctx) {
     	let option;
-    	let t_value = /*choice*/ ctx[5].label + "";
+    	let t_value = /*choice*/ ctx[7].label + "";
     	let t;
     	let option_value_value;
 
@@ -2607,18 +3508,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*choice*/ ctx[5].value;
+    			option.__value = option_value_value = /*choice*/ ctx[7].value;
     			option.value = option.__value;
-    			add_location(option, file$6, 16, 12, 581);
+    			add_location(option, file$6, 25, 12, 850);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && t_value !== (t_value = /*choice*/ ctx[5].label + "")) set_data_dev(t, t_value);
+    			if (dirty & /*field*/ 1 && t_value !== (t_value = /*choice*/ ctx[7].label + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*field*/ 1 && option_value_value !== (option_value_value = /*choice*/ ctx[5].value)) {
+    			if (dirty & /*field*/ 1 && option_value_value !== (option_value_value = /*choice*/ ctx[7].value)) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -2632,7 +3533,7 @@ var app = (function () {
     		block,
     		id: create_each_block$4.name,
     		type: "each",
-    		source: "(16:8) {#each field.choices as choice}",
+    		source: "(25:8) {#each field.choices as choice}",
     		ctx
     	});
 
@@ -2644,16 +3545,28 @@ var app = (function () {
     	let label;
     	let t0_value = /*field*/ ctx[0].label + "";
     	let t0;
-    	let label_for_value;
     	let t1;
+    	let helpicon;
+    	let label_for_value;
+    	let t2;
     	let select;
     	let select_name_value;
+    	let select_aria_describedby_value;
+    	let t3;
+    	let errors;
     	let div_class_value;
-    	let t2;
+    	let t4;
     	let help;
     	let current;
     	let mounted;
     	let dispose;
+
+    	helpicon = new HelpIcon({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
     	let each_value = /*field*/ ctx[0].choices;
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -2662,8 +3575,16 @@ var app = (function () {
     		each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
     	}
 
-    	help = new Help({
+    	errors = new Errors({
     			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
@@ -2673,21 +3594,30 @@ var app = (function () {
     			label = element("label");
     			t0 = text(t0_value);
     			t1 = space();
+    			create_component(helpicon.$$.fragment);
+    			t2 = space();
     			select = element("select");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t2 = space();
+    			t3 = space();
+    			create_component(errors.$$.fragment);
+    			t4 = space();
     			create_component(help.$$.fragment);
     			attr_dev(label, "for", label_for_value = /*field*/ ctx[0].name);
-    			add_location(label, file$6, 13, 4, 397);
+    			add_location(label, file$6, 19, 4, 530);
     			attr_dev(select, "name", select_name_value = /*field*/ ctx[0].name);
-    			if (/*field*/ ctx[0].value === void 0) add_render_callback(() => /*select_change_handler*/ ctx[2].call(select));
-    			add_location(select, file$6, 14, 4, 456);
-    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-select']));
-    			add_location(div, file$6, 12, 0, 326);
+
+    			attr_dev(select, "aria-describedby", select_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			if (/*field*/ ctx[0].value === void 0) add_render_callback(() => /*select_change_handler*/ ctx[5].call(select));
+    			add_location(select, file$6, 23, 4, 656);
+    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div, file$6, 18, 0, 486);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2696,7 +3626,9 @@ var app = (function () {
     			insert_dev(target, div, anchor);
     			append_dev(div, label);
     			append_dev(label, t0);
-    			append_dev(div, t1);
+    			append_dev(label, t1);
+    			mount_component(helpicon, label, null);
+    			append_dev(div, t2);
     			append_dev(div, select);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -2704,14 +3636,16 @@ var app = (function () {
     			}
 
     			select_option(select, /*field*/ ctx[0].value);
-    			insert_dev(target, t2, anchor);
+    			append_dev(div, t3);
+    			mount_component(errors, div, null);
+    			insert_dev(target, t4, anchor);
     			mount_component(help, target, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[2]),
-    					listen_dev(select, "blur", /*setValue*/ ctx[1], false, false, false)
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[5]),
+    					listen_dev(select, "blur", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -2719,6 +3653,9 @@ var app = (function () {
     		},
     		p: function update(ctx, [dirty]) {
     			if ((!current || dirty & /*field*/ 1) && t0_value !== (t0_value = /*field*/ ctx[0].label + "")) set_data_dev(t0, t0_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
 
     			if (!current || dirty & /*field*/ 1 && label_for_value !== (label_for_value = /*field*/ ctx[0].name)) {
     				attr_dev(label, "for", label_for_value);
@@ -2752,31 +3689,48 @@ var app = (function () {
     				attr_dev(select, "name", select_name_value);
     			}
 
+    			if (!current || dirty & /*field*/ 1 && select_aria_describedby_value !== (select_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(select, "aria-describedby", select_aria_describedby_value);
+    			}
+
     			if (dirty & /*field*/ 1) {
     				select_option(select, /*field*/ ctx[0].value);
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-select']))) {
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div, "class", div_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
+    			destroy_component(helpicon);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t2);
+    			destroy_component(errors);
+    			if (detaching) detach_dev(t4);
     			destroy_component(help, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -2795,15 +3749,21 @@ var app = (function () {
     }
 
     function instance$7($$self, $$props, $$invalidate) {
-    	let errors;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChoiceSelect', slots, []);
     	
     	let { field } = $$props;
     	const dispatch = createEventDispatcher();
+    	let classes = ['input', 'input-choice-select'];
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -2824,16 +3784,20 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
+    		classes,
     		setValue,
-    		errors
+    		showHelp,
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
-    		if ('errors' in $$props) errors = $$props.errors;
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2842,11 +3806,11 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*field*/ 1) {
-    			errors = field.getValidationErors();
+    			field.getValidationErors();
     		}
     	};
 
-    	return [field, setValue, select_change_handler];
+    	return [field, showHelp, classes, setValue, toggleHelp, select_change_handler];
     }
 
     class ChoiceSelect extends SvelteComponentDev {
@@ -2883,31 +3847,59 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[8] = list[i];
     	return child_ctx;
     }
 
-    // (16:0) {#if field.label !== undefined}
+    // (22:0) {#if field.label !== undefined}
     function create_if_block$5(ctx) {
     	let legend;
-    	let t_value = /*field*/ ctx[0].label + "";
-    	let t;
+    	let t0_value = /*field*/ ctx[0].label + "";
+    	let t0;
+    	let t1;
+    	let helpicon;
+    	let current;
+
+    	helpicon = new HelpIcon({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
 
     	const block = {
     		c: function create() {
     			legend = element("legend");
-    			t = text(t_value);
-    			add_location(legend, file$5, 16, 4, 461);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			create_component(helpicon.$$.fragment);
+    			add_location(legend, file$5, 22, 4, 614);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, legend, anchor);
-    			append_dev(legend, t);
+    			append_dev(legend, t0);
+    			append_dev(legend, t1);
+    			mount_component(helpicon, legend, null);
+    			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && t_value !== (t_value = /*field*/ ctx[0].label + "")) set_data_dev(t, t_value);
+    			if ((!current || dirty & /*field*/ 1) && t0_value !== (t0_value = /*field*/ ctx[0].label + "")) set_data_dev(t0, t0_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(legend);
+    			destroy_component(helpicon);
     		}
     	};
 
@@ -2915,22 +3907,22 @@ var app = (function () {
     		block,
     		id: create_if_block$5.name,
     		type: "if",
-    		source: "(16:0) {#if field.label !== undefined}",
+    		source: "(22:0) {#if field.label !== undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (21:4) {#each field.choices as choice}
+    // (30:4) {#each field.choices as choice}
     function create_each_block$3(ctx) {
     	let label;
     	let input;
     	let input_value_value;
+    	let input_aria_describedby_value;
     	let t0;
-    	let t1_value = /*choice*/ ctx[6].label + "";
+    	let t1_value = /*choice*/ ctx[8].label + "";
     	let t1;
-    	let t2;
     	let mounted;
     	let dispose;
 
@@ -2940,14 +3932,18 @@ var app = (function () {
     			input = element("input");
     			t0 = space();
     			t1 = text(t1_value);
-    			t2 = space();
     			attr_dev(input, "type", "radio");
-    			input.__value = input_value_value = /*choice*/ ctx[6].value;
+    			input.__value = input_value_value = /*choice*/ ctx[8].value;
     			input.value = input.__value;
-    			/*$$binding_groups*/ ctx[3][0].push(input);
-    			add_location(input, file$5, 22, 12, 629);
+
+    			attr_dev(input, "aria-describedby", input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			/*$$binding_groups*/ ctx[6][0].push(input);
+    			add_location(input, file$5, 31, 12, 834);
     			attr_dev(label, "class", "svelte-1251773");
-    			add_location(label, file$5, 21, 8, 609);
+    			add_location(label, file$5, 30, 8, 814);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, label, anchor);
@@ -2955,32 +3951,37 @@ var app = (function () {
     			input.checked = input.__value === /*field*/ ctx[0].value;
     			append_dev(label, t0);
     			append_dev(label, t1);
-    			append_dev(label, t2);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "change", /*input_change_handler*/ ctx[2]),
-    					listen_dev(input, "change", /*setValue*/ ctx[1], false, false, false)
+    					listen_dev(input, "change", /*input_change_handler*/ ctx[5]),
+    					listen_dev(input, "change", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[6].value)) {
+    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[8].value)) {
     				prop_dev(input, "__value", input_value_value);
     				input.value = input.__value;
+    			}
+
+    			if (dirty & /*field*/ 1 && input_aria_describedby_value !== (input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(input, "aria-describedby", input_aria_describedby_value);
     			}
 
     			if (dirty & /*field*/ 1) {
     				input.checked = input.__value === /*field*/ ctx[0].value;
     			}
 
-    			if (dirty & /*field*/ 1 && t1_value !== (t1_value = /*choice*/ ctx[6].label + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*field*/ 1 && t1_value !== (t1_value = /*choice*/ ctx[8].label + "")) set_data_dev(t1, t1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(label);
-    			/*$$binding_groups*/ ctx[3][0].splice(/*$$binding_groups*/ ctx[3][0].indexOf(input), 1);
+    			/*$$binding_groups*/ ctx[6][0].splice(/*$$binding_groups*/ ctx[6][0].indexOf(input), 1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -2990,7 +3991,7 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(21:4) {#each field.choices as choice}",
+    		source: "(30:4) {#each field.choices as choice}",
     		ctx
     	});
 
@@ -3000,8 +4001,10 @@ var app = (function () {
     function create_fragment$6(ctx) {
     	let t0;
     	let div;
-    	let div_class_value;
     	let t1;
+    	let errors;
+    	let div_class_value;
+    	let t2;
     	let help;
     	let current;
     	let if_block = /*field*/ ctx[0].label !== undefined && create_if_block$5(ctx);
@@ -3013,8 +4016,16 @@ var app = (function () {
     		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     	}
 
-    	help = new Help({
+    	errors = new Errors({
     			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
@@ -3029,9 +4040,11 @@ var app = (function () {
     			}
 
     			t1 = space();
+    			create_component(errors.$$.fragment);
+    			t2 = space();
     			create_component(help.$$.fragment);
-    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-radio']));
-    			add_location(div, file$5, 19, 0, 499);
+    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div, file$5, 28, 0, 728);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3045,7 +4058,9 @@ var app = (function () {
     				each_blocks[i].m(div, null);
     			}
 
-    			insert_dev(target, t1, anchor);
+    			append_dev(div, t1);
+    			mount_component(errors, div, null);
+    			insert_dev(target, t2, anchor);
     			mount_component(help, target, anchor);
     			current = true;
     		},
@@ -3053,17 +4068,27 @@ var app = (function () {
     			if (/*field*/ ctx[0].label !== undefined) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
+
+    					if (dirty & /*field*/ 1) {
+    						transition_in(if_block, 1);
+    					}
     				} else {
     					if_block = create_if_block$5(ctx);
     					if_block.c();
+    					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
     				}
     			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
     			}
 
-    			if (dirty & /*field, setValue*/ 3) {
+    			if (dirty & /*field, undefined, setValue*/ 9) {
     				each_value = /*field*/ ctx[0].choices;
     				validate_each_argument(each_value);
     				let i;
@@ -3076,7 +4101,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$3(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
+    						each_blocks[i].m(div, t1);
     					}
     				}
 
@@ -3087,20 +4112,29 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-radio']))) {
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div, "class", div_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(if_block);
+    			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(if_block);
+    			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
@@ -3109,7 +4143,8 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t1);
+    			destroy_component(errors);
+    			if (detaching) detach_dev(t2);
     			destroy_component(help, detaching);
     		}
     	};
@@ -3126,12 +4161,12 @@ var app = (function () {
     }
 
     function instance$6($$self, $$props, $$invalidate) {
-    	let errors;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChoiceRadio', slots, []);
     	
     	let { field } = $$props;
-    	let dispatch = createEventDispatcher();
+    	const dispatch = createEventDispatcher();
+    	let classes = ['input', 'input-text'];
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
@@ -3139,6 +4174,12 @@ var app = (function () {
     		if (field.params.setNextFieldset) {
     			field.fieldset.form.navigation.nextFieldset();
     		}
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -3161,17 +4202,20 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
+    		classes,
     		setValue,
-    		errors
+    		showHelp,
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
-    		if ('dispatch' in $$props) dispatch = $$props.dispatch;
-    		if ('errors' in $$props) errors = $$props.errors;
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -3180,11 +4224,19 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*field*/ 1) {
-    			errors = field.getValidationErors();
+    			field.getValidationErors();
     		}
     	};
 
-    	return [field, setValue, input_change_handler, $$binding_groups];
+    	return [
+    		field,
+    		showHelp,
+    		classes,
+    		setValue,
+    		toggleHelp,
+    		input_change_handler,
+    		$$binding_groups
+    	];
     }
 
     class ChoiceRadio extends SvelteComponentDev {
@@ -3221,31 +4273,59 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[9] = list[i];
     	return child_ctx;
     }
 
-    // (16:0) {#if field.label !== undefined}
+    // (22:0) {#if field.label !== undefined}
     function create_if_block$4(ctx) {
     	let legend;
-    	let t_value = /*field*/ ctx[0].label + "";
-    	let t;
+    	let t0_value = /*field*/ ctx[0].label + "";
+    	let t0;
+    	let t1;
+    	let helpicon;
+    	let current;
+
+    	helpicon = new HelpIcon({
+    			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	helpicon.$on("toggleHelp", /*toggleHelp*/ ctx[4]);
 
     	const block = {
     		c: function create() {
     			legend = element("legend");
-    			t = text(t_value);
-    			add_location(legend, file$4, 16, 4, 461);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			create_component(helpicon.$$.fragment);
+    			add_location(legend, file$4, 22, 4, 629);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, legend, anchor);
-    			append_dev(legend, t);
+    			append_dev(legend, t0);
+    			append_dev(legend, t1);
+    			mount_component(helpicon, legend, null);
+    			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && t_value !== (t_value = /*field*/ ctx[0].label + "")) set_data_dev(t, t_value);
+    			if ((!current || dirty & /*field*/ 1) && t0_value !== (t0_value = /*field*/ ctx[0].label + "")) set_data_dev(t0, t0_value);
+    			const helpicon_changes = {};
+    			if (dirty & /*field*/ 1) helpicon_changes.field = /*field*/ ctx[0];
+    			helpicon.$set(helpicon_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(helpicon.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(helpicon.$$.fragment, local);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(legend);
+    			destroy_component(helpicon);
     		}
     	};
 
@@ -3253,14 +4333,14 @@ var app = (function () {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(16:0) {#if field.label !== undefined}",
+    		source: "(22:0) {#if field.label !== undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (21:4) {#each field.choices as choice}
+    // (30:4) {#each field.choices as choice}
     function create_each_block$2(ctx) {
     	let label;
     	let img;
@@ -3269,11 +4349,11 @@ var app = (function () {
     	let t0;
     	let input;
     	let input_value_value;
+    	let input_aria_describedby_value;
     	let t1;
     	let div;
-    	let t2_value = /*choice*/ ctx[6].label + "";
+    	let t2_value = /*choice*/ ctx[9].label + "";
     	let t2;
-    	let t3;
     	let label_class_value;
     	let mounted;
     	let dispose;
@@ -3287,24 +4367,28 @@ var app = (function () {
     			t1 = space();
     			div = element("div");
     			t2 = text(t2_value);
-    			t3 = space();
-    			if (!src_url_equal(img.src, img_src_value = /*choice*/ ctx[6].image)) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "alt", img_alt_value = /*choice*/ ctx[6].label);
-    			add_location(img, file$4, 22, 12, 685);
+    			if (!src_url_equal(img.src, img_src_value = /*choice*/ ctx[9].image)) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", img_alt_value = /*choice*/ ctx[9].label);
+    			add_location(img, file$4, 31, 12, 903);
     			attr_dev(input, "type", "radio");
-    			input.__value = input_value_value = /*choice*/ ctx[6].value;
+    			input.__value = input_value_value = /*choice*/ ctx[9].value;
     			input.value = input.__value;
-    			attr_dev(input, "class", "svelte-wryltr");
-    			/*$$binding_groups*/ ctx[3][0].push(input);
-    			add_location(input, file$4, 23, 12, 743);
-    			attr_dev(div, "class", "image-text");
-    			add_location(div, file$4, 24, 12, 843);
 
-    			attr_dev(label, "class", label_class_value = "" + (null_to_empty(/*choice*/ ctx[6].value === /*field*/ ctx[0].value
+    			attr_dev(input, "aria-describedby", input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '');
+
+    			attr_dev(input, "class", "svelte-wryltr");
+    			/*$$binding_groups*/ ctx[6][0].push(input);
+    			add_location(input, file$4, 32, 12, 961);
+    			attr_dev(div, "class", "image-text");
+    			add_location(div, file$4, 33, 12, 1132);
+
+    			attr_dev(label, "class", label_class_value = "" + (null_to_empty(/*choice*/ ctx[9].value === /*field*/ ctx[0].value
     			? 'selected'
     			: '') + " svelte-wryltr"));
 
-    			add_location(label, file$4, 21, 8, 609);
+    			add_location(label, file$4, 30, 8, 827);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, label, anchor);
@@ -3315,38 +4399,43 @@ var app = (function () {
     			append_dev(label, t1);
     			append_dev(label, div);
     			append_dev(div, t2);
-    			append_dev(label, t3);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "change", /*input_change_handler*/ ctx[2]),
-    					listen_dev(input, "change", /*setValue*/ ctx[1], false, false, false)
+    					listen_dev(input, "change", /*input_change_handler*/ ctx[5]),
+    					listen_dev(input, "change", /*setValue*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && !src_url_equal(img.src, img_src_value = /*choice*/ ctx[6].image)) {
+    			if (dirty & /*field*/ 1 && !src_url_equal(img.src, img_src_value = /*choice*/ ctx[9].image)) {
     				attr_dev(img, "src", img_src_value);
     			}
 
-    			if (dirty & /*field*/ 1 && img_alt_value !== (img_alt_value = /*choice*/ ctx[6].label)) {
+    			if (dirty & /*field*/ 1 && img_alt_value !== (img_alt_value = /*choice*/ ctx[9].label)) {
     				attr_dev(img, "alt", img_alt_value);
     			}
 
-    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[6].value)) {
+    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[9].value)) {
     				prop_dev(input, "__value", input_value_value);
     				input.value = input.__value;
+    			}
+
+    			if (dirty & /*field*/ 1 && input_aria_describedby_value !== (input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
+    			? /*field*/ ctx[0].name + '-help'
+    			: '')) {
+    				attr_dev(input, "aria-describedby", input_aria_describedby_value);
     			}
 
     			if (dirty & /*field*/ 1) {
     				input.checked = input.__value === /*field*/ ctx[0].value;
     			}
 
-    			if (dirty & /*field*/ 1 && t2_value !== (t2_value = /*choice*/ ctx[6].label + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*field*/ 1 && t2_value !== (t2_value = /*choice*/ ctx[9].label + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*field*/ 1 && label_class_value !== (label_class_value = "" + (null_to_empty(/*choice*/ ctx[6].value === /*field*/ ctx[0].value
+    			if (dirty & /*field*/ 1 && label_class_value !== (label_class_value = "" + (null_to_empty(/*choice*/ ctx[9].value === /*field*/ ctx[0].value
     			? 'selected'
     			: '') + " svelte-wryltr"))) {
     				attr_dev(label, "class", label_class_value);
@@ -3354,7 +4443,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(label);
-    			/*$$binding_groups*/ ctx[3][0].splice(/*$$binding_groups*/ ctx[3][0].indexOf(input), 1);
+    			/*$$binding_groups*/ ctx[6][0].splice(/*$$binding_groups*/ ctx[6][0].indexOf(input), 1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -3364,7 +4453,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(21:4) {#each field.choices as choice}",
+    		source: "(30:4) {#each field.choices as choice}",
     		ctx
     	});
 
@@ -3374,8 +4463,10 @@ var app = (function () {
     function create_fragment$5(ctx) {
     	let t0;
     	let div;
-    	let div_class_value;
     	let t1;
+    	let errors_1;
+    	let div_class_value;
+    	let t2;
     	let help;
     	let current;
     	let if_block = /*field*/ ctx[0].label !== undefined && create_if_block$4(ctx);
@@ -3387,8 +4478,16 @@ var app = (function () {
     		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
     	}
 
-    	help = new Help({
+    	errors_1 = new Errors({
     			props: { field: /*field*/ ctx[0] },
+    			$$inline: true
+    		});
+
+    	help = new Help({
+    			props: {
+    				field: /*field*/ ctx[0],
+    				show: /*showHelp*/ ctx[1]
+    			},
     			$$inline: true
     		});
 
@@ -3403,9 +4502,11 @@ var app = (function () {
     			}
 
     			t1 = space();
+    			create_component(errors_1.$$.fragment);
+    			t2 = space();
     			create_component(help.$$.fragment);
-    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-image']));
-    			add_location(div, file$4, 19, 0, 499);
+    			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
+    			add_location(div, file$4, 28, 0, 743);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3419,7 +4520,9 @@ var app = (function () {
     				each_blocks[i].m(div, null);
     			}
 
-    			insert_dev(target, t1, anchor);
+    			append_dev(div, t1);
+    			mount_component(errors_1, div, null);
+    			insert_dev(target, t2, anchor);
     			mount_component(help, target, anchor);
     			current = true;
     		},
@@ -3427,17 +4530,27 @@ var app = (function () {
     			if (/*field*/ ctx[0].label !== undefined) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
+
+    					if (dirty & /*field*/ 1) {
+    						transition_in(if_block, 1);
+    					}
     				} else {
     					if_block = create_if_block$4(ctx);
     					if_block.c();
+    					transition_in(if_block, 1);
     					if_block.m(t0.parentNode, t0);
     				}
     			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
     			}
 
-    			if (dirty & /*field, setValue*/ 3) {
+    			if (dirty & /*field, undefined, setValue*/ 9) {
     				each_value = /*field*/ ctx[0].choices;
     				validate_each_argument(each_value);
     				let i;
@@ -3450,7 +4563,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$2(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
+    						each_blocks[i].m(div, t1);
     					}
     				}
 
@@ -3461,20 +4574,29 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(['input', 'input-choice-image']))) {
+    			const errors_1_changes = {};
+    			if (dirty & /*field*/ 1) errors_1_changes.field = /*field*/ ctx[0];
+    			errors_1.$set(errors_1_changes);
+
+    			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div, "class", div_class_value);
     			}
 
     			const help_changes = {};
     			if (dirty & /*field*/ 1) help_changes.field = /*field*/ ctx[0];
+    			if (dirty & /*showHelp*/ 2) help_changes.show = /*showHelp*/ ctx[1];
     			help.$set(help_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(if_block);
+    			transition_in(errors_1.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(if_block);
+    			transition_out(errors_1.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
@@ -3483,7 +4605,8 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t1);
+    			destroy_component(errors_1);
+    			if (detaching) detach_dev(t2);
     			destroy_component(help, detaching);
     		}
     	};
@@ -3506,6 +4629,7 @@ var app = (function () {
     	
     	let { field } = $$props;
     	let dispatch = createEventDispatcher();
+    	let classes = ['input', 'input-choice-image'];
 
     	const setValue = () => {
     		dispatch('update', field.fieldset.form);
@@ -3513,6 +4637,12 @@ var app = (function () {
     		if (field.params.setNextFieldset) {
     			field.fieldset.form.navigation.nextFieldset();
     		}
+    	};
+
+    	let showHelp = false;
+
+    	const toggleHelp = () => {
+    		$$invalidate(1, showHelp = !showHelp);
     	};
 
     	const writable_props = ['field'];
@@ -3535,16 +4665,22 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		createEventDispatcher,
     		Help,
+    		HelpIcon,
     		Errors,
     		field,
     		dispatch,
+    		classes,
     		setValue,
+    		showHelp,
+    		toggleHelp,
     		errors
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('field' in $$props) $$invalidate(0, field = $$props.field);
     		if ('dispatch' in $$props) dispatch = $$props.dispatch;
+    		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
+    		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
     		if ('errors' in $$props) errors = $$props.errors;
     	};
 
@@ -3558,7 +4694,15 @@ var app = (function () {
     		}
     	};
 
-    	return [field, setValue, input_change_handler, $$binding_groups];
+    	return [
+    		field,
+    		showHelp,
+    		classes,
+    		setValue,
+    		toggleHelp,
+    		input_change_handler,
+    		$$binding_groups
+    	];
     }
 
     class ChoiceImage extends SvelteComponentDev {
@@ -3948,8 +5092,8 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (34:4) {#if fieldset.percentage !== undefined}
-    function create_if_block_8(ctx) {
+    // (35:4) {#if fieldset.percentage !== undefined}
+    function create_if_block_9(ctx) {
     	let percentage;
     	let current;
 
@@ -3990,17 +5134,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_8.name,
+    		id: create_if_block_9.name,
     		type: "if",
-    		source: "(34:4) {#if fieldset.percentage !== undefined}",
+    		source: "(35:4) {#if fieldset.percentage !== undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (53:49) 
-    function create_if_block_7(ctx) {
+    // (56:49) 
+    function create_if_block_8(ctx) {
     	let p;
     	let t_value = /*field*/ ctx[6].getValue() + "";
     	let t;
@@ -4009,7 +5153,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			t = text(t_value);
-    			add_location(p, file$2, 53, 16, 2249);
+    			add_location(p, file$2, 56, 16, 2416);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -4027,17 +5171,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_7.name,
+    		id: create_if_block_8.name,
     		type: "if",
-    		source: "(53:49) ",
+    		source: "(56:49) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (51:48) 
-    function create_if_block_6(ctx) {
+    // (54:48) 
+    function create_if_block_7(ctx) {
     	let h2;
     	let t_value = /*field*/ ctx[6].getValue() + "";
     	let t;
@@ -4046,7 +5190,7 @@ var app = (function () {
     		c: function create() {
     			h2 = element("h2");
     			t = text(t_value);
-    			add_location(h2, file$2, 51, 16, 2155);
+    			add_location(h2, file$2, 54, 16, 2322);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -4064,17 +5208,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_6.name,
+    		id: create_if_block_7.name,
     		type: "if",
-    		source: "(51:48) ",
+    		source: "(54:48) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (49:51) 
-    function create_if_block_5(ctx) {
+    // (52:51) 
+    function create_if_block_6(ctx) {
     	let choiceimage;
     	let current;
 
@@ -4114,17 +5258,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_5.name,
+    		id: create_if_block_6.name,
     		type: "if",
-    		source: "(49:51) ",
+    		source: "(52:51) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (47:51) 
-    function create_if_block_4(ctx) {
+    // (50:51) 
+    function create_if_block_5(ctx) {
     	let choiceradio;
     	let current;
 
@@ -4164,17 +5308,17 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_4.name,
+    		id: create_if_block_5.name,
     		type: "if",
-    		source: "(47:51) ",
+    		source: "(50:51) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (45:52) 
-    function create_if_block_3(ctx) {
+    // (48:52) 
+    function create_if_block_4(ctx) {
     	let choiceselect;
     	let current;
 
@@ -4214,16 +5358,66 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_3.name,
+    		id: create_if_block_4.name,
     		type: "if",
-    		source: "(45:52) ",
+    		source: "(48:52) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (43:45) 
+    // (46:48) 
+    function create_if_block_3(ctx) {
+    	let checkbox;
+    	let current;
+
+    	checkbox = new Checkbox({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	checkbox.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(checkbox.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(checkbox, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const checkbox_changes = {};
+    			if (dirty & /*fields*/ 4) checkbox_changes.field = /*field*/ ctx[6];
+    			checkbox.$set(checkbox_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(checkbox.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(checkbox.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(checkbox, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(46:48) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (44:45) 
     function create_if_block_2(ctx) {
     	let range;
     	let current;
@@ -4266,14 +5460,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(43:45) ",
+    		source: "(44:45) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (41:48) 
+    // (42:48) 
     function create_if_block_1$2(ctx) {
     	let textarea;
     	let current;
@@ -4316,14 +5510,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$2.name,
     		type: "if",
-    		source: "(41:48) ",
+    		source: "(42:48) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (39:12) {#if field.type === 'Text'}
+    // (40:12) {#if field.type === 'Text'}
     function create_if_block$2(ctx) {
     	let text_1;
     	let current;
@@ -4366,14 +5560,14 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(39:12) {#if field.type === 'Text'}",
+    		source: "(40:12) {#if field.type === 'Text'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (38:8) {#each fields as field}
+    // (39:8) {#each fields as field}
     function create_each_block$1(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -4388,7 +5582,8 @@ var app = (function () {
     		create_if_block_4,
     		create_if_block_5,
     		create_if_block_6,
-    		create_if_block_7
+    		create_if_block_7,
+    		create_if_block_8
     	];
 
     	const if_blocks = [];
@@ -4397,11 +5592,12 @@ var app = (function () {
     		if (/*field*/ ctx[6].type === 'Text') return 0;
     		if (/*field*/ ctx[6].type === 'TextArea') return 1;
     		if (/*field*/ ctx[6].type === 'Range') return 2;
-    		if (/*field*/ ctx[6].type === 'ChoiceSelect') return 3;
-    		if (/*field*/ ctx[6].type === 'ChoiceRadio') return 4;
-    		if (/*field*/ ctx[6].type === 'ChoiceImage') return 5;
-    		if (/*field*/ ctx[6].type === 'Headline') return 6;
-    		if (/*field*/ ctx[6].type === 'Paragraph') return 7;
+    		if (/*field*/ ctx[6].type === 'Checkbox') return 3;
+    		if (/*field*/ ctx[6].type === 'ChoiceSelect') return 4;
+    		if (/*field*/ ctx[6].type === 'ChoiceRadio') return 5;
+    		if (/*field*/ ctx[6].type === 'ChoiceImage') return 6;
+    		if (/*field*/ ctx[6].type === 'Headline') return 7;
+    		if (/*field*/ ctx[6].type === 'Paragraph') return 8;
     		return -1;
     	}
 
@@ -4480,7 +5676,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(38:8) {#each fields as field}",
+    		source: "(39:8) {#each fields as field}",
     		ctx
     	});
 
@@ -4500,7 +5696,7 @@ var app = (function () {
     	let div_outro;
     	let fieldset_1_class_value;
     	let current;
-    	let if_block = /*fieldset*/ ctx[0].percentage !== undefined && create_if_block_8(ctx);
+    	let if_block = /*fieldset*/ ctx[0].percentage !== undefined && create_if_block_9(ctx);
     	let each_value = /*fields*/ ctx[2];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -4527,11 +5723,11 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(legend, file$2, 32, 4, 1107);
+    			add_location(legend, file$2, 33, 4, 1156);
     			attr_dev(div, "class", div_class_value = "fields " + /*fieldset*/ ctx[0].getFieldsClasses());
-    			add_location(div, file$2, 36, 4, 1277);
+    			add_location(div, file$2, 37, 4, 1326);
     			attr_dev(fieldset_1, "class", fieldset_1_class_value = /*fieldset*/ ctx[0].getClasses());
-    			add_location(fieldset_1, file$2, 31, 0, 1062);
+    			add_location(fieldset_1, file$2, 32, 0, 1111);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4562,7 +5758,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block_8(ctx);
+    					if_block = create_if_block_9(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(fieldset_1, t2);
@@ -4703,6 +5899,7 @@ var app = (function () {
     		Text,
     		Textarea,
     		Range,
+    		Checkbox,
     		ChoiceSelect,
     		ChoiceRadio,
     		ChoiceImage,
@@ -5503,7 +6700,7 @@ var app = (function () {
     	}
     }
 
-    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"DIN 18599",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Email",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",value:"Adresse des Gebäudes"},{type:"Paragraph",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"salutation",label:"Anrede",type:"ChoiceSelect",classes:["w1of1"],choices:[{label:"Herr",value:"mr"},{label:"Frau",value:"mrs"}],required:true},{name:"name",label:"Name",type:"Text",classes:["w1of1"],placeholder:"Nachname",required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:30,error:"Maximal 30 Zeichen"}]},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}],help:{type:"question",content:"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
+    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"DIN 18599",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Ihre Email-Adresse",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",value:"Adresse des Gebäudes"},{type:"Paragraph",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]},{name:"privacy",label:"Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",type:"Checkbox",classes:["w1of1"],required:true,validations:[{type:"isChecked",error:"Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."}]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"salutation",label:"Anrede",type:"ChoiceSelect",classes:["w1of1"],choices:[{label:"Herr",value:"mr"},{label:"Frau",value:"mrs"}],required:true},{name:"name",label:"Name",type:"Text",classes:["w1of1"],placeholder:"Nachname",required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:30,error:"Maximal 30 Zeichen"}]},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}],help:{type:"question",content:"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
 
     /* src/App.svelte generated by Svelte v3.42.1 */
 
