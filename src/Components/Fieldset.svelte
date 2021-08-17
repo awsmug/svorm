@@ -40,12 +40,12 @@
     let percentageCurrent = fieldset.form.navigation.getCurrentFieldset().percentage;
 </script>
 
-<fieldset class={fieldset.getClasses()}>
+<fieldset class={fieldset.getClasses()} in:fade>
     <legend>{fieldset.label}</legend>
     {#if fieldset.percentage !== undefined}
         <Percentage start={percentageStart} percentage={percentageCurrent} />
     {/if}
-    <div class="fields {fieldset.getFieldsClasses()}" out:fade={{duration:500}} in:fade={{duration:500,delay:500}}>
+    <div class="fields {fieldset.getFieldsClasses()}">
         {#each fields as field}
             {#if field.type === 'Text'}
                 <Text field={field} on:update={update} />

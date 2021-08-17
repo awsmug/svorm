@@ -130,7 +130,6 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static isChecked( value: any ) : boolean {
-        console.log( value );
         return value == true ? true : false;
     }
 }

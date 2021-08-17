@@ -4,7 +4,7 @@
     "classes": [ "test-form" ],
     "fieldsets": [
         {
-            "label": "DIN 18599",
+            "label": "Projektdaten",
             "name": "projektadresse",
             "nextFieldset": "basisdaten",
             "fields": [
@@ -119,6 +119,9 @@
                     "required": true,
                     "choices": [
                         {
+                            "label": "Bitte wählen..."
+                        },
+                        {
                             "label": "Bayern",
                             "value": "Bayern"
                         },
@@ -146,7 +149,13 @@
                             "label": "Saarland",
                             "value": "Saarland"
                         }
-                    ]               
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie ein Bundesland aus"
+                        }
+                    ]         
                 },
                 {
                     "name": "privacy",
@@ -160,161 +169,61 @@
                             "error": "Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."
                         }
                     ]
+                },
+                {
+                    "name": "privacy",
+                    "label": "Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",
+                    "type": "Checkbox",
+                    "classes": [ "w1of1" ]
                 }
             ]
         },
         {
             "label": "Basisdaten",
             "name": "basisdaten",
-            "fields": [
+            "fields": [                
                 {
-                    "name": "salutation",
-                    "label": "Anrede",
-                    "type": "ChoiceSelect",
-                    "classes": [ "w1of1" ], 
-                    "choices": [
-                        {
-                            "label": "Herr",
-                            "value": "mr"
-                        },
-                        {
-                            "label": "Frau",
-                            "value": "mrs"
-                        }
-                    ],                    
-                    "required": true               
-                },
-                {
-                    "name": "name",
-                    "label": "Name",
-                    "type": "Text",
-                    "classes": [ "w1of1" ], 
-                    "placeholder": "Nachname",
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "string",
-                            "error": "Der Angegebene Wert muss eine Zeichenkette sein"
-                        },
-                        {
-                            "type": "minLength",
-                            "value": 3,
-                            "error": "Mindestens 3 Zeichen"
-                        },
-                        {
-                            "type": "maxLength",
-                            "value": 30,
-                            "error": "Maximal 30 Zeichen"
-                        }
-                    ]
-                },
-                {
-                    "name": "street",
-                    "label": "Straße und Hausnummer",
-                    "type": "Text",
-                    "classes": [ "w1of1" ], 
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "string",
-                            "error": "Der Angegebene Wert muss eine Zeichenkette sein"
-                        },
-                        {
-                            "type": "minLength",
-                            "value": 3,
-                            "error": "Mindestens 3 Zeichen"
-                        },
-                        {
-                            "type": "maxLength",
-                            "value": 100,
-                            "error": "Maximal 100 Zeichen"
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-                    }
-                },
-                {
-                    "name": "zip",
-                    "label": "Postleitzahl",
-                    "classes": [ "w1of4" ], 
-                    "type": "Text",
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "string",
-                            "error": "Postleitzahl ungültig"
-                        },
-                        {
-                            "type": "minLength",
-                            "value": 5,
-                            "error": "Eine Postleitzahl muss aus 5 Ziffern bestehen"
-                        },
-                        {
-                            "type": "maxLength",
-                            "value": 5,
-                            "error": "Eine Postleitzahl muss aus 5 Ziffern bestehen"
-                        }
-                    ]
-                },
-                {
-                    "name": "city",
-                    "label": "Ort",
-                    "type": "Text",
-                    "classes": [ "w3of4" ], 
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "string",
-                            "error": "Der Angegebene Wert muss eine Zeichenkette sein"
-                        },
-                        {
-                            "type": "minLength",
-                            "value": 3,
-                            "error": "Mindestens 3 Zeichen"
-                        },
-                        {
-                            "type": "maxLength",
-                            "value": 50,
-                            "error": "Maximal 50 Zeichen"
-                        }
-                    ]
-                },
-                {
-                    "name": "state",
-                    "label": "Bundesland",
+                    "name": "reason",
+                    "label": "Grund der Erstellung des Energieausweises",
                     "type": "ChoiceSelect",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [
                         {
-                            "label": "Bayern",
-                            "value": "Bayern"
+                            "label": "Bitte wählen..."
                         },
                         {
-                            "label": "Berlin",
-                            "value": "Berlin"
+                            "label": "Modernisierung / Erweiterung",
+                            "value": "Modernisierung / Erweiterung"
                         },
                         {
-                            "label": "Hamburg",
-                            "value": "Hamburg"
+                            "label": "Vermietung",
+                            "value": "Vermietung"
                         },
                         {
-                            "label": "Hessen",
-                            "value": "Hessen"
+                            "label": "Verkauf",
+                            "value": "Verkauf"
                         },
                         {
-                            "label": "Nordrhein-Westfalen",
-                            "value": "Nordrhein-Westfalen"
+                            "label": "Sonstiges",
+                            "value": "Sonstiges"
+                        }
+                    ]               
+                },
+                {
+                    "name": "reason",
+                    "label": "Gebäudedaten",
+                    "type": "ChoiceRadio",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "choices": [                        
+                        {
+                            "label": "Bestand",
+                            "value": "Bestand"
                         },
                         {
-                            "label": "Meckelemburg-Vorpommern",
-                            "value": "Meckelemburg-Vorpommern"
-                        },
-                        {
-                            "label": "Saarland",
-                            "value": "Saarland"
+                            "label": "Neubau",
+                            "value": "Neubau"
                         }
                     ]               
                 }

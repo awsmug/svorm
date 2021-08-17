@@ -463,62 +463,6 @@ var app = (function () {
             }
         };
     }
-    function create_out_transition(node, fn, params) {
-        let config = fn(node, params);
-        let running = true;
-        let animation_name;
-        const group = outros;
-        group.r += 1;
-        function go() {
-            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
-            if (css)
-                animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
-            const start_time = now() + delay;
-            const end_time = start_time + duration;
-            add_render_callback(() => dispatch(node, false, 'start'));
-            loop(now => {
-                if (running) {
-                    if (now >= end_time) {
-                        tick(0, 1);
-                        dispatch(node, false, 'end');
-                        if (!--group.r) {
-                            // this will result in `end()` being called,
-                            // so we don't need to clean up here
-                            run_all(group.c);
-                        }
-                        return false;
-                    }
-                    if (now >= start_time) {
-                        const t = easing((now - start_time) / duration);
-                        tick(1 - t, t);
-                    }
-                }
-                return running;
-            });
-        }
-        if (is_function(config)) {
-            wait().then(() => {
-                // @ts-ignore
-                config = config();
-                go();
-            });
-        }
-        else {
-            go();
-        }
-        return {
-            end(reset) {
-                if (reset && config.tick) {
-                    config.tick(1, 0);
-                }
-                if (running) {
-                    if (animation_name)
-                        delete_rule(node, animation_name);
-                    running = false;
-                }
-            }
-        };
-    }
     function create_bidirectional_transition(node, fn, params, intro) {
         let config = fn(node, params);
         let t = intro ? 0 : 1;
@@ -981,7 +925,6 @@ var app = (function () {
          * @since 1.0.0
          */
         static isChecked(value) {
-            console.log(value);
             return value == true ? true : false;
         }
     }
@@ -1044,6 +987,11 @@ var app = (function () {
                         break;
                     case 'maxLength':
                         if (!ValidationMedhods.maxLength(this.value, valueAsNumber)) {
+                            errors.push(validation.error);
+                        }
+                        break;
+                    case 'empty':
+                        if (ValidationMedhods.empty(this.value)) {
                             errors.push(validation.error);
                         }
                         break;
@@ -5153,7 +5101,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			t = text(t_value);
-    			add_location(p, file$2, 56, 16, 2416);
+    			add_location(p, file$2, 56, 16, 2363);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -5190,7 +5138,7 @@ var app = (function () {
     		c: function create() {
     			h2 = element("h2");
     			t = text(t_value);
-    			add_location(h2, file$2, 54, 16, 2322);
+    			add_location(h2, file$2, 54, 16, 2269);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -5692,9 +5640,8 @@ var app = (function () {
     	let t2;
     	let div;
     	let div_class_value;
-    	let div_intro;
-    	let div_outro;
     	let fieldset_1_class_value;
+    	let fieldset_1_intro;
     	let current;
     	let if_block = /*fieldset*/ ctx[0].percentage !== undefined && create_if_block_9(ctx);
     	let each_value = /*fields*/ ctx[2];
@@ -5723,9 +5670,9 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(legend, file$2, 33, 4, 1156);
+    			add_location(legend, file$2, 33, 4, 1164);
     			attr_dev(div, "class", div_class_value = "fields " + /*fieldset*/ ctx[0].getFieldsClasses());
-    			add_location(div, file$2, 37, 4, 1326);
+    			add_location(div, file$2, 37, 4, 1334);
     			attr_dev(fieldset_1, "class", fieldset_1_class_value = /*fieldset*/ ctx[0].getClasses());
     			add_location(fieldset_1, file$2, 32, 0, 1111);
     		},
@@ -5817,11 +5764,12 @@ var app = (function () {
     				transition_in(each_blocks[i]);
     			}
 
-    			add_render_callback(() => {
-    				if (div_outro) div_outro.end(1);
-    				div_intro = create_in_transition(div, fade, { duration: 500, delay: 500 });
-    				div_intro.start();
-    			});
+    			if (!fieldset_1_intro) {
+    				add_render_callback(() => {
+    					fieldset_1_intro = create_in_transition(fieldset_1, fade, {});
+    					fieldset_1_intro.start();
+    				});
+    			}
 
     			current = true;
     		},
@@ -5833,15 +5781,12 @@ var app = (function () {
     				transition_out(each_blocks[i]);
     			}
 
-    			if (div_intro) div_intro.invalidate();
-    			div_outro = create_out_transition(div, fade, { duration: 500 });
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(fieldset_1);
     			if (if_block) if_block.d();
     			destroy_each(each_blocks, detaching);
-    			if (detaching && div_outro) div_outro.end();
     		}
     	};
 
@@ -6700,7 +6645,7 @@ var app = (function () {
     	}
     }
 
-    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"DIN 18599",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Ihre Email-Adresse",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",value:"Adresse des Gebäudes"},{type:"Paragraph",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]},{name:"privacy",label:"Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",type:"Checkbox",classes:["w1of1"],required:true,validations:[{type:"isChecked",error:"Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."}]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"salutation",label:"Anrede",type:"ChoiceSelect",classes:["w1of1"],choices:[{label:"Herr",value:"mr"},{label:"Frau",value:"mrs"}],required:true},{name:"name",label:"Name",type:"Text",classes:["w1of1"],placeholder:"Nachname",required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:30,error:"Maximal 30 Zeichen"}]},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}],help:{type:"question",content:"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
+    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"Projektdaten",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Ihre Email-Adresse",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",value:"Adresse des Gebäudes"},{type:"Paragraph",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Saarland",value:"Saarland"}],validations:[{type:"empty",error:"Bitte wählen Sie ein Bundesland aus"}]},{name:"privacy",label:"Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",type:"Checkbox",classes:["w1of1"],required:true,validations:[{type:"isChecked",error:"Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."}]},{name:"privacy",label:"Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",type:"Checkbox",classes:["w1of1"]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"reason",label:"Grund der Erstellung des Energieausweises",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Modernisierung / Erweiterung",value:"Modernisierung / Erweiterung"},{label:"Vermietung",value:"Vermietung"},{label:"Verkauf",value:"Verkauf"},{label:"Sonstiges",value:"Sonstiges"}]},{name:"reason",label:"Gebäudedaten",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Bestand",value:"Bestand"},{label:"Neubau",value:"Neubau"}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
 
     /* src/App.svelte generated by Svelte v3.42.1 */
 

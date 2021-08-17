@@ -67,6 +67,11 @@ export default class Validator {
                         errors.push( validation.error );
                     }
                     break;
+                case 'empty':
+                    if ( ValidationMedhods.empty( this.value ) ) {
+                        errors.push( validation.error );
+                    }
+                    break;                    
                 case 'inArray':
                     if ( ! ValidationMedhods.inArray( this.value, validation.values ) ) {
                         errors.push( validation.error );
