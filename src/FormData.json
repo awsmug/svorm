@@ -122,12 +122,24 @@
                             "label": "Bitte wählen..."
                         },
                         {
+                            "label": "Baden-Württemberg",
+                            "value": "Baden-Württemberg"
+                        },
+                        {
                             "label": "Bayern",
                             "value": "Bayern"
                         },
                         {
                             "label": "Berlin",
                             "value": "Berlin"
+                        },
+                        {
+                            "label": "Bremen",
+                            "value": "Bremen"
+                        },
+                        {
+                            "label": "Brandenburg",
+                            "value": "Brandenburg"
                         },
                         {
                             "label": "Hamburg",
@@ -142,12 +154,32 @@
                             "value": "Nordrhein-Westfalen"
                         },
                         {
+                            "label": "Niedersachsen",
+                            "value": "Niedersachsen"
+                        },
+                        {
                             "label": "Meckelemburg-Vorpommern",
                             "value": "Meckelemburg-Vorpommern"
                         },
                         {
+                            "label": "Rheinland-Pfalz",
+                            "value": "Rheinland-Pfalz"
+                        },
+                        {
                             "label": "Saarland",
                             "value": "Saarland"
+                        },
+                        {
+                            "label": "Sachsen",
+                            "value": "Sachsen"
+                        },
+                        {
+                            "label": "Sachsen-Anhalt",
+                            "value": "Sachsen-Anhalt"
+                        },
+                        {
+                            "label": "Thüringen",
+                            "value": "Thüringen"
                         }
                     ],
                     "validations": [
