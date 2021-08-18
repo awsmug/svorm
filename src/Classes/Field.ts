@@ -125,14 +125,10 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public getClasses( additionalClasses: string[] = []): string {
-        let genericClases = [ 'input', 'input-' + this.type ];
-        this.classes = genericClases.concat( this.classes );
-
-        if ( this.classes.length > 0  ) {
-            return additionalClasses.concat( this.classes ).join(' ') ;
-        }
+        let genericClasses = [ 'input', 'input-' + this.type ];
+        let classes = genericClasses.concat( this.classes );
         
-        return additionalClasses.join(' ');
+        return classes.join(' ');
     }
 
     /**
@@ -154,7 +150,7 @@ export default class Field implements HasFieldData {
             this.addClass( 'validated' );
         }
 
-        this.wasValidated = true;
+        this.validated = true;
 
         return this.errors;
     }

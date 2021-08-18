@@ -12,7 +12,7 @@
                     "name": "email1",
                     "label": "Ihre Email-Adresse",
                     "type": "text",
-                    "classes": [ "w1of1" ], 
+                    "classes": [ "w1of1", "spacer2top" ], 
                     "required": true,
                     "validations": [
                         {
@@ -25,7 +25,7 @@
                     "name": "email2",
                     "label": "Email wiederholen",
                     "type": "text",
-                    "classes": [ "w1of1" ], 
+                    "classes": [ "w1of1" ],
                     "required": true,
                     "validations": [
                         {
@@ -38,7 +38,7 @@
                     "type": "headline",
                     "name": "headlineAddressBuilding",
                     "value": "Adresse des Gebäudes",
-                    "classes": [ "w1of1" ]
+                    "classes": [ "w1of1", "spacer2top" ]
                 },
                 {
                     "type": "paragraph",
@@ -119,7 +119,7 @@
                     "name": "state",
                     "label": "Bundesland",
                     "type": "choice-select",
-                    "classes": [ "w1of1" ], 
+                    "classes": [ "w1of1", "spacer2bottom" ], 
                     "required": true,
                     "choices": [
                         {
@@ -197,7 +197,7 @@
                     "name": "privacy",
                     "label": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
                     "type": "checkbox",
-                    "classes": [ "w1of1" ], 
+                    "classes": [ "w1of1", "spacer2top" ], 
                     "required": true,
                     "validations": [
                         {
@@ -208,15 +208,16 @@
                 },
                 {
                     "name": "contact",
+                    "classes": [ "w1of1", "spacer2bottom" ], 
                     "label": "Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",
-                    "type": "checkbox",
-                    "classes": [ "w1of1" ]
+                    "type": "checkbox"
                 }
             ]
         },
         {
             "label": "Basisdaten",
             "name": "basisdaten",
+            "nextFieldset": "geometrischeErfassung",
             "fields": [                
                 {
                     "name": "grund",
@@ -282,7 +283,11 @@
                             "label": "Gemischt genutztes Gebäude",
                             "value": "Gemischt genutztes Gebäude"
                         }
-                    ]               
+                    ],
+                    "help": {
+                        "type": "info",
+                        "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
+                    }              
                 },
                 {
                     "name": "wohneinheiten",
@@ -316,11 +321,11 @@
                     "required": true,
                     "choices": [                        
                         {
-                            "label": "Über 50%",
+                            "label": "über 50%",
                             "value": "majority"
                         },
                         {
-                            "label": "Unter 50%",
+                            "label": "unter 50%",
                             "value": "minority"
                         }
                     ],
@@ -330,9 +335,154 @@
                             "value": "Gemischt genutztes Gebäude",
                             "operator": "=="
                         }
-                    ]
-                }                
+                    ],
+                    "help": {
+                        "type": "info",
+                        "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
+                    }
+                },
+                {
+                    "name": "gebaeudetyp",
+                    "label": "Gebäudetyp",
+                    "type": "choice-radio",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "choices": [                        
+                        {
+                            "label": "Freistehendes Haus",
+                            "value": "Freistehendes Haus"
+                        },
+                        {
+                            "label": "Reihenmittelhaus / beidseitig Angebautes Gebäude",
+                            "value": "Reihenmittelhaus / beidseitig Angebautes Gebäude"
+                        },
+                        {
+                            "label": "Reihenendhaus / Doppelhaushälfte",
+                            "value": "Reihenendhaus / Doppelhaushälfte"
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Wann benötige ich einen Energieausweis. Wann einen Bedarfs- oder Verbrauchsausweis. (Tabelle ggf. erstellen)</p>"
+                    }           
+                },
+                {
+                    "type": "headline",
+                    "name": "headlineNumberOfFloors",
+                    "value": "Anzahl der Geschosse",
+                    "classes": [ "w1of1", "spacer2top" ]
+                },
+                {
+                    "name": "geschosseSpitzboden",
+                    "label": "Spitzboden",
+                    "type": "text",
+                    "classes": [ "w1of5" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Was ist ein Spitzboden?</p>"
+                    },
+                    "default": 0
+                },
+                {
+                    "name": "geschosseDachgeschosse",
+                    "label": "Dachgeschosse",
+                    "type": "text",
+                    "classes": [ "w1of5" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Das Dachgeschoss zählt nur als Vollgeschoss, wenn eine lichte Höhe im DG von min. 2,30 m auf einer Fläche erreicht wird, die mehr als 2/3 des darunter liegenden Geschosses aufweist.</p>"
+                    },
+                    "default": 0
+                },
+                {
+                    "name": "geschosseObergeschosse",
+                    "label": "Obergeschosse:",
+                    "type": "text",
+                    "classes": [ "w1of5" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Was ist ein Obergeschoss?</p>"
+                    },
+                    "default": 0
+                },
+                {
+                    "name": "geschosseErdgeschoss",
+                    "label": "Erdgeschoss",
+                    "type": "text",
+                    "classes": [ "w1of5" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Wie kann es 0 Erdgeschosse geben?</p>"
+                    },
+                    "default": 0
+                },
+                {
+                    "name": "geschosseUntergeschossKeller",
+                    "label": "Untergeschoss/Keller",
+                    "type": "text",
+                    "classes": [ "w1of5" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Der Keller ist ein Vollgeschoss, wenn die Höhe von Oberkante Gelände bis zur Oberkante Kellerdecke im Mittel mehr als 1,60 m beträgt, wenn die Geschosshöhe mindestens 2,30 m umfasst.</p>"
+                    },
+                    "default": 0
+                }      
             ]
-        }        
+        },
+        {
+            "label": "Geometische Erfassung",
+            "name": "geometrischeErfassung",
+            "nextFieldset": "basisdaten",
+            "fields": [
+                {
+                    "name": "email1",
+                    "label": "Ihre Email-Adresse",
+                    "type": "text",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "email",
+                            "error": "Email-Adresse ist ungültig"
+                        }
+                    ]
+                }
+            ]
+        }       
     ]
 }

@@ -14,49 +14,55 @@ fieldset {
             textarea, 
             select {
                 width:100%;
-            }            
+            }
 
-            &.error {
-                
+            /**
+            * Input element sizes
+            **/
+            &.w1of1 {
+                width: 100%;
+            }
+            &.w1of2 {
+                width: 50%;
+            }
+            &.w1of3 {
+                width: 33.333333%;
+            }
+            &.w2of3 {
+                width: 66.666666%;
+            }
+            &.w1of4 {
+                width: 25%;
+            }
+            &.w3of4 {
+                width: 75%;
+            }
+            &.w1of5 {
+                width: 20%;
+            }
+            &.w2of5 {
+                width: 40%;
+            }
+            &.w3of5 {
+                width: 60%;
+            }
+            &.w4of5 {
+                width: 80%;
+            }
+            &.spacer1top{
+                margin-top: 1rem;
+            }
+            &.spacer2top{
+                margin-top: 2rem;
+            }
+            &.spacer1bottom{
+                margin-bottom: 1rem;
+            }
+            &.spacer2bottom{
+                margin-bottom: 2rem;
             }
         }
-        
-        /**
-        * Input element sizes
-        **/
-        .w1of1 {
-            width: 100%;
-        }
-        .w1of2 {
-            width: 50%;
-        }
-        .w1of3 {
-            width: 33.333333%;
-        }
-        .w2of3 {
-            width: 66.666666%;
-        }
-        .w1of4 {
-            width: 25%;
-        }
-        .w3of4 {
-            width: 75%;
-        }
-        .w1of5 {
-            width: 20%;
-        }
-        .w2of5 {
-            width: 40%;
-        }
-        .w3of5 {
-            width: 60%;
-        }
-        .w4of5 {
-            width: 80%;
-        }
-    } 
-
-    
+    }
 }
 
 /**
@@ -65,10 +71,6 @@ fieldset {
  body {
      font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
      font-size: 1rem;
-
-     form {
-         padding: 1rem;
-     }
 
      fieldset {
          border: 0;
@@ -102,25 +104,8 @@ fieldset {
 
                 label {
                     display:block;
-                    font-weight: 600;
                     margin-bottom: 0.25rem;
                     margin: 0 0.25rem 0.25rem 0.5rem;
-                    
-                    .icon-question,
-                    .icon-info {
-                        cursor: pointer;
-                        display: inline;
-                        padding-top: 5px;
-
-                        svg {
-                            width:18px;
-                            height:18px;
-                        }
-                        
-                        &:hover {
-                            color: #2d7d15;
-                        }
-                    }
                 }
                 
                 input[type=text], select {
@@ -180,31 +165,49 @@ fieldset {
                         }
                     }
                 }
-            }
 
-            .input-help {
-                margin: -0.5rem 0 0.5rem;
-                
-                .input-help-triangle {
-                    width: 0px;
-                    height: 0px;
-                    -webkit-transform:rotate(360deg);
-                    border-style: solid;
-                    border-width: 0 1rem 1rem 1rem;
-                    border-color: transparent transparent black transparent;
-                    margin-left: 1rem;
+                .icon-question,
+                .icon-info {
+                    cursor: pointer;
+                    display: inline;
+                    padding-top: 5px;
+
+                    svg {
+                        width:18px;
+                        height:18px;
+                    }
+                    
+                    &:hover {
+                        color: #2d7d15;
+                    }
                 }
 
-                .input-help-content{
-                    font-size: 0.8rem;
-                    color: white;
-                    display: block;
-                    border: #black 1px solid;
-                    border-radius: 0.25rem;
-                    padding: 1rem;
-                    background-color: black;        
+                .input-help {
+                    margin: 0 0 0.5rem;
+                    
+                    .input-help-triangle {
+                        width: 0px;
+                        height: 0px;
+                        -webkit-transform:rotate(360deg);
+                        border-style: solid;
+                        border-width: 0 1rem 1rem 1rem;
+                        border-color: transparent transparent black transparent;
+                        margin-left: 1rem;
+                    }
+    
+                    .input-help-content{
+                        font-size: 0.8rem;
+                        color: white;
+                        display: block;
+                        border: black 1px solid;
+                        border-radius: 0.25rem;
+                        padding: 1rem;
+                        background-color: black;        
+                    }
                 }
             }
+
+            
         }        
      }
 
@@ -217,12 +220,28 @@ fieldset {
             padding: 12px 16px;
             margin-left: 0.5rem;
             cursor: pointer;
-            border-width: 1px;
-            border-radius: 5px;
+            border-width: 0.1rem;
+            border-color: #2d7d15;
             background-color: #2d7d15;
             color: white;
             font-size: 0.9rem;
+            font-weight: 500;
             min-width: 10rem;
+            transition: 0.25s;
+
+            box-shadow: 0.125rem 0.125rem 0.125rem grey;
+
+            &:hover
+            {
+                background-color: white;
+                color: #2d7d15;
+                transition: 0.25s;
+            }
+
+            &:active
+            {
+                box-shadow: 0.0rem 0.0rem 0.0rem;
+            }
         }
     }
  }

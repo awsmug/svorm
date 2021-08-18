@@ -42,6 +42,11 @@ export default class Validator {
                         errors.push( validation.error );
                     }
                     break;
+                case 'int':
+                    if ( ! ValidationMedhods.int( this.value ) ) {
+                        errors.push( validation.error );
+                    }
+                    break;
                 case 'email':
                     if ( ! ValidationMedhods.email( this.value ) ) {
                         errors.push( validation.error );
@@ -78,7 +83,6 @@ export default class Validator {
                     }
                     break;
                 case 'isChecked':
-                    console.log( this );
                     if ( ! ValidationMedhods.isChecked( this.value ) ) {
                         errors.push( validation.error );
                     }

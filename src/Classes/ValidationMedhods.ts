@@ -19,6 +19,22 @@ export default class ValidationMedhods {
 
         return false;
     }
+
+    /**
+     * Is value of tye int?
+     * 
+     * @param value Value which have to be checked.
+     * @return boolean True if is of type int, false if not.
+     * 
+     * @since 1.0.0
+     */
+     static int( value: any ) {
+        if ( Number.isInteger( parseInt( value ) ) ) {
+            return true;
+        }
+
+        return false;
+    }
     
     /**
      * Is value of tye string?
