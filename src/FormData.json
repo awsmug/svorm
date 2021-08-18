@@ -32,7 +32,10 @@
                             "type": "email",
                             "error": "Email-Adresse ist ungültig"
                         }
-                    ]
+                    ],
+                    "defaultValue": {
+                        "field": "email1"
+                    }
                 },
                 {
                     "type": "headline",
@@ -387,8 +390,7 @@
                     "help": {
                         "type": "question",
                         "content": "<p>Was ist ein Spitzboden?</p>"
-                    },
-                    "default": 0
+                    }
                 },
                 {
                     "name": "geschosseDachgeschosse",
@@ -405,8 +407,7 @@
                     "help": {
                         "type": "question",
                         "content": "<p>Das Dachgeschoss zählt nur als Vollgeschoss, wenn eine lichte Höhe im DG von min. 2,30 m auf einer Fläche erreicht wird, die mehr als 2/3 des darunter liegenden Geschosses aufweist.</p>"
-                    },
-                    "default": 0
+                    }
                 },
                 {
                     "name": "geschosseObergeschosse",
@@ -423,8 +424,7 @@
                     "help": {
                         "type": "question",
                         "content": "<p>Was ist ein Obergeschoss?</p>"
-                    },
-                    "default": 0
+                    }
                 },
                 {
                     "name": "geschosseErdgeschoss",
@@ -442,7 +442,17 @@
                         "type": "question",
                         "content": "<p>Wie kann es 0 Erdgeschosse geben?</p>"
                     },
-                    "default": 0
+                    "defaultValue": {
+                        "value": 5,
+                        "callback": {
+                            "method": "MeineKlasse::function",
+                            "params": [
+                                "form",
+                                "field::baujahr",
+                                1
+                            ]
+                        }
+                    }
                 },
                 {
                     "name": "geschosseUntergeschossKeller",
@@ -459,8 +469,7 @@
                     "help": {
                         "type": "question",
                         "content": "<p>Der Keller ist ein Vollgeschoss, wenn die Höhe von Oberkante Gelände bis zur Oberkante Kellerdecke im Mittel mehr als 1,60 m beträgt, wenn die Geschosshöhe mindestens 2,30 m umfasst.</p>"
-                    },
-                    "default": 0
+                    }
                 }      
             ]
         },
@@ -486,3 +495,4 @@
         }       
     ]
 }
+

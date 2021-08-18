@@ -13,8 +13,7 @@ export default interface HasFieldData {
     readonly label       : string;
     readonly params      : any[];
     readonly choices     : HasChoicesData[];
-    readonly default     : any;
-
+    readonly defaultValue: any;
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
     readonly required    : boolean;

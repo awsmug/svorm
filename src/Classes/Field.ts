@@ -6,6 +6,7 @@ import Help from './Help';
 import Validator from './Validator';
 import type HasChoicesData from '../Interfaces/HasChoicesData';
 import type HasValidationData from '../Interfaces/HasValidationData';
+import DynamicValue from './DynamicValue';
 
 /**
  * Field class.
@@ -19,7 +20,7 @@ export default class Field implements HasFieldData {
     readonly label       : string;
     readonly placeholder : string;
     readonly required    : boolean;
-    readonly default     : any[];
+    readonly defaultValue: any[];
     readonly params      : any[];
     readonly help        : HasHelpData;
     readonly choices     : HasChoicesData[];
@@ -52,7 +53,8 @@ export default class Field implements HasFieldData {
         this.choices      = field.choices === undefined ? []: field.choices;
         this.params       = field.params === undefined ? []: field.params;
         this.classes      = field.classes === undefined ? []: field.classes;
-        this.required     = field.required === undefined ? false: true;        
+        this.required     = field.required === undefined ? false: true; 
+        this.defaultValue = field.defaultValue === undefined ? undefined: field.defaultValue;
         this.validations  = field.validations === undefined ? []: field.validations;
         this.conditions   = field.conditions === undefined ? []: field.conditions;  
 
@@ -73,12 +75,29 @@ export default class Field implements HasFieldData {
     /**
      * Get value of field.
      * 
-     * @param value Value to set.
+     * @return value Value to set.
      * 
      * @since 1.0.0
      */
     public getValue() : any {
         return this.value;
+    }
+
+    /**
+     * Get default value.
+     * 
+     * @return value Default value.
+     * 
+     * @since 1.0.0
+     */
+    public getDefaultValue() : any {
+        if(  this.defaultValue === undefined )
+        {
+            return;
+        }
+        
+        let dynamicValue = new DynamicValue( this.fieldset.form, this.defaultValue );
+        return dynamicValue.getValue();
     }
 
     /**
@@ -199,8 +218,7 @@ export default class Field implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public conditionsFullfilled() : boolean
-    {
+    public conditionsFullfilled() : boolean {
         if ( this.conditions.length === 0 ) {
             return true;
         }
