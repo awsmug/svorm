@@ -10,14 +10,15 @@ import type HasConditionData from "./HasConditionData";
 export default interface HasFieldsetData {
     readonly name          : string;
     readonly label         : string;    
-    readonly percentage    : number;
     readonly params        : [];
     readonly classes       : [];
     readonly fieldsClasses : [];
     readonly fields        : Field[];
-    readonly conditions    : HasConditionData[];    
-    readonly submission    : HasSubmissionData;
-
+    readonly conditions    : HasConditionData[];
+    
+    readonly percentage    : number;
     readonly nextFieldset  : string;
     readonly prevFieldset  : string;
+
+    readonly submission    : HasSubmissionData;
 }

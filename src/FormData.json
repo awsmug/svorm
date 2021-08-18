@@ -36,10 +36,12 @@
                 },
                 {
                     "type": "Headline",
+                    "name": "headlineAddressBuilding",
                     "value": "Adresse des Gebäudes"
                 },
                 {
                     "type": "Paragraph",
+                    "name": "paragraphAddressBuilding",
                     "value": "Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."
                 },
                 {
@@ -203,7 +205,7 @@
                     ]
                 },
                 {
-                    "name": "privacy",
+                    "name": "contact",
                     "label": "Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",
                     "type": "Checkbox",
                     "classes": [ "w1of1" ]

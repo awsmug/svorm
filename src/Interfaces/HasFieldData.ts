@@ -1,4 +1,6 @@
+import type HasChoicesData from "./HasChoicesData";
 import type HasConditionData from "./HasConditionData";
+import type HasValidationData from "./HasValidationData";
 
 /**
  * Field data interface.
@@ -6,13 +8,14 @@ import type HasConditionData from "./HasConditionData";
  * @since 1.0.0
  */
 export default interface HasFieldData {
-    readonly name        : string;    
     readonly type        : string;
+    readonly name        : string;    
     readonly label       : string;
-    readonly choices     : [];
-    readonly params      : [];
-    readonly classes     : string[];
-    readonly conditions  : HasConditionData[];  
+    readonly params      : any[];
+    readonly choices     : HasChoicesData[];
+    readonly default     : any;
+
+    readonly conditions  : HasConditionData[];
+    readonly validations : HasValidationData[];
     readonly required    : boolean;
-    readonly validations : [];
 }

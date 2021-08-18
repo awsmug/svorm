@@ -8,7 +8,7 @@
 
     export let field: Field;
 
-    $: errors = field.getValidationErors();
+    $: field.getValidationErors();
 
     let dispatch = createEventDispatcher();
     let classes  : string[] = ['input', 'input-choice-image'];

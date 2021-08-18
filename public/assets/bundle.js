@@ -1043,6 +1043,7 @@ var app = (function () {
             this.classes = field.classes === undefined ? [] : field.classes;
             this.required = field.required === undefined ? false : true;
             this.validations = field.validations === undefined ? [] : field.validations;
+            this.conditions = field.conditions === undefined ? [] : field.conditions;
             this.value = field.value;
         }
         /**
@@ -1165,6 +1166,44 @@ var app = (function () {
         hasBeenValidated() {
             return this.validated;
         }
+        /**
+         * Conditions fullfilled.
+         *
+         * @return True if fullfilled, false if not.
+         *
+         * @since 1.0.0
+         */
+        conditionsFullfilled() {
+            if (this.conditions.length === 0) {
+                console.log('No conditions for ' + this.name);
+                return true;
+            }
+            console.log('Conditions for ' + this.name);
+            let fullfillments = [];
+            this.conditions.forEach((condition) => {
+                let fullfilled = false;
+                let field = this.fieldset.form.getField(condition.field);
+                switch (condition.operator) {
+                    case '==':
+                        fullfilled = condition.value === field.getValue();
+                        break;
+                    case '!=':
+                        fullfilled = condition.value !== field.getValue();
+                        break;
+                    case '>':
+                        fullfilled = condition.value !== field.getValue();
+                        break;
+                    case '<':
+                        fullfilled = condition.value !== field.getValue();
+                        break;
+                    default:
+                        throw new Error('Operator "' + condition.operator + '" does not exist.');
+                }
+                fullfillments.push(fullfilled);
+            });
+            console.log(this.conditions);
+            return !fullfillments.includes(false);
+        }
     }
 
     /**
@@ -1227,7 +1266,7 @@ var app = (function () {
             return !fullfillments.includes(false);
         }
         /**
-         * Get CSS classes.
+         * Get CSS classes for fieldset wrapper.
          *
          * @return String of CSS classes.
          *
@@ -1240,7 +1279,7 @@ var app = (function () {
             return '';
         }
         /**
-         * Get CSS field classes.
+         * Get CSS classes for field wrapper div.
          *
          * @return String of CSS classes.
          *
@@ -4221,7 +4260,7 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[9] = list[i];
+    	child_ctx[8] = list[i];
     	return child_ctx;
     }
 
@@ -4247,7 +4286,7 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			create_component(helpicon.$$.fragment);
-    			add_location(legend, file$4, 22, 4, 629);
+    			add_location(legend, file$4, 22, 4, 620);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, legend, anchor);
@@ -4300,7 +4339,7 @@ var app = (function () {
     	let input_aria_describedby_value;
     	let t1;
     	let div;
-    	let t2_value = /*choice*/ ctx[9].label + "";
+    	let t2_value = /*choice*/ ctx[8].label + "";
     	let t2;
     	let label_class_value;
     	let mounted;
@@ -4315,11 +4354,11 @@ var app = (function () {
     			t1 = space();
     			div = element("div");
     			t2 = text(t2_value);
-    			if (!src_url_equal(img.src, img_src_value = /*choice*/ ctx[9].image)) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "alt", img_alt_value = /*choice*/ ctx[9].label);
-    			add_location(img, file$4, 31, 12, 903);
+    			if (!src_url_equal(img.src, img_src_value = /*choice*/ ctx[8].image)) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", img_alt_value = /*choice*/ ctx[8].label);
+    			add_location(img, file$4, 31, 12, 894);
     			attr_dev(input, "type", "radio");
-    			input.__value = input_value_value = /*choice*/ ctx[9].value;
+    			input.__value = input_value_value = /*choice*/ ctx[8].value;
     			input.value = input.__value;
 
     			attr_dev(input, "aria-describedby", input_aria_describedby_value = /*field*/ ctx[0].help !== undefined
@@ -4328,15 +4367,15 @@ var app = (function () {
 
     			attr_dev(input, "class", "svelte-wryltr");
     			/*$$binding_groups*/ ctx[6][0].push(input);
-    			add_location(input, file$4, 32, 12, 961);
+    			add_location(input, file$4, 32, 12, 952);
     			attr_dev(div, "class", "image-text");
-    			add_location(div, file$4, 33, 12, 1132);
+    			add_location(div, file$4, 33, 12, 1123);
 
-    			attr_dev(label, "class", label_class_value = "" + (null_to_empty(/*choice*/ ctx[9].value === /*field*/ ctx[0].value
+    			attr_dev(label, "class", label_class_value = "" + (null_to_empty(/*choice*/ ctx[8].value === /*field*/ ctx[0].value
     			? 'selected'
     			: '') + " svelte-wryltr"));
 
-    			add_location(label, file$4, 30, 8, 827);
+    			add_location(label, file$4, 30, 8, 818);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, label, anchor);
@@ -4358,15 +4397,15 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*field*/ 1 && !src_url_equal(img.src, img_src_value = /*choice*/ ctx[9].image)) {
+    			if (dirty & /*field*/ 1 && !src_url_equal(img.src, img_src_value = /*choice*/ ctx[8].image)) {
     				attr_dev(img, "src", img_src_value);
     			}
 
-    			if (dirty & /*field*/ 1 && img_alt_value !== (img_alt_value = /*choice*/ ctx[9].label)) {
+    			if (dirty & /*field*/ 1 && img_alt_value !== (img_alt_value = /*choice*/ ctx[8].label)) {
     				attr_dev(img, "alt", img_alt_value);
     			}
 
-    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[9].value)) {
+    			if (dirty & /*field*/ 1 && input_value_value !== (input_value_value = /*choice*/ ctx[8].value)) {
     				prop_dev(input, "__value", input_value_value);
     				input.value = input.__value;
     			}
@@ -4381,9 +4420,9 @@ var app = (function () {
     				input.checked = input.__value === /*field*/ ctx[0].value;
     			}
 
-    			if (dirty & /*field*/ 1 && t2_value !== (t2_value = /*choice*/ ctx[9].label + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*field*/ 1 && t2_value !== (t2_value = /*choice*/ ctx[8].label + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*field*/ 1 && label_class_value !== (label_class_value = "" + (null_to_empty(/*choice*/ ctx[9].value === /*field*/ ctx[0].value
+    			if (dirty & /*field*/ 1 && label_class_value !== (label_class_value = "" + (null_to_empty(/*choice*/ ctx[8].value === /*field*/ ctx[0].value
     			? 'selected'
     			: '') + " svelte-wryltr"))) {
     				attr_dev(label, "class", label_class_value);
@@ -4412,7 +4451,7 @@ var app = (function () {
     	let t0;
     	let div;
     	let t1;
-    	let errors_1;
+    	let errors;
     	let div_class_value;
     	let t2;
     	let help;
@@ -4426,7 +4465,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
     	}
 
-    	errors_1 = new Errors({
+    	errors = new Errors({
     			props: { field: /*field*/ ctx[0] },
     			$$inline: true
     		});
@@ -4450,11 +4489,11 @@ var app = (function () {
     			}
 
     			t1 = space();
-    			create_component(errors_1.$$.fragment);
+    			create_component(errors.$$.fragment);
     			t2 = space();
     			create_component(help.$$.fragment);
     			attr_dev(div, "class", div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]));
-    			add_location(div, file$4, 28, 0, 743);
+    			add_location(div, file$4, 28, 0, 734);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4469,7 +4508,7 @@ var app = (function () {
     			}
 
     			append_dev(div, t1);
-    			mount_component(errors_1, div, null);
+    			mount_component(errors, div, null);
     			insert_dev(target, t2, anchor);
     			mount_component(help, target, anchor);
     			current = true;
@@ -4522,9 +4561,9 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			const errors_1_changes = {};
-    			if (dirty & /*field*/ 1) errors_1_changes.field = /*field*/ ctx[0];
-    			errors_1.$set(errors_1_changes);
+    			const errors_changes = {};
+    			if (dirty & /*field*/ 1) errors_changes.field = /*field*/ ctx[0];
+    			errors.$set(errors_changes);
 
     			if (!current || dirty & /*field*/ 1 && div_class_value !== (div_class_value = /*field*/ ctx[0].getClasses(/*classes*/ ctx[2]))) {
     				attr_dev(div, "class", div_class_value);
@@ -4538,13 +4577,13 @@ var app = (function () {
     		i: function intro(local) {
     			if (current) return;
     			transition_in(if_block);
-    			transition_in(errors_1.$$.fragment, local);
+    			transition_in(errors.$$.fragment, local);
     			transition_in(help.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(if_block);
-    			transition_out(errors_1.$$.fragment, local);
+    			transition_out(errors.$$.fragment, local);
     			transition_out(help.$$.fragment, local);
     			current = false;
     		},
@@ -4553,7 +4592,7 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
     			destroy_each(each_blocks, detaching);
-    			destroy_component(errors_1);
+    			destroy_component(errors);
     			if (detaching) detach_dev(t2);
     			destroy_component(help, detaching);
     		}
@@ -4571,7 +4610,6 @@ var app = (function () {
     }
 
     function instance$5($$self, $$props, $$invalidate) {
-    	let errors;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ChoiceImage', slots, []);
     	
@@ -4620,8 +4658,7 @@ var app = (function () {
     		classes,
     		setValue,
     		showHelp,
-    		toggleHelp,
-    		errors
+    		toggleHelp
     	});
 
     	$$self.$inject_state = $$props => {
@@ -4629,7 +4666,6 @@ var app = (function () {
     		if ('dispatch' in $$props) dispatch = $$props.dispatch;
     		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
     		if ('showHelp' in $$props) $$invalidate(1, showHelp = $$props.showHelp);
-    		if ('errors' in $$props) errors = $$props.errors;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -4638,7 +4674,7 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*field*/ 1) {
-    			errors = field.getValidationErors();
+    			field.getValidationErors();
     		}
     	};
 
@@ -5041,7 +5077,7 @@ var app = (function () {
     }
 
     // (35:4) {#if fieldset.percentage !== undefined}
-    function create_if_block_9(ctx) {
+    function create_if_block_10(ctx) {
     	let percentage;
     	let current;
 
@@ -5082,7 +5118,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_9.name,
+    		id: create_if_block_10.name,
     		type: "if",
     		source: "(35:4) {#if fieldset.percentage !== undefined}",
     		ctx
@@ -5091,439 +5127,14 @@ var app = (function () {
     	return block;
     }
 
-    // (56:49) 
-    function create_if_block_8(ctx) {
-    	let p;
-    	let t_value = /*field*/ ctx[6].getValue() + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			p = element("p");
-    			t = text(t_value);
-    			add_location(p, file$2, 56, 16, 2363);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*fields*/ 4 && t_value !== (t_value = /*field*/ ctx[6].getValue() + "")) set_data_dev(t, t_value);
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_8.name,
-    		type: "if",
-    		source: "(56:49) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (54:48) 
-    function create_if_block_7(ctx) {
-    	let h2;
-    	let t_value = /*field*/ ctx[6].getValue() + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			h2 = element("h2");
-    			t = text(t_value);
-    			add_location(h2, file$2, 54, 16, 2269);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, h2, anchor);
-    			append_dev(h2, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*fields*/ 4 && t_value !== (t_value = /*field*/ ctx[6].getValue() + "")) set_data_dev(t, t_value);
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h2);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_7.name,
-    		type: "if",
-    		source: "(54:48) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (52:51) 
-    function create_if_block_6(ctx) {
-    	let choiceimage;
-    	let current;
-
-    	choiceimage = new ChoiceImage({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	choiceimage.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(choiceimage.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(choiceimage, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const choiceimage_changes = {};
-    			if (dirty & /*fields*/ 4) choiceimage_changes.field = /*field*/ ctx[6];
-    			choiceimage.$set(choiceimage_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(choiceimage.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(choiceimage.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(choiceimage, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_6.name,
-    		type: "if",
-    		source: "(52:51) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (50:51) 
-    function create_if_block_5(ctx) {
-    	let choiceradio;
-    	let current;
-
-    	choiceradio = new ChoiceRadio({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	choiceradio.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(choiceradio.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(choiceradio, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const choiceradio_changes = {};
-    			if (dirty & /*fields*/ 4) choiceradio_changes.field = /*field*/ ctx[6];
-    			choiceradio.$set(choiceradio_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(choiceradio.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(choiceradio.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(choiceradio, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_5.name,
-    		type: "if",
-    		source: "(50:51) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (48:52) 
-    function create_if_block_4(ctx) {
-    	let choiceselect;
-    	let current;
-
-    	choiceselect = new ChoiceSelect({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	choiceselect.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(choiceselect.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(choiceselect, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const choiceselect_changes = {};
-    			if (dirty & /*fields*/ 4) choiceselect_changes.field = /*field*/ ctx[6];
-    			choiceselect.$set(choiceselect_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(choiceselect.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(choiceselect.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(choiceselect, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4.name,
-    		type: "if",
-    		source: "(48:52) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (46:48) 
-    function create_if_block_3(ctx) {
-    	let checkbox;
-    	let current;
-
-    	checkbox = new Checkbox({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	checkbox.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(checkbox.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(checkbox, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const checkbox_changes = {};
-    			if (dirty & /*fields*/ 4) checkbox_changes.field = /*field*/ ctx[6];
-    			checkbox.$set(checkbox_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(checkbox.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(checkbox.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(checkbox, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_3.name,
-    		type: "if",
-    		source: "(46:48) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (44:45) 
-    function create_if_block_2(ctx) {
-    	let range;
-    	let current;
-
-    	range = new Range({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	range.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(range.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(range, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const range_changes = {};
-    			if (dirty & /*fields*/ 4) range_changes.field = /*field*/ ctx[6];
-    			range.$set(range_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(range.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(range.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(range, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_2.name,
-    		type: "if",
-    		source: "(44:45) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (42:48) 
-    function create_if_block_1$2(ctx) {
-    	let textarea;
-    	let current;
-
-    	textarea = new Textarea({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	textarea.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(textarea.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(textarea, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const textarea_changes = {};
-    			if (dirty & /*fields*/ 4) textarea_changes.field = /*field*/ ctx[6];
-    			textarea.$set(textarea_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(textarea.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(textarea.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(textarea, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1$2.name,
-    		type: "if",
-    		source: "(42:48) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (40:12) {#if field.type === 'Text'}
+    // (40:12) {#if field.conditionsFullfilled() }
     function create_if_block$2(ctx) {
-    	let text_1;
-    	let current;
-
-    	text_1 = new Text({
-    			props: { field: /*field*/ ctx[6] },
-    			$$inline: true
-    		});
-
-    	text_1.$on("update", /*update*/ ctx[3]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(text_1.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(text_1, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const text_1_changes = {};
-    			if (dirty & /*fields*/ 4) text_1_changes.field = /*field*/ ctx[6];
-    			text_1.$set(text_1_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(text_1.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(text_1.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(text_1, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$2.name,
-    		type: "if",
-    		source: "(40:12) {#if field.type === 'Text'}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (39:8) {#each fields as field}
-    function create_each_block$1(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
     	let current;
 
     	const if_block_creators = [
-    		create_if_block$2,
     		create_if_block_1$2,
     		create_if_block_2,
     		create_if_block_3,
@@ -5531,7 +5142,8 @@ var app = (function () {
     		create_if_block_5,
     		create_if_block_6,
     		create_if_block_7,
-    		create_if_block_8
+    		create_if_block_8,
+    		create_if_block_9
     	];
 
     	const if_blocks = [];
@@ -5622,6 +5234,499 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
+    		id: create_if_block$2.name,
+    		type: "if",
+    		source: "(40:12) {#if field.conditionsFullfilled() }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (57:53) 
+    function create_if_block_9(ctx) {
+    	let p;
+    	let t_value = /*field*/ ctx[6].getValue() + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			t = text(t_value);
+    			add_location(p, file$2, 57, 20, 2476);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*fields*/ 4 && t_value !== (t_value = /*field*/ ctx[6].getValue() + "")) set_data_dev(t, t_value);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_9.name,
+    		type: "if",
+    		source: "(57:53) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (55:52) 
+    function create_if_block_8(ctx) {
+    	let h2;
+    	let t_value = /*field*/ ctx[6].getValue() + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			h2 = element("h2");
+    			t = text(t_value);
+    			add_location(h2, file$2, 55, 20, 2374);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h2, anchor);
+    			append_dev(h2, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*fields*/ 4 && t_value !== (t_value = /*field*/ ctx[6].getValue() + "")) set_data_dev(t, t_value);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h2);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8.name,
+    		type: "if",
+    		source: "(55:52) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (53:55) 
+    function create_if_block_7(ctx) {
+    	let choiceimage;
+    	let current;
+
+    	choiceimage = new ChoiceImage({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	choiceimage.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(choiceimage.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(choiceimage, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const choiceimage_changes = {};
+    			if (dirty & /*fields*/ 4) choiceimage_changes.field = /*field*/ ctx[6];
+    			choiceimage.$set(choiceimage_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(choiceimage.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(choiceimage.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(choiceimage, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7.name,
+    		type: "if",
+    		source: "(53:55) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (51:55) 
+    function create_if_block_6(ctx) {
+    	let choiceradio;
+    	let current;
+
+    	choiceradio = new ChoiceRadio({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	choiceradio.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(choiceradio.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(choiceradio, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const choiceradio_changes = {};
+    			if (dirty & /*fields*/ 4) choiceradio_changes.field = /*field*/ ctx[6];
+    			choiceradio.$set(choiceradio_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(choiceradio.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(choiceradio.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(choiceradio, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6.name,
+    		type: "if",
+    		source: "(51:55) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (49:56) 
+    function create_if_block_5(ctx) {
+    	let choiceselect;
+    	let current;
+
+    	choiceselect = new ChoiceSelect({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	choiceselect.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(choiceselect.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(choiceselect, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const choiceselect_changes = {};
+    			if (dirty & /*fields*/ 4) choiceselect_changes.field = /*field*/ ctx[6];
+    			choiceselect.$set(choiceselect_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(choiceselect.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(choiceselect.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(choiceselect, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5.name,
+    		type: "if",
+    		source: "(49:56) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (47:52) 
+    function create_if_block_4(ctx) {
+    	let checkbox;
+    	let current;
+
+    	checkbox = new Checkbox({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	checkbox.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(checkbox.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(checkbox, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const checkbox_changes = {};
+    			if (dirty & /*fields*/ 4) checkbox_changes.field = /*field*/ ctx[6];
+    			checkbox.$set(checkbox_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(checkbox.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(checkbox.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(checkbox, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_4.name,
+    		type: "if",
+    		source: "(47:52) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (45:49) 
+    function create_if_block_3(ctx) {
+    	let range;
+    	let current;
+
+    	range = new Range({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	range.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(range.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(range, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const range_changes = {};
+    			if (dirty & /*fields*/ 4) range_changes.field = /*field*/ ctx[6];
+    			range.$set(range_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(range.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(range.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(range, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(45:49) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (43:52) 
+    function create_if_block_2(ctx) {
+    	let textarea;
+    	let current;
+
+    	textarea = new Textarea({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	textarea.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(textarea.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(textarea, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const textarea_changes = {};
+    			if (dirty & /*fields*/ 4) textarea_changes.field = /*field*/ ctx[6];
+    			textarea.$set(textarea_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(textarea.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(textarea.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(textarea, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(43:52) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (41:16) {#if field.type === 'Text'}
+    function create_if_block_1$2(ctx) {
+    	let text_1;
+    	let current;
+
+    	text_1 = new Text({
+    			props: { field: /*field*/ ctx[6] },
+    			$$inline: true
+    		});
+
+    	text_1.$on("update", /*update*/ ctx[3]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(text_1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(text_1, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const text_1_changes = {};
+    			if (dirty & /*fields*/ 4) text_1_changes.field = /*field*/ ctx[6];
+    			text_1.$set(text_1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(text_1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(text_1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(text_1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$2.name,
+    		type: "if",
+    		source: "(41:16) {#if field.type === 'Text'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (39:8) {#each fields as field}
+    function create_each_block$1(ctx) {
+    	let show_if = /*field*/ ctx[6].conditionsFullfilled();
+    	let if_block_anchor;
+    	let current;
+    	let if_block = show_if && create_if_block$2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*fields*/ 4) show_if = /*field*/ ctx[6].conditionsFullfilled();
+
+    			if (show_if) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*fields*/ 4) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block$2(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
     		id: create_each_block$1.name,
     		type: "each",
     		source: "(39:8) {#each fields as field}",
@@ -5643,7 +5748,7 @@ var app = (function () {
     	let fieldset_1_class_value;
     	let fieldset_1_intro;
     	let current;
-    	let if_block = /*fieldset*/ ctx[0].percentage !== undefined && create_if_block_9(ctx);
+    	let if_block = /*fieldset*/ ctx[0].percentage !== undefined && create_if_block_10(ctx);
     	let each_value = /*fields*/ ctx[2];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -5705,7 +5810,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block_9(ctx);
+    					if_block = create_if_block_10(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(fieldset_1, t2);
@@ -6645,7 +6750,7 @@ var app = (function () {
     	}
     }
 
-    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"Projektdaten",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Ihre Email-Adresse",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",value:"Adresse des Gebäudes"},{type:"Paragraph",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Baden-Württemberg",value:"Baden-Württemberg"},{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Bremen",value:"Bremen"},{label:"Brandenburg",value:"Brandenburg"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Niedersachsen",value:"Niedersachsen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Rheinland-Pfalz",value:"Rheinland-Pfalz"},{label:"Saarland",value:"Saarland"},{label:"Sachsen",value:"Sachsen"},{label:"Sachsen-Anhalt",value:"Sachsen-Anhalt"},{label:"Thüringen",value:"Thüringen"}],validations:[{type:"empty",error:"Bitte wählen Sie ein Bundesland aus"}]},{name:"privacy",label:"Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",type:"Checkbox",classes:["w1of1"],required:true,validations:[{type:"isChecked",error:"Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."}]},{name:"privacy",label:"Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",type:"Checkbox",classes:["w1of1"]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"grund",label:"Grund der Erstellung des Energieausweises",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Modernisierung / Erweiterung",value:"Modernisierung / Erweiterung"},{label:"Vermietung",value:"Vermietung"},{label:"Verkauf",value:"Verkauf"},{label:"Sonstiges",value:"Sonstiges"}]},{name:"gebaeudedaten",label:"Gebäudedaten",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Bestand",value:"Bestand"},{label:"Neubau",value:"Neubau"}]},{name:"nutzung",label:"Nutzung",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Einfamilienhaus",value:"Einfamilienhaus"},{label:"Mehrfamilienhaus",value:"Mehrfamilienhaus"},{label:"Gemischt genutztes Gebäude",value:"Gemischt genutztes Gebäude"}]},{name:"wohneinheiten",label:"Anzahl der Wohneinheiten",type:"Text",classes:["w1of1"],required:true,validations:[{type:"min",error:"1"},{type:"max",error:"100"}],conditions:[{field:"nutzung",value:"Mehrfamilienhaus",operator:"=="}]},{name:"wohnnutzung",label:"Flächenanteil Wohnnutzung",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Über 50%",value:"majority"},{label:"Unter 50%",value:"minority"}],conditions:[{field:"nutzung",value:"Mehrfamilienhaus",operator:"=="}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
+    var name="test-form";var start="projektadresse";var classes=["test-form"];var fieldsets=[{label:"Projektdaten",name:"projektadresse",nextFieldset:"basisdaten",fields:[{name:"email1",label:"Ihre Email-Adresse",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{name:"email2",label:"Email wiederholen",type:"Text",classes:["w1of1"],required:true,validations:[{type:"email",error:"Email-Adresse ist ungültig"}]},{type:"Headline",name:"headlineAddressBuilding",value:"Adresse des Gebäudes"},{type:"Paragraph",name:"paragraphAddressBuilding",value:"Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."},{name:"street",label:"Straße und Hausnummer",type:"Text",classes:["w1of1"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:100,error:"Maximal 100 Zeichen"}]},{name:"zip",label:"Postleitzahl",classes:["w1of4"],type:"Text",required:true,validations:[{type:"string",error:"Postleitzahl ungültig"},{type:"minLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"},{type:"maxLength",value:5,error:"Eine Postleitzahl muss aus 5 Ziffern bestehen"}]},{name:"city",label:"Ort",type:"Text",classes:["w3of4"],required:true,validations:[{type:"string",error:"Der Angegebene Wert muss eine Zeichenkette sein"},{type:"minLength",value:3,error:"Mindestens 3 Zeichen"},{type:"maxLength",value:50,error:"Maximal 50 Zeichen"}]},{name:"state",label:"Bundesland",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Baden-Württemberg",value:"Baden-Württemberg"},{label:"Bayern",value:"Bayern"},{label:"Berlin",value:"Berlin"},{label:"Bremen",value:"Bremen"},{label:"Brandenburg",value:"Brandenburg"},{label:"Hamburg",value:"Hamburg"},{label:"Hessen",value:"Hessen"},{label:"Nordrhein-Westfalen",value:"Nordrhein-Westfalen"},{label:"Niedersachsen",value:"Niedersachsen"},{label:"Meckelemburg-Vorpommern",value:"Meckelemburg-Vorpommern"},{label:"Rheinland-Pfalz",value:"Rheinland-Pfalz"},{label:"Saarland",value:"Saarland"},{label:"Sachsen",value:"Sachsen"},{label:"Sachsen-Anhalt",value:"Sachsen-Anhalt"},{label:"Thüringen",value:"Thüringen"}],validations:[{type:"empty",error:"Bitte wählen Sie ein Bundesland aus"}]},{name:"privacy",label:"Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",type:"Checkbox",classes:["w1of1"],required:true,validations:[{type:"isChecked",error:"Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."}]},{name:"contact",label:"Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",type:"Checkbox",classes:["w1of1"]}]},{label:"Basisdaten",name:"basisdaten",fields:[{name:"grund",label:"Grund der Erstellung des Energieausweises",type:"ChoiceSelect",classes:["w1of1"],required:true,choices:[{label:"Bitte wählen..."},{label:"Modernisierung / Erweiterung",value:"Modernisierung / Erweiterung"},{label:"Vermietung",value:"Vermietung"},{label:"Verkauf",value:"Verkauf"},{label:"Sonstiges",value:"Sonstiges"}]},{name:"gebaeudedaten",label:"Gebäudedaten",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Bestand",value:"Bestand"},{label:"Neubau",value:"Neubau"}]},{name:"nutzung",label:"Nutzung",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Einfamilienhaus",value:"Einfamilienhaus"},{label:"Mehrfamilienhaus",value:"Mehrfamilienhaus"},{label:"Gemischt genutztes Gebäude",value:"Gemischt genutztes Gebäude"}]},{name:"wohneinheiten",label:"Anzahl der Wohneinheiten",type:"Text",classes:["w1of1"],required:true,validations:[{type:"min",error:"1"},{type:"max",error:"100"}],conditions:[{field:"nutzung",value:"Mehrfamilienhaus",operator:"=="}]},{name:"wohnnutzung",label:"Flächenanteil Wohnnutzung",type:"ChoiceRadio",classes:["w1of1"],required:true,choices:[{label:"Über 50%",value:"majority"},{label:"Unter 50%",value:"minority"}],conditions:[{field:"nutzung",value:"Mehrfamilienhaus",operator:"=="}]}]}];var FormData = {name:name,start:start,classes:classes,fieldsets:fieldsets};
 
     /* src/App.svelte generated by Svelte v3.42.1 */
 

@@ -91,7 +91,7 @@ export default class Fieldset implements HasFieldsetData {
     }
 
     /**
-     * Get CSS classes.
+     * Get CSS classes for fieldset wrapper.
      * 
      * @return String of CSS classes.
      * 
@@ -108,7 +108,7 @@ export default class Fieldset implements HasFieldsetData {
 
 
     /**
-     * Get CSS field classes.
+     * Get CSS classes for field wrapper div.
      * 
      * @return String of CSS classes.
      * 

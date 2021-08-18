@@ -1,9 +1,11 @@
 import type HasFieldData from '../Interfaces/HasFieldData';
-import type HasConditionData from "./HasConditionData";
+import type HasConditionData from "../Interfaces/HasConditionData";
 import type HasHelpData from '../Interfaces/HasHelpData';
 import type Fieldset from './Fieldset';
 import Help from './Help';
 import Validator from './Validator';
+import type HasChoicesData from '../Interfaces/HasChoicesData';
+import type HasValidationData from '../Interfaces/HasValidationData';
 
 /**
  * Field class.
@@ -16,15 +18,16 @@ export default class Field implements HasFieldData {
     readonly type        : string;    
     readonly label       : string;
     readonly placeholder : string;
-    readonly help        : HasHelpData;
-    readonly choices     : [];
-    readonly params      : [];
-    readonly classes     : string[];
-    readonly conditions  : HasConditionData[];  
     readonly required    : boolean;
-    readonly validations : [];
+    readonly default     : any[];
+    readonly params      : any[];
+    readonly help        : HasHelpData;
+    readonly choices     : HasChoicesData[];
+    readonly conditions  : HasConditionData[];
+    readonly validations : HasValidationData[];
 
     public   value       : any;
+    private  classes     : string[];
     private  validated   : boolean = false;    
     private  errors      : string[] = [];
 
@@ -50,7 +53,8 @@ export default class Field implements HasFieldData {
         this.params       = field.params === undefined ? []: field.params;
         this.classes      = field.classes === undefined ? []: field.classes;
         this.required     = field.required === undefined ? false: true;        
-        this.validations  = field.validations === undefined ? []: field.validations;        
+        this.validations  = field.validations === undefined ? []: field.validations;
+        this.conditions   = field.conditions === undefined ? []: field.conditions;  
 
         this.value        = field.value;
     }
@@ -187,5 +191,52 @@ export default class Field implements HasFieldData {
      */
     public hasBeenValidated() : boolean {
         return this.validated;
+    }
+
+    /**
+     * Conditions fullfilled.
+     * 
+     * @return True if fullfilled, false if not.
+     * 
+     * @since 1.0.0
+     */
+    public conditionsFullfilled() : boolean
+    {
+        if ( this.conditions.length === 0 ) {
+            console.log( 'No conditions for ' +  this.name );
+            return true;
+        }
+
+        console.log( 'Conditions for ' +  this.name );
+
+        let fullfillments = [];
+
+        this.conditions.forEach( ( condition: HasConditionData ) => {
+            let fullfilled = false;
+            let field = this.fieldset.form.getField( condition.field );
+
+            switch ( condition.operator ) {
+                case '==':
+                    fullfilled = condition.value === field.getValue();
+                    break;
+                case '!=':
+                    fullfilled = condition.value !== field.getValue();
+                    break;
+                case '>':
+                    fullfilled = condition.value !== field.getValue();
+                    break;                    
+                case '<':
+                    fullfilled = condition.value !== field.getValue();
+                    break;
+                default:
+                    throw new Error( 'Operator "' + condition.operator + '" does not exist.');                        
+            }
+
+            fullfillments.push( fullfilled );
+        });
+
+        console.log( this.conditions );
+
+        return ! fullfillments.includes( false );
     }
 }
