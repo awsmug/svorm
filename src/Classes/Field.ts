@@ -1,4 +1,5 @@
 import type HasFieldData from '../Interfaces/HasFieldData';
+import type HasConditionData from "./HasConditionData";
 import type HasHelpData from '../Interfaces/HasHelpData';
 import type Fieldset from './Fieldset';
 import Help from './Help';
@@ -19,6 +20,7 @@ export default class Field implements HasFieldData {
     readonly choices     : [];
     readonly params      : [];
     readonly classes     : string[];
+    readonly conditions  : HasConditionData[];  
     readonly required    : boolean;
     readonly validations : [];
 

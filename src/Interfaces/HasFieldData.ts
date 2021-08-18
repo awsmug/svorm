@@ -1,3 +1,5 @@
+import type HasConditionData from "./HasConditionData";
+
 /**
  * Field data interface.
  * 
@@ -10,6 +12,7 @@ export default interface HasFieldData {
     readonly choices     : [];
     readonly params      : [];
     readonly classes     : string[];
+    readonly conditions  : HasConditionData[];  
     readonly required    : boolean;
     readonly validations : [];
 }

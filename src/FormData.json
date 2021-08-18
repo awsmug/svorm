@@ -215,7 +215,7 @@
             "name": "basisdaten",
             "fields": [                
                 {
-                    "name": "reason",
+                    "name": "grund",
                     "label": "Grund der Erstellung des Energieausweises",
                     "type": "ChoiceSelect",
                     "classes": [ "w1of1" ], 
@@ -243,7 +243,7 @@
                     ]               
                 },
                 {
-                    "name": "reason",
+                    "name": "gebaeudedaten",
                     "label": "Gebäudedaten",
                     "type": "ChoiceRadio",
                     "classes": [ "w1of1" ], 
@@ -258,7 +258,76 @@
                             "value": "Neubau"
                         }
                     ]               
-                }
+                },
+                {
+                    "name": "nutzung",
+                    "label": "Nutzung",
+                    "type": "ChoiceRadio",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "choices": [                        
+                        {
+                            "label": "Einfamilienhaus",
+                            "value": "Einfamilienhaus"
+                        },
+                        {
+                            "label": "Mehrfamilienhaus",
+                            "value": "Mehrfamilienhaus"
+                        },
+                        {
+                            "label": "Gemischt genutztes Gebäude",
+                            "value": "Gemischt genutztes Gebäude"
+                        }
+                    ]               
+                },
+                {
+                    "name": "wohneinheiten",
+                    "label": "Anzahl der Wohneinheiten",
+                    "type": "Text",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "min",
+                            "error": "1"
+                        },
+                        {
+                            "type": "max",
+                            "error": "100"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "field": "nutzung",
+                            "value": "Mehrfamilienhaus",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                {
+                    "name": "wohnnutzung",
+                    "label": "Flächenanteil Wohnnutzung",
+                    "type": "ChoiceRadio",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "choices": [                        
+                        {
+                            "label": "Über 50%",
+                            "value": "majority"
+                        },
+                        {
+                            "label": "Unter 50%",
+                            "value": "minority"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "field": "nutzung",
+                            "value": "Mehrfamilienhaus",
+                            "operator": "=="
+                        }
+                    ]
+                }                
             ]
         }        
     ]
