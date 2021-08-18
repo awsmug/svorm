@@ -125,6 +125,9 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public getClasses( additionalClasses: string[] = []): string {
+        let genericClases = [ 'input', 'input-' + this.type ];
+        this.classes = genericClases.concat( this.classes );
+
         if ( this.classes.length > 0  ) {
             return additionalClasses.concat( this.classes ).join(' ') ;
         }
@@ -203,11 +206,8 @@ export default class Field implements HasFieldData {
     public conditionsFullfilled() : boolean
     {
         if ( this.conditions.length === 0 ) {
-            console.log( 'No conditions for ' +  this.name );
             return true;
         }
-
-        console.log( 'Conditions for ' +  this.name );
 
         let fullfillments = [];
 
@@ -234,8 +234,6 @@ export default class Field implements HasFieldData {
 
             fullfillments.push( fullfilled );
         });
-
-        console.log( this.conditions );
 
         return ! fullfillments.includes( false );
     }

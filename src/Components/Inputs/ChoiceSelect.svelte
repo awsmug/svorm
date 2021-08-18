@@ -9,10 +9,6 @@
     export let field: Field;
 
     const dispatch = createEventDispatcher();
-    let   classes  : string[] = ['input', 'input-choice-select'];
-
-    $: field.getValidationErors();
-
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
     }
@@ -23,17 +19,17 @@
     }
 </script>
 
-<div class={field.getClasses(classes)}>
-    <label for={field.name}>
-        {field.label}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </label>
+<label for={field.name}>
+    {field.label}
+    <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+</label>
+<div class="input-select-field">
     <select name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
         {#each field.choices as choice}
             <option value={choice.value}>{choice.label}</option>
         {/each}
     </select>
-    <Errors field={field} />
 </div>
-
+<Errors field={field} />
 <Help field={field} show={showHelp} />
+

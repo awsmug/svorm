@@ -2,6 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
+
     import Help from '../Help.svelte';
     import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
@@ -12,11 +13,7 @@
         field.value = false;
     }
 
-    const dispatch = createEventDispatcher();    
-    let   classes  : string[] = ['input', 'input-checkbox'];
-
-    $: field.getValidationErors();
-
+    const dispatch = createEventDispatcher();
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
     }
@@ -27,15 +24,12 @@
     }
 </script>
 
-<div class={field.getClasses( classes )}>        
-    <div class="input-checkbox-field">
-        <label for={field.name}>
-            <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
-            {field.label}
-            <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-        </label>
-    </div>
-    <Errors field={field} />
+<div class="input-checkbox-field">
+    <label for={field.name}>
+        <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+        {field.label}
+        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+    </label>
 </div>
-
+<Errors field={field} />
 <Help field={field} show={showHelp} />

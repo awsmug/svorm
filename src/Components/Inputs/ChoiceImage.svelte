@@ -8,11 +8,7 @@
 
     export let field: Field;
 
-    $: field.getValidationErors();
-
-    let dispatch = createEventDispatcher();
-    let classes  : string[] = ['input', 'input-choice-image'];
-
+    const dispatch = createEventDispatcher();
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
 
@@ -34,17 +30,15 @@
     </legend>
 {/if}
 
-<div class={field.getClasses(classes)}>
-    {#each field.choices as choice}
-        <label class="{choice.value === field.value ? 'selected': ''}">
-            <img src={choice.image} alt={choice.label} />
-            <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
-            <div class="image-text">{choice.label}</div>
-        </label>
-    {/each}
-    <Errors field="{field}" />
-</div>
 
+{#each field.choices as choice}
+    <label class="{choice.value === field.value ? 'selected': ''}">
+        <img src={choice.image} alt={choice.label} />
+        <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+        <div class="image-text">{choice.label}</div>
+    </label>
+{/each}
+<Errors field="{field}" />
 <Help field={field} show={showHelp} />
 
 <style>

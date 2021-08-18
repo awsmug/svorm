@@ -9,11 +9,7 @@
     export let field: Field;
 
     const dispatch = createEventDispatcher();
-    let   classes  : string[] = ['input', 'input-range'];
-
-    $: field.getValidationErors();
-
-    const setValue = () => {      
+    const setValue = () => {
         dispatch( 'update', field.fieldset.form );
     }
 
@@ -23,13 +19,12 @@
     }
 </script>
 
-<div class={field.getClasses(classes)}>
-    <label for={field.name}>
-        {field.label}:  {field.value} {#if field.params.unit !== undefined}{field.params.unit}{/if}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </label>
+<label for={field.name}>
+    {field.label}:  {field.value} {#if field.params.unit !== undefined}{field.params.unit}{/if}
+    <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+</label>
+<div class="input-range-field">
     <input name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
-    <Errors field={field} />
 </div>
-
+<Errors field={field} />
 <Help field={field} show={showHelp} />

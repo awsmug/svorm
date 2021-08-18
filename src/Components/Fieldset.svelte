@@ -48,25 +48,27 @@
     <div class="fields {fieldset.getFieldsClasses()}">
         {#each fields as field}
             {#if field.conditionsFullfilled() }
-                {#if field.type === 'Text'}
-                    <Text field={field} on:update={update} />
-                {:else if field.type === 'TextArea'}
-                    <Textarea field={field} on:update={update}  />
-                {:else if field.type === 'Range'}
-                    <Range field={field} on:update={update}  />
-                {:else if field.type === 'Checkbox'}
-                    <Checkbox field={field} on:update={update} />
-                {:else if field.type === 'ChoiceSelect'}
-                    <ChoiceSelect field={field} on:update={update} />
-                {:else if field.type === 'ChoiceRadio'}
-                    <ChoiceRadio field={field} on:update={update} />
-                {:else if field.type === 'ChoiceImage'}
-                    <ChoiceImage field={field} on:update={update} />
-                {:else if field.type === 'Headline'}
-                    <h2>{field.getValue()}</h2>
-                {:else if field.type === 'Paragraph'}
-                    <p>{field.getValue()}</p>
-                {/if}
+                <div class={field.getClasses()} in:fade>
+                    {#if field.type === 'Text'}
+                        <Text field={field} on:update={update} />
+                    {:else if field.type === 'TextArea'}
+                        <Textarea field={field} on:update={update}  />
+                    {:else if field.type === 'Range'}
+                        <Range field={field} on:update={update}  />
+                    {:else if field.type === 'Checkbox'}
+                        <Checkbox field={field} on:update={update} />
+                    {:else if field.type === 'ChoiceSelect'}
+                        <ChoiceSelect field={field} on:update={update} />
+                    {:else if field.type === 'ChoiceRadio'}
+                        <ChoiceRadio field={field} on:update={update} />
+                    {:else if field.type === 'ChoiceImage'}
+                        <ChoiceImage field={field} on:update={update} />
+                    {:else if field.type === 'Headline'}
+                        <h2>{field.getValue()}</h2>
+                    {:else if field.type === 'Paragraph'}
+                        <p>{field.getValue()}</p>
+                    {/if}
+                </div>
             {/if}            
         {/each}
     </div>

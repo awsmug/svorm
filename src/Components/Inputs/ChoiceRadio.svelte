@@ -9,10 +9,6 @@
     export let field: Field;
 
     const dispatch = createEventDispatcher();
-    let   classes  : string[] = ['input', 'input-text'];
-
-    $: field.getValidationErors();
-
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
         
@@ -34,16 +30,13 @@
     </legend>
 {/if}
 
-<div class="{field.getClasses(classes)}">
-    {#each field.choices as choice}
-        <label>
-            <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
-            {choice.label}
-        </label>
-    {/each}
-    <Errors field="{field}" />
-</div>
-
+{#each field.choices as choice}
+    <label>
+        <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+        {choice.label}
+    </label>
+{/each}
+<Errors field="{field}" />
 <Help field={field} show={showHelp} />
 
 <style>

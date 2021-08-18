@@ -2,6 +2,7 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from '../../Classes/Field';
+
     import Help from '../Help.svelte';
     import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
@@ -9,10 +10,6 @@
     export let field: Field;
 
     const dispatch = createEventDispatcher();
-    let   classes  : string[] = ['input', 'input-textarea'];
-
-    $: field.getValidationErors();
-
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
     }
@@ -23,13 +20,12 @@
     }
 </script>
 
-<div class={field.getClasses( classes )}>
-    <label for={field.name}>
-        {field.label}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </label>
-    <div><textarea name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea></div>
-    <Errors field="{field}" />
+<label for={field.name}>
+    {field.label}
+    <HelpIcon field={field} on:toggleHelp={toggleHelp} />
+</label>
+<div class="input-textarea-field">
+    <textarea name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea>
 </div>
-
+<Errors field="{field}" />
 <Help field={field} show={showHelp} />
