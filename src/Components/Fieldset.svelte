@@ -49,23 +49,23 @@
         {#each fields as field}
             {#if field.conditionsFullfilled() }
                 <div class={field.getClasses()} in:fade>
-                    {#if field.type === 'Text'}
+                    {#if field.type === 'text'}
                         <Text field={field} on:update={update} />
-                    {:else if field.type === 'TextArea'}
+                    {:else if field.type === 'textarea'}
                         <Textarea field={field} on:update={update}  />
-                    {:else if field.type === 'Range'}
+                    {:else if field.type === 'range'}
                         <Range field={field} on:update={update}  />
-                    {:else if field.type === 'Checkbox'}
+                    {:else if field.type === 'checkbox'}
                         <Checkbox field={field} on:update={update} />
-                    {:else if field.type === 'ChoiceSelect'}
+                    {:else if field.type === 'choice-select'}
                         <ChoiceSelect field={field} on:update={update} />
-                    {:else if field.type === 'ChoiceRadio'}
+                    {:else if field.type === 'choice-radio'}
                         <ChoiceRadio field={field} on:update={update} />
-                    {:else if field.type === 'ChoiceImage'}
+                    {:else if field.type === 'choice-image'}
                         <ChoiceImage field={field} on:update={update} />
-                    {:else if field.type === 'Headline'}
+                    {:else if field.type === 'headline'}
                         <h2>{field.getValue()}</h2>
-                    {:else if field.type === 'Paragraph'}
+                    {:else if field.type === 'paragraph'}
                         <p>{field.getValue()}</p>
                     {/if}
                 </div>

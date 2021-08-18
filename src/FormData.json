@@ -11,7 +11,7 @@
                 {
                     "name": "email1",
                     "label": "Ihre Email-Adresse",
-                    "type": "Text",
+                    "type": "text",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
@@ -24,7 +24,7 @@
                 {
                     "name": "email2",
                     "label": "Email wiederholen",
-                    "type": "Text",
+                    "type": "text",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
@@ -35,19 +35,21 @@
                     ]
                 },
                 {
-                    "type": "Headline",
+                    "type": "headline",
                     "name": "headlineAddressBuilding",
-                    "value": "Adresse des Gebäudes"
+                    "value": "Adresse des Gebäudes",
+                    "classes": [ "w1of1" ]
                 },
                 {
-                    "type": "Paragraph",
+                    "type": "paragraph",
                     "name": "paragraphAddressBuilding",
-                    "value": "Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten."
+                    "value": "Machen Sie hier Angaben zum Gebäude, für das Sie den Energieausweis erstellen möchten.",
+                    "classes": [ "w1of1" ]
                 },
                 {
                     "name": "street",
                     "label": "Straße und Hausnummer",
-                    "type": "Text",
+                    "type": "text",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
@@ -71,7 +73,7 @@
                     "name": "zip",
                     "label": "Postleitzahl",
                     "classes": [ "w1of4" ], 
-                    "type": "Text",
+                    "type": "text",
                     "required": true,
                     "validations": [
                         {
@@ -93,7 +95,7 @@
                 {
                     "name": "city",
                     "label": "Ort",
-                    "type": "Text",
+                    "type": "text",
                     "classes": [ "w3of4" ], 
                     "required": true,
                     "validations": [
@@ -116,7 +118,7 @@
                 {
                     "name": "state",
                     "label": "Bundesland",
-                    "type": "ChoiceSelect",
+                    "type": "choice-select",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [
@@ -194,7 +196,7 @@
                 {
                     "name": "privacy",
                     "label": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
-                    "type": "Checkbox",
+                    "type": "checkbox",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
@@ -207,7 +209,7 @@
                 {
                     "name": "contact",
                     "label": "Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",
-                    "type": "Checkbox",
+                    "type": "checkbox",
                     "classes": [ "w1of1" ]
                 }
             ]
@@ -219,7 +221,7 @@
                 {
                     "name": "grund",
                     "label": "Grund der Erstellung des Energieausweises",
-                    "type": "ChoiceSelect",
+                    "type": "choice-select",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [
@@ -247,7 +249,7 @@
                 {
                     "name": "gebaeudedaten",
                     "label": "Gebäudedaten",
-                    "type": "ChoiceRadio",
+                    "type": "choice-radio",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
@@ -264,7 +266,7 @@
                 {
                     "name": "nutzung",
                     "label": "Nutzung",
-                    "type": "ChoiceRadio",
+                    "type": "choice-radio",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
@@ -285,7 +287,7 @@
                 {
                     "name": "wohneinheiten",
                     "label": "Anzahl der Wohneinheiten",
-                    "type": "Text",
+                    "type": "text",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
@@ -309,7 +311,7 @@
                 {
                     "name": "wohnnutzung",
                     "label": "Flächenanteil Wohnnutzung",
-                    "type": "ChoiceRadio",
+                    "type": "choice-radio",
                     "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
