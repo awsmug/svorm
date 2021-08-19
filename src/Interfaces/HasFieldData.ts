@@ -14,6 +14,7 @@ export default interface HasFieldData {
     readonly params      : any[];
     readonly choices     : HasChoicesData[];
     readonly defaultValue: any;
+    readonly dynamicValue: any;
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
     readonly required    : boolean;

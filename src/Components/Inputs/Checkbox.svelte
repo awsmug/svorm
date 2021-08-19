@@ -8,6 +8,8 @@
     import Errors from '../Errors.svelte';
 
     export let field: Field;
+
+    $: field.autoValue();
     
     if( field.value == undefined ) {
         field.value = false;

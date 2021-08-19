@@ -9,11 +9,7 @@
 
     export let field: Field;
 
-    $: {
-        if( field.value == undefined ) {
-            field.value = field.getDefaultValue();
-        }
-    }
+    $: field.autoValue();
 
     const dispatch = createEventDispatcher();
     const setValue = () => {

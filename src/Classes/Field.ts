@@ -21,6 +21,7 @@ export default class Field implements HasFieldData {
     readonly placeholder : string;
     readonly required    : boolean;
     readonly defaultValue: any[];
+    readonly dynamicValue: any[];
     readonly params      : any[];
     readonly help        : HasHelpData;
     readonly choices     : HasChoicesData[];
@@ -52,13 +53,14 @@ export default class Field implements HasFieldData {
         this.help         = field.help === undefined ? undefined : new Help( field.help );
         this.choices      = field.choices === undefined ? []: field.choices;
         this.params       = field.params === undefined ? []: field.params;
-        this.classes      = field.classes === undefined ? []: field.classes;
         this.required     = field.required === undefined ? false: true; 
         this.defaultValue = field.defaultValue === undefined ? undefined: field.defaultValue;
+        this.dynamicValue = field.dynamicValue === undefined ? undefined: field.dynamicValue;
         this.validations  = field.validations === undefined ? []: field.validations;
         this.conditions   = field.conditions === undefined ? []: field.conditions;  
 
         this.value        = field.value;
+        this.classes      = field.classes === undefined ? []: field.classes;
     }
 
     /**
@@ -91,7 +93,7 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public getDefaultValue() : any {
-        if(  this.defaultValue === undefined )
+        if( this.defaultValue === undefined )
         {
             return;
         }
@@ -101,13 +103,49 @@ export default class Field implements HasFieldData {
     }
 
     /**
+     * Get default value.
+     * 
+     * @return value Default value.
+     * 
+     * @since 1.0.0
+     */
+     public getDynamicValue() : any {
+        if(  this.dynamicValue === undefined )
+        {
+            return;
+        }
+        
+        let dynamicValue = new DynamicValue( this.fieldset.form, this.dynamicValue );
+        return dynamicValue.getValue();
+    }
+
+    /**
+     * Sets autovalues for default or dynamic value if exists.
+     * 
+     * @since 1.0.0
+     */
+    public autoValue()
+    {
+        if( this.value == undefined ) {
+            this.value = this.getDefaultValue();
+        }
+
+        let dynamicValue = this.getDynamicValue();
+        if( dynamicValue !== undefined )
+        {
+            this.value = dynamicValue;
+        }
+    }
+
+    /**
      * Does field have choices.
      * 
      * @return True if it has choices, false if not.
      * 
      * @since 1.0.0
      */
-    public hasChoices() {
+    public hasChoices() : boolean 
+    {
         return this.choices.length > 0;
     }
 

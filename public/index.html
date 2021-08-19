@@ -12,6 +12,16 @@
                 return field.getValue();
             }
         }
+
+        function calcSum( form ) {
+            var field1 = form.getField('email1').getValue();
+            var field2 = form.getField('email2').getValue();
+
+            if( field1 !== undefined && field2 !== undefined )
+            {
+                return parseInt( field1 ) + parseInt( field2 );
+            }
+        }
      </script>
     <script defer src="assets/bundle.js"></script>
 </head>

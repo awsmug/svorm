@@ -96,7 +96,13 @@
                             "value": 5,
                             "error": "Eine Postleitzahl muss aus 5 Ziffern bestehen"
                         }
-                    ]
+                    ],
+                    "dynamicValue": {
+                        "callback": {
+                            "method": "calcSum",
+                            "addFormParam": true
+                        }
+                    }
                 },
                 {
                     "name": "city",
