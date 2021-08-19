@@ -6,4 +6,5 @@
  export default interface HasCallbackData {
     readonly method: string;
     readonly params: [];
+    readonly addFormParam: boolean;
 }

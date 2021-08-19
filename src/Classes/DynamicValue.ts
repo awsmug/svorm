@@ -72,14 +72,20 @@ export default class DynamicValue {
                 func = obj[ words[1] ];
             }
 
-            if( this.callback.params === undefined ) 
+
+            let params = this.callback.params !== undefined ? this.callback.params : [];
+
+            if( this.callback.addFormParam === true )
             {
-                return func();
-            } 
-            else 
-            {
-                return func.apply( window, this.callback.params );
+                if( params === undefined )
+                {
+                    params = [ this.form ];
+                } else {
+                    params.push( this.form );
+                }
             }
+            
+            return func.apply( window, params );
         }
     }
 }

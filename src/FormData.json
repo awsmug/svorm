@@ -32,12 +32,7 @@
                             "type": "email",
                             "error": "Email-Adresse ist ungültig"
                         }
-                    ],
-                    "defaultValue": {
-                        "callback": {
-                            "method": "Math.random"
-                        }
-                    }
+                    ]       
                 },
                 {
                     "type": "headline",
@@ -72,7 +67,13 @@
                             "value": 100,
                             "error": "Maximal 100 Zeichen"
                         }
-                    ]
+                    ],
+                    "defaultValue": {
+                        "callback": {
+                            "method": "duplicateEmail",
+                            "addFormParam": true
+                        }
+                    }
                 },
                 {
                     "name": "zip",

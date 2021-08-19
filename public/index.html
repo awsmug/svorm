@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form test</title>        
     <link rel="stylesheet" href="assets/bundle.css" />
+    <script type="text/javascript">
+        function duplicateEmail( form ) {
+            var field = form.getField('email1');
+            if( field.getValue() !== undefined ) {
+                return field.getValue();
+            }
+        }
+     </script>
     <script defer src="assets/bundle.js"></script>
 </head>
 <body>    
