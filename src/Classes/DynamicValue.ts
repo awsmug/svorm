@@ -60,7 +60,7 @@ export default class DynamicValue {
         if( this.callback !== undefined )
         {
             let func;
-            const words = this.callback.method.split('::');
+            const words = this.callback.method.split('.');
 
             if( words.length === 1 )
             {
@@ -69,15 +69,7 @@ export default class DynamicValue {
             else if( words.length === 2 )
             {
                 let obj = window[ words[0] ];
-
-                if( this.callback.params === undefined ) 
-                {
-                    func = obj[ words[1] ];
-                } 
-                else 
-                {
-                    func = obj[ words[1] ];
-                }
+                func = obj[ words[1] ];
             }
 
             if( this.callback.params === undefined ) 
@@ -86,7 +78,7 @@ export default class DynamicValue {
             } 
             else 
             {
-                return func.apply( this.callback.params );
+                return func.apply( window, this.callback.params );
             }
         }
     }

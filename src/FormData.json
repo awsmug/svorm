@@ -34,7 +34,9 @@
                         }
                     ],
                     "defaultValue": {
-                        "field": "email1"
+                        "callback": {
+                            "method": "Math.random"
+                        }
                     }
                 },
                 {
