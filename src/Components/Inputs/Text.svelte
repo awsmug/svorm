@@ -9,12 +9,14 @@
 
     export let field: Field;
 
-    if( field.value == undefined ) {
-       field.value = field.getDefaultValue();
+    $: {
+        if( field.value == undefined ) {
+            field.value = field.getDefaultValue();
+        }
     }
 
     const dispatch = createEventDispatcher();
-    const setValue = () => {      
+    const setValue = () => {
         dispatch( 'update', field.fieldset.form );
     }
 

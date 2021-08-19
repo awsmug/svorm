@@ -18,8 +18,7 @@
     $: fields = fieldset.fields;
 
     const dispatch = createEventDispatcher();
-
-    function update( form ) {        
+    function update( form ) {
         dispatch( 'update', form.detail );
     }
 

@@ -47,15 +47,17 @@ export default class DynamicValue {
         }
 
         // 2nd take field
-        if( this.field != undefined && this.form.getField( this.field ) !== undefined )
+        if( this.field !== undefined )
         {
-            console.log( this.form.getField( this.field ) );
-
-            return this.form.getField( this.field ).getValue();
+            let field = this.form.getField( this.field );
+            if( field !== undefined )
+            {
+                return field.getValue();
+            }   
         }
 
         // 3rd take callback
-        if( this.callback.method !== undefined )
+        if( this.callback !== undefined )
         {
             let func;
             const words = this.callback.method.split('::');

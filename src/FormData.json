@@ -441,17 +441,6 @@
                     "help": {
                         "type": "question",
                         "content": "<p>Wie kann es 0 Erdgeschosse geben?</p>"
-                    },
-                    "defaultValue": {
-                        "value": 5,
-                        "callback": {
-                            "method": "MeineKlasse::function",
-                            "params": [
-                                "form",
-                                "field::baujahr",
-                                1
-                            ]
-                        }
                     }
                 },
                 {
@@ -479,7 +468,7 @@
             "nextFieldset": "basisdaten",
             "fields": [
                 {
-                    "name": "email1",
+                    "name": "eines",
                     "label": "Ihre Email-Adresse",
                     "type": "text",
                     "classes": [ "w1of1", "spacer2top" ], 

@@ -8,12 +8,12 @@
     export let formData: HasFormData;
     
     let form = new Form( formData );
+    let showNavbar = true;
 
     let update = ( e ) => {
         form = e.detail;
     }
 
-    $: showNavbar = true;
 </script>
 
 <form name={form.name} class={form.getClasses()} on:submit|preventDefault>
