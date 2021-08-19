@@ -67,13 +67,7 @@
                             "value": 100,
                             "error": "Maximal 100 Zeichen"
                         }
-                    ],
-                    "defaultValue": {
-                        "callback": {
-                            "method": "duplicateEmail",
-                            "addFormParam": true
-                        }
-                    }
+                    ]
                 },
                 {
                     "name": "zip",
@@ -96,13 +90,7 @@
                             "value": 5,
                             "error": "Eine Postleitzahl muss aus 5 Ziffern bestehen"
                         }
-                    ],
-                    "dynamicValue": {
-                        "callback": {
-                            "method": "calcSum",
-                            "addFormParam": true
-                        }
-                    }
+                    ]
                 },
                 {
                     "name": "city",

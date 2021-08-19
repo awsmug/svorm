@@ -5,24 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form test</title>        
     <link rel="stylesheet" href="assets/bundle.css" />
-    <script type="text/javascript">
-        function duplicateEmail( form ) {
-            var field = form.getField('email1');
-            if( field.getValue() !== undefined ) {
-                return field.getValue();
-            }
-        }
-
-        function calcSum( form ) {
-            var field1 = form.getField('email1').getValue();
-            var field2 = form.getField('email2').getValue();
-
-            if( field1 !== undefined && field2 !== undefined )
-            {
-                return parseInt( field1 ) + parseInt( field2 );
-            }
-        }
-     </script>
     <script defer src="assets/bundle.js"></script>
 </head>
 <body>    
