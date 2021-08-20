@@ -1,6 +1,6 @@
 {
     "name": "test-form",
-    "start": "projektadresse",
+    "start": "geometrischeErfassung",
     "classes": [ "test-form" ],
     "fieldsets": [
         {
@@ -367,6 +367,28 @@
                     }           
                 },
                 {
+                    "name": "baujahr",
+                    "label": "Baujahr:",
+                    "type": "text",
+                    "classes": [ "w1of1" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben sie ein gültiges Jahr an"
+                        },
+                        {
+                            "type": "min",
+                            "value": 1800,
+                            "error": "Das Baujahr darf nicht vor 1800 liegen."
+                        }
+                    ],
+                    "help": {
+                        "type": "question",
+                        "content": "<p>Was ist ein Obergeschoss?</p>"
+                    }
+                },
+                {
                     "type": "headline",
                     "name": "headlineNumberOfFloors",
                     "value": "Anzahl der Geschosse",
@@ -381,7 +403,17 @@
                     "validations": [
                         {
                             "type": "int",
-                            "error": "Bitte geben Sie eine ganze Zahl an."
+                            "error": "Geben Sie 1 oder 0 Spitzböden an"
+                        },
+                        {
+                            "type": "min",
+                            "value": 0,
+                            "error": "Weniger als 0 nicht möglich"
+                        },
+                        {
+                            "type": "max",
+                            "value": 1,
+                            "error": "Mehr als 1 nicht möglich"
                         }
                     ],
                     "help": {
@@ -467,15 +499,9 @@
                 {
                     "name": "eines",
                     "label": "Ihre Email-Adresse",
-                    "type": "text",
+                    "type": "workspace",
                     "classes": [ "w1of1", "spacer2top" ], 
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "email",
-                            "error": "Email-Adresse ist ungültig"
-                        }
-                    ]
+                    "required": true
                 }
             ]
         }       

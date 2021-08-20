@@ -12,6 +12,7 @@
     import ChoiceRadio from './Inputs/ChoiceRadio.svelte';
     import ChoiceImage from './Inputs/ChoiceImage.svelte'; 
     import Percentage from './Percentage.svelte';
+    import Workspace from './Inputs/Geo/Workspace.svelte';
     
     export let fieldset: Fieldset;
 
@@ -62,6 +63,8 @@
                         <ChoiceRadio field={field} on:update={update} />
                     {:else if field.type === 'choice-image'}
                         <ChoiceImage field={field} on:update={update} />
+                    {:else if field.type === 'workspace'}
+                        <Workspace field={field} on:update={update} />                        
                     {:else if field.type === 'headline'}
                         <h2>{field.getValue()}</h2>
                     {:else if field.type === 'paragraph'}
