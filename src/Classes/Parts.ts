@@ -1,7 +1,7 @@
-import type HasPartData from "../Interfaces/HasPartData";
+import Part from "./Part";
 
 export default class Parts {
-    public parts: HasPartData[] = [];
+    public items: Part[] = [];
 
     /**
      * Initializing help.
@@ -10,51 +10,71 @@ export default class Parts {
      * 
      * @since 1.0.0
      */
-     public constructor( parts: HasPartData[] = [] ){
+     public constructor( parts: Part[] = [] ){
         if( parts.length === 0 ) {
-            this.parts = parts = [
-                {
-                    width: 10.0,
-                    length: 10.0,
-                    height: 2.5,
-                    horizontalOffset:0,
-                    verticalOffset:0
-                }
-            ];
+            this.new();
         } else {
-            this.parts = parts;
+            this.items = parts;
         }
     }
 
+    /**
+     * Add new clean item
+     * 
+     * @since 1.0.0
+     */
     public new() {
-        let part = {
-            width: 10.0,
-            length: 10.0,
-            height: 2.5,
-            horizontalOffset:0,
-            verticalOffset:0
-        };
+        let part = new Part(
+            10.0,
+            10.0,
+            2.5,
+            0,
+            0
+        );
 
         this.add( part );
     };
 
-    public add( part: HasPartData )
+    /**
+     * Add part
+     * 
+     * @param Part part
+     */
+    public add( part: Part )
     {
-        this.parts.push( part )
+        this.items.push( part );
     }
 
+    /**
+     * Delete part
+     * 
+     * @param Part part
+     */
     public delete( key: number )
     {
-        let partsFiltered: HasPartData[] = [];
+        let parts: Part[] = [];
 
-        for ( let currentKey in this.parts ) {
-            
-            if( parseInt( currentKey ) != parseInt( key ) )
+        for ( let currentKey in this.items ) 
+        {         
+            if( parseInt( currentKey ) != key )
             {
-                partsFiltered.push( this.parts[key] );
+                parts.push( this.items[ key ] );
             }
         }
 
-        this.parts = partsFiltered;
+        this.items = parts;
+    }
+
+    /**
+     * Update part
+     * 
+     * @param number Key of item for updating 
+     * @param Part Part data
+     * 
+     * @since 1.0.0
+     */
+    public update( key: number, part: Part )
+    {
+        this.items.splice( key, 1, part );
     }
 }

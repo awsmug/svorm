@@ -3,84 +3,26 @@
 
     import type Field from '../../../Classes/Field';
 
-    import Help from '../../Help.svelte';
-    import HelpIcon from '../../HelpIcon.svelte';
-    import Errors from '../../Errors.svelte';
-
     import ViewportParts from './ViewportParts.svelte';
-    import type HasPartData from '../../../Interfaces/HasPartData';
-import ControlPanelParts from './ControlPanelParts.svelte';
+    import ControlPanelParts from './ControlPanelParts.svelte';
+    import Parts from '../../../Classes/Parts';
 
     export let field: Field;
+    let parts: Parts = new Parts();
 
-    $: field.autoValue();
-
-    const dispatch = createEventDispatcher();
-    const setValue = () => {
-        dispatch( 'update', field.fieldset.form );
+    $: {
+        field.autoValue();
     }
 
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }
-
-    let parts: HasPartData[] = [];
-    let count: number = 0;
-
-    if( field.value === undefined )
-    {
-        parts = [
-            {
-                width: 10.0,
-                length: 10.0,
-                height: 2.5,
-                horizontalOffset:0,
-                verticalOffset:0
-            }
-        ];
-    } else {
-
-    }
-
-    const addPart = () => {
-        let part = {
-            width: 10.0,
-            length: 10.0,
-            height: 2.5,
-            horizontalOffset:0,
-            verticalOffset:0
-        };
-        parts = [...parts, part ];
+    const newPart = () => {
+        parts.new();
+        parts = parts;
     };
 
     const deletePart = ( e ) => {
-        let keyDelete = e.detail;
-
-        let partsFiltered = [];
-        for ( let key in parts ) {
-            
-            if( key != keyDelete )
-            {
-                partsFiltered.push( parts[key] );
-            }
-        }
-
-        parts = [ ...partsFiltered ];
+        parts.delete( e.detail );
+        parts = parts;
     };
-
-    const updatePart = ( e ) => {
-        let keyUpdate      = e.detail.key;
-        let partDimensions = e.detail.partDimensions;
-
-        for ( let key in parts ) {
-            
-            if( key == keyUpdate )
-            {
-                
-            }
-        }  
-    }
 </script>
 
 <div class="viewport">
@@ -89,9 +31,9 @@ import ControlPanelParts from './ControlPanelParts.svelte';
 
 <div class="control-panel">
     <div class="control-panel-menu">
-        <button on:click={addPart}>+ Gebäudeteil hinzufügen</button>
+        <button on:click={newPart}>Gebäudeteil hinzufügen</button>
     </div>
-    <ControlPanelParts bind:parts={parts} on:deletePart={deletePart} on:updatePart={updatePart} />
+    <ControlPanelParts bind:parts={parts} on:deletePart={deletePart} />
 </div>
 
 <style>

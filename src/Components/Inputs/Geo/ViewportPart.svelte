@@ -1,28 +1,23 @@
 <script lang="ts">
-    import type HasPartData from '../../../Interfaces/HasPartData';
+    import type Part from '../../../Classes/Part';
 
-    export let part: HasPartData;
+    export let part: Part;
     export let key: number;
 
-    let width            = part.width;
-    let length           = part.length;
-    let horizontalOffset = part.horizontalOffset;
-    let verticalOffset   = part.verticalOffset;    
+    let width            : number; 
+    let length           : number;
+    let verticalOffset   : number;
+    let horizontalOffset : number;
 
     $: {
-        width            = width * 20;
-        length           = length * 20;
-        horizontalOffset = horizontalOffset * 20;
-        verticalOffset   = verticalOffset * 20;
-
-        width            = Math.round( width );
-        length           = Math.round( length );
-        horizontalOffset = Math.round( horizontalOffset );
-        verticalOffset   = Math.round( verticalOffset );
+        width            = part.getSreenWidth();
+        length           = part.getSreenLength();
+        verticalOffset   = part.getSreenVerticalOffset();
+        horizontalOffset = part.getSreenHorizontalOffset();
     }
 </script>
 
-<div class="part" style="transform: translate({horizontalOffset}px, {verticalOffset}px);width: {width}px; height: {length}px">{key +1}</div>
+<div class="part" style="width: {width}px; height: {length}px; transform: translate({horizontalOffset}px, {verticalOffset}px);">{key +1}</div>
 
 <style>
     .part

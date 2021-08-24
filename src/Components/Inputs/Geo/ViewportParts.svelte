@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type HasPartData from '../../../Interfaces/HasPartData';
+    import type Parts from '../../../Classes/Parts';
     import ViewportPart from './ViewportPart.svelte';
 
-    export let parts: HasPartData[];
+    export let parts: Parts;
 </script>
 
 <div class="viewport-content">
-    {#each parts as part, i }
+    {#each parts.items as part, i }
         <ViewportPart bind:part={part} key={i} />
     {/each}
 </div>
