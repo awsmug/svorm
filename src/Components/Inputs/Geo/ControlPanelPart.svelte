@@ -1,44 +1,49 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
 
-    export let width;
-    export let height;
-    export let length;
-    export let horizontalOffset;
-    export let verticalOffset;
+    export let key: number;
+    export let width: number;
+    export let height: number;
+    export let length: number;
+    export let horizontalOffset: number;
+    export let verticalOffset: number;
 
     const dispatch = createEventDispatcher();
 
-    const setValue = () => {
+    const updatePart = () => {
         let partDimensions = { width, height, length, horizontalOffset, verticalOffset };
         dispatch( 'updatePart', partDimensions );
+    }
+
+    const deletePart = () => {
+        dispatch('deletePart', key );
     }
 </script>
 
 <div class="part">
     <div class="part-header">
-        <div class="part-title">Gebäudeteil 1</div><button role="">X</button>
+        <div class="part-title">Gebäudeteil {key+1}</div><button on:click={deletePart}>X</button>
     </div>
     <div class="part-inputs">
         <div class="part-input">
             <label for="width">Breite</label>
-            <input type="text" bind:value={width} /> m
+            <input type="text" bind:value={width} on:change={updatePart} /> m
         </div>
         <div class="part-input">
             <label for="height">Länge</label>
-            <input type="text" bind:value={length} /> m
+            <input type="text" bind:value={length} on:change={updatePart} /> m
         </div>
         <div class="part-input">
             <label for="height">Höhe</label>
-            <input type="text" bind:value={height} /> m
+            <input type="text" bind:value={height} on:change={updatePart} /> m
         </div>
         <div class="part-input">
             <label for="height">Horizontaler Versatz</label>
-            <input type="text" bind:value={horizontalOffset} /> m
+            <input type="text" bind:value={horizontalOffset} on:change={updatePart} /> m
         </div>
         <div class="part-input">
             <label for="height">Vertikaler Versatz</label>
-            <input type="text" bind:value={verticalOffset} /> m
+            <input type="text" bind:value={verticalOffset} on:change={updatePart} /> m
         </div>
     </div>
 </div>

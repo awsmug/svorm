@@ -1,12 +1,15 @@
 <script lang="ts">
-    import { tweened } from 'svelte/motion';
+    import type HasPartData from '../../../Interfaces/HasPartData';
 
-    export let width;
-    export let length;
-    export let horizontalOffset;
-    export let verticalOffset;    
+    export let part: HasPartData;
+    export let key: number;
 
-    $: { 
+    let width            = part.width;
+    let length           = part.length;
+    let horizontalOffset = part.horizontalOffset;
+    let verticalOffset   = part.verticalOffset;    
+
+    $: {
         width            = width * 20;
         length           = length * 20;
         horizontalOffset = horizontalOffset * 20;
@@ -17,10 +20,9 @@
         horizontalOffset = Math.round( horizontalOffset );
         verticalOffset   = Math.round( verticalOffset );
     }
-
 </script>
 
-<div class="part" style="transform: translate({horizontalOffset}px, {verticalOffset}px);width: {width}px; height: {length}px">1</div>
+<div class="part" style="transform: translate({horizontalOffset}px, {verticalOffset}px);width: {width}px; height: {length}px">{key +1}</div>
 
 <style>
     .part

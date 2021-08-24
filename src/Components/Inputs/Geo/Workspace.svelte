@@ -7,8 +7,9 @@
     import HelpIcon from '../../HelpIcon.svelte';
     import Errors from '../../Errors.svelte';
 
-    import ViewportPart from './ViewportPart.svelte';
-    import ControlPanelPart from './ControlPanelPart.svelte';   
+    import ViewportParts from './ViewportParts.svelte';
+    import type HasPartData from '../../../Interfaces/HasPartData';
+import ControlPanelParts from './ControlPanelParts.svelte';
 
     export let field: Field;
 
@@ -24,30 +25,15 @@
         showHelp = ! showHelp;
     }
 
-    let parts: [];
-
-    console.log( field.value );
+    let parts: HasPartData[] = [];
+    let count: number = 0;
 
     if( field.value === undefined )
     {
         parts = [
             {
                 width: 10.0,
-                length: 15.0,
-                height: 2.5,
-                horizontalOffset:0,
-                verticalOffset:0
-            },
-            {
-                width: 19.0,
-                length: 7.0,
-                height: 2.5,
-                horizontalOffset:0,
-                verticalOffset:8
-            },
-            {
-                width: 10.0,
-                length: 15.0,
+                length: 10.0,
                 height: 2.5,
                 horizontalOffset:0,
                 verticalOffset:0
@@ -56,25 +42,56 @@
     } else {
 
     }
+
+    const addPart = () => {
+        let part = {
+            width: 10.0,
+            length: 10.0,
+            height: 2.5,
+            horizontalOffset:0,
+            verticalOffset:0
+        };
+        parts = [...parts, part ];
+    };
+
+    const deletePart = ( e ) => {
+        let keyDelete = e.detail;
+
+        let partsFiltered = [];
+        for ( let key in parts ) {
+            
+            if( key != keyDelete )
+            {
+                partsFiltered.push( parts[key] );
+            }
+        }
+
+        parts = [ ...partsFiltered ];
+    };
+
+    const updatePart = ( e ) => {
+        let keyUpdate      = e.detail.key;
+        let partDimensions = e.detail.partDimensions;
+
+        for ( let key in parts ) {
+            
+            if( key == keyUpdate )
+            {
+                
+            }
+        }  
+    }
 </script>
 
 <div class="viewport">
-    <div class="viewport-content">
-        {#each parts as part }
-            <ViewportPart width={part.width} length={part.length} horizontalOffset={part.horizontalOffset} verticalOffset={part.verticalOffset}  />
-        {/each}       
-    </div>
+    <ViewportParts bind:parts={parts} />
 </div>
 
 <div class="control-panel">
     <div class="control-panel-menu">
-        <button>Gebäudeteil hinzufügen</button>
+        <button on:click={addPart}>+ Gebäudeteil hinzufügen</button>
     </div>
-    <div class="parts">
-        {#each parts as part }
-            <ControlPanelPart bind:width={part.width} bind:length={part.length} bind:height={part.height} bind:horizontalOffset={part.horizontalOffset} bind:verticalOffset={part.verticalOffset}  />
-        {/each}
-    </div>
+    <ControlPanelParts bind:parts={parts} on:deletePart={deletePart} on:updatePart={updatePart} />
 </div>
 
 <style>
@@ -87,8 +104,13 @@
         height: 30rem;        
         
     }
-    .viewport .viewport-content
+    .control-panel
     {
-        display: flex;
+        background-color: darkgray;
+        padding: 1rem;
+    }
+    .control-panel button
+    {
+        padding: 0.5rem;
     }
 </style>
