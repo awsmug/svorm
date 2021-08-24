@@ -58,9 +58,11 @@ export default class Parts {
         {         
             if( parseInt( currentKey ) != key )
             {
-                parts.push( this.items[ key ] );
+                parts.push( this.items[ currentKey ] );
             }
         }
+        console.log( this.items );
+        console.log( parts );
 
         this.items = parts;
     }

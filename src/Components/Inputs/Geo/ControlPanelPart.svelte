@@ -19,23 +19,23 @@
     <div class="part-inputs">
         <div class="part-input">
             <label for="width">Breite</label>
-            <input type="text" bind:value={part.width} /> m
+            <input type=number step=0.01 bind:value={part.width} /> m
         </div>
         <div class="part-input">
             <label for="height">Länge</label>
-            <input type="text" bind:value={part.length} /> m
+            <input type=number step=0.01 bind:value={part.length} /> m
         </div>
         <div class="part-input">
-            <label for="height">Höhe</label>
-            <input type="text" bind:value={part.height} /> m
+            <label for="height">Gebäudehöhe</label>
+            <input type=number step=0.01 bind:value={part.height} /> m
         </div>
         <div class="part-input">
             <label for="height">Horizontaler Versatz</label>
-            <input type="text" bind:value={part.horizontalOffset} /> m
+            <input type=number step=0.01 bind:value={part.horizontalOffset} /> m
         </div>
         <div class="part-input">
             <label for="height">Vertikaler Versatz</label>
-            <input type="text" bind:value={part.verticalOffset} /> m
+            <input type=number step=0.01 bind:value={part.verticalOffset} /> m
         </div>
     </div>
 </div>
@@ -46,7 +46,7 @@
         background-color: grey;
         margin: 1rem;
     }
-    .part-header
+    .part .part-header
     {
         display: flex;
         flex-wrap: wrap;
@@ -54,16 +54,16 @@
         background-color: white;
         padding: 1rem;
     }
-    .part-inputs
+    .part .part-inputs
     {
         display: flex;        
     }
-    .part-input
+    .part .part-inputs .part-input
     {
         box-sizing: border-box;        
         padding: 0.5rem;
     }
-    .part-input input 
+    .part .part-inputs .part-input input 
     {
         width:90%;
     }

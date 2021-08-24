@@ -9,9 +9,16 @@
 
     export let field: Field;
     let parts: Parts = new Parts();
+    let viewportWidth: number;
+    let viewportHeight: number;
 
     $: {
         field.autoValue();
+
+        if( viewportWidth !== undefined )
+        {
+            
+        }
     }
 
     const newPart = () => {
@@ -25,7 +32,7 @@
     };
 </script>
 
-<div class="viewport">
+<div bind:clientHeight={viewportHeight} bind:clientWidth={viewportWidth} class="viewport">
     <ViewportParts bind:parts={parts} />
 </div>
 

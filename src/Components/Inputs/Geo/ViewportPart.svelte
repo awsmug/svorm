@@ -4,6 +4,8 @@
     export let part: Part;
     export let key: number;
 
+    let element;
+
     let width            : number; 
     let length           : number;
     let verticalOffset   : number;
@@ -17,7 +19,7 @@
     }
 </script>
 
-<div class="part" style="width: {width}px; height: {length}px; transform: translate({horizontalOffset}px, {verticalOffset}px);">{key +1}</div>
+<div class="part" style="width: {width}px; height: {length}px; transform: translate({horizontalOffset}px, {verticalOffset}px);" bind:this={element} >{key +1}</div>
 
 <style>
     .part
