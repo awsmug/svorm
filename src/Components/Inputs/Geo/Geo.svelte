@@ -38,6 +38,8 @@
             'y': 0
         })
 
+        console.log( canvas.getItemsWidth() );
+
         canvas.origItems = canvas.origItems;
     };
 

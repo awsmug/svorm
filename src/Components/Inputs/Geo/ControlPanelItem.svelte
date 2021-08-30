@@ -23,7 +23,7 @@
             <input type=number step=0.01 bind:value={canvasItem.width} /> m
         </div>
         <div class="part-input">
-            <label for="height">Länge</label>
+            <label for="height">Höhe</label>
             <input type=number step=0.01 bind:value={canvasItem.height} /> m
         </div>
         <div class="part-input">

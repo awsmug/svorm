@@ -127,6 +127,11 @@ export default class Canvas {
      */
     public getItemsWidth() : number
     {
+        if( this.origItems.length == 0 )
+        {
+            return 0;
+        }
+
         let right: number[] = [];
         this.origItems.forEach( ( item ) => {
             right.push( item.x + item.width );
@@ -144,6 +149,11 @@ export default class Canvas {
      */
     public getItemsHeight() : number
     {
+        if( this.origItems.length == 0 )
+        {
+            return 0;
+        }
+        
         let bottom: number[] = [];
         this.origItems.forEach( ( item ) => {
             bottom.push( item.y + item.height );
