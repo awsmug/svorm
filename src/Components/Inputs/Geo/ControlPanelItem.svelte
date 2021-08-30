@@ -1,41 +1,38 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-    import type Part from '../../../Classes/Part';
 
-    export let part: Part;
+    import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
+
+    export let canvasItem: HasCanvasItemData;
     export let key:  number;
 
     const dispatch = createEventDispatcher();
 
-    const deletePart = () => {
-        dispatch( 'deletePart', key );
+    const deleteItem = () => {
+        dispatch( 'deleteItem', key );
     }
 </script>
 
 <div class="part">
     <div class="part-header">
-        <div class="part-title">Gebäudeteil {key+1}</div><button on:click={deletePart}>X</button>
+        <div class="part-title">Gebäudeteil {key+1}</div><button on:click={deleteItem}>X</button>
     </div>
     <div class="part-inputs">
         <div class="part-input">
             <label for="width">Breite</label>
-            <input type=number step=0.01 bind:value={part.width} /> m
+            <input type=number step=0.01 bind:value={canvasItem.width} /> m
         </div>
         <div class="part-input">
             <label for="height">Länge</label>
-            <input type=number step=0.01 bind:value={part.length} /> m
+            <input type=number step=0.01 bind:value={canvasItem.height} /> m
         </div>
         <div class="part-input">
-            <label for="height">Gebäudehöhe</label>
-            <input type=number step=0.01 bind:value={part.height} /> m
+            <label for="height">X</label>
+            <input type=number step=0.01 bind:value={canvasItem.x} /> m
         </div>
         <div class="part-input">
-            <label for="height">Horizontaler Versatz</label>
-            <input type=number step=0.01 bind:value={part.horizontalOffset} /> m
-        </div>
-        <div class="part-input">
-            <label for="height">Vertikaler Versatz</label>
-            <input type=number step=0.01 bind:value={part.verticalOffset} /> m
+            <label for="height">Y</label>
+            <input type=number step=0.01 bind:value={canvasItem.y} /> m
         </div>
     </div>
 </div>
@@ -44,7 +41,7 @@
     .part
     {
         background-color: grey;
-        margin: 1rem;
+        margin: 1rem 0;
     }
     .part .part-header
     {
