@@ -60,7 +60,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static min( value: number, min: number ) {
-        if( value === undefined ) return false;
+        if( value === undefined ) return true;
         return ! ( value < min );
     }
 
@@ -75,7 +75,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static max( value: number, max: number ) {
-        if( value === undefined ) return false;
+        if( value === undefined ) return true;
         return ! ( value > max );
     }
 
@@ -90,7 +90,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static minLength( value: string, min: number ) {
-        if( value === undefined ) return false;        
+        if( value === undefined ) return true;        
         return ! ( value.length < min );
     }
 
@@ -105,7 +105,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
     static maxLength( value: string, max: number ) {
-        if( value === undefined ) return false;
+        if( value === undefined ) return true;
         return ! ( value.length > max );
     }
 

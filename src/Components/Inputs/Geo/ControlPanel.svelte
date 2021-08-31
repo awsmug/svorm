@@ -20,24 +20,25 @@
 </script>
 
 <div class="control-panel">
-    <div class="control-panel-menu">
-        <button on:click={newItem}>Gebäudeteil hinzufügen</button>
-    </div>
     <div class="parts">
         {#each canvas.origItems as canvasItem, i }
             <ControlPanelItemComponent bind:canvasItem={canvasItem} key={i} on:deleteItem={deleteItem} />
         {/each}
+    </div>
+    <div class="control-panel-menu">
+       <button class="button" on:click={newItem}>+</button>
     </div>
 </div>
 
 <style>
     .control-panel
     {
-        background-color: darkgray;
-        padding: 1rem;
+        border: lightgray solid 1px;
+        
     }
-    .control-panel button
+    .control-panel .control-panel-menu 
     {
-        padding: 0.5rem;
+        padding: 1rem;
+        background-color: lightgray;
     }
 </style>

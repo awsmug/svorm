@@ -196,8 +196,8 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public validate() : string[] {
-        let validation = new Validator( this.value, this.validations );
-        this.errors = validation.check();
+        let validator = new Validator( this.value, this.validations );
+        this.errors = validator.check();
         
         if ( this.errors.length > 0 ) {
             this.addClass( 'error' );

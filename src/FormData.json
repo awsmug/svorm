@@ -1,6 +1,6 @@
 {
     "name": "test-form",
-    "start": "geometrischeErfassung",
+    "start": "projektadresse",
     "classes": [ "test-form" ],
     "fieldsets": [
         {
@@ -197,12 +197,12 @@
                     "name": "privacy",
                     "label": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
                     "type": "checkbox",
-                    "classes": [ "w1of1", "spacer2top" ], 
+                    "classes": [ "w1of1", "spacer1top" ], 
                     "required": true,
                     "validations": [
                         {
                             "type": "isChecked",
-                            "error": "Sie müssen die Datenschutzerklärung lesen und aktzeptioeren bevor Sie fortfahren."
+                            "error": "Sie müssen die Datenschutzerklärung lesen und akzeptieren bevor Sie fortfahren."
                         }
                     ]
                 },
@@ -245,6 +245,12 @@
                             "label": "Sonstiges",
                             "value": "Sonstiges"
                         }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen Grund der Erstellung aus"
+                        }
                     ]               
                 },
                 {
@@ -262,7 +268,13 @@
                             "label": "Neubau",
                             "value": "Neubau"
                         }
-                    ]               
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        }
+                    ]             
                 },
                 {
                     "name": "nutzung",
@@ -284,6 +296,12 @@
                             "value": "Gemischt genutztes Gebäude"
                         }
                     ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        }
+                    ],    
                     "help": {
                         "type": "info",
                         "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
@@ -297,12 +315,16 @@
                     "required": true,
                     "validations": [
                         {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        },
+                        {
                             "type": "min",
-                            "error": "1"
+                            "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
                         },
                         {
                             "type": "max",
-                            "error": "100"
+                            "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
                         }
                     ],
                     "conditions": [
@@ -359,6 +381,12 @@
                         {
                             "label": "Reihenendhaus / Doppelhaushälfte",
                             "value": "Reihenendhaus / Doppelhaushälfte"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
                         }
                     ],
                     "help": {
@@ -473,8 +501,8 @@
                     }
                 },
                 {
-                    "name": "geschosseUntergeschossKeller",
-                    "label": "Untergeschoss/Keller",
+                    "name": "geschossKeller",
+                    "label": "Keller",
                     "type": "text",
                     "classes": [ "w1of5" ], 
                     "required": true,
@@ -502,6 +530,60 @@
                     "type": "workspace",
                     "classes": [ "w1of1", "spacer2top" ], 
                     "required": true
+                },
+                {
+                    "name": "orientierung",
+                    "label": "Orientierung",
+                    "type": "choice-select",
+                    "classes": [ "w1of1", "spacer2bottom" ], 
+                    "required": true,
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },
+                        {
+                            "label": "Norden",
+                            "value": "Norden"
+                        },
+                        {
+                            "label": "Nordosten",
+                            "value": "Nordosten"
+                        },
+                        {
+                            "label": "Osten",
+                            "value": "Osten"
+                        },
+                        {
+                            "label": "Südosten",
+                            "value": "Südosten"
+                        },
+                        {
+                            "label": "Süden",
+                            "value": "Süden"
+                        },
+                        {
+                            "label": "Südwesten",
+                            "value": "Südwesten"
+                        },
+                        {
+                            "label": "Westen",
+                            "value": "Westen"
+                        },
+                        {
+                            "label": "Nordwesten",
+                            "value": "Nordwesten"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie ein Bundesland aus"
+                        }
+                    ],
+                    "help": {
+                        "type": "info",
+                        "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
+                    }        
                 }
             ]
         }       

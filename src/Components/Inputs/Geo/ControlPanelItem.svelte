@@ -13,24 +13,24 @@
     }
 </script>
 
-<div class="part">
-    <div class="part-header">
-        <div class="part-title">Gebäudeteil {key+1}</div><button on:click={deleteItem}>X</button>
+<div class="canvas-item">
+    <div class="canvas-item-header">
+        <div class="canvas-item-title" role="definition">Gebäudeteil {key+1}</div><button class="button-alert" on:click={deleteItem}>X</button>
     </div>
-    <div class="part-inputs">
-        <div class="part-input">
+    <div class="canvas-item-inputs">
+        <div class="canvas-item-input">
             <label for="width">Breite</label>
             <input type=number step=0.01 bind:value={canvasItem.width} /> m
         </div>
-        <div class="part-input">
+        <div class="canvas-item-input">
             <label for="height">Höhe</label>
             <input type=number step=0.01 bind:value={canvasItem.height} /> m
         </div>
-        <div class="part-input">
+        <div class="canvas-item-input">
             <label for="height">X</label>
             <input type=number step=0.01 bind:value={canvasItem.x} /> m
         </div>
-        <div class="part-input">
+        <div class="canvas-item-input">
             <label for="height">Y</label>
             <input type=number step=0.01 bind:value={canvasItem.y} /> m
         </div>
@@ -38,30 +38,40 @@
 </div>
 
 <style>
-    .part
+    .button-alert 
     {
-        background-color: grey;
-        margin: 1rem 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.1rem;
     }
-    .part .part-header
+    .canvas-item
+    {
+        border-bottom: 1px solid lightgray;
+        font-size: small;
+    }
+    .canvas-item .canvas-item-header
     {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        background-color: white;
-        padding: 1rem;
+        padding: 0.5rem;
     }
-    .part .part-inputs
+    .canvas-item .canvas-item-header .canvas-item-title
+    {
+        font-size:medium;
+        font-weight: 700;
+    }
+    .canvas-item .canvas-item-inputs
     {
         display: flex;        
     }
-    .part .part-inputs .part-input
+    .canvas-item .canvas-item-inputs .canvas-item-input
     {
         box-sizing: border-box;        
         padding: 0.5rem;
     }
-    .part .part-inputs .part-input input 
+    .canvas-item .canvas-item-inputs .canvas-item-input input 
     {
-        width:90%;
+        width:50%;
     }
 </style>

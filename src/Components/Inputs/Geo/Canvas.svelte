@@ -30,7 +30,7 @@
 <style>
     .canvas-border
     {
-        padding:2rem;
+        padding:1rem;
         background-color: lightgray;
     }
     .canvas-wrapper
