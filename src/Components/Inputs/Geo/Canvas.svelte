@@ -35,15 +35,13 @@
     }
     .canvas-wrapper
     {
-        
-        width: 100%;
+        height: 600;
+        overflow: hidden;
     }
     .canvas-wrapper .canvas
     {
         margin:auto;
-        background-color: lightgray;
-        box-sizing: border-box;
+        background-color: lightgray;        
         overflow: hidden;
-        border: darkgray dashed 1px;
     }
 </style>
