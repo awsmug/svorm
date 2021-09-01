@@ -7,7 +7,7 @@ export default class Canvas {
     public wrapperWidth: number;
     public wrapperHeight: number;
 
-    private fullSizeContent: boolean;
+    private fullSizeContent: boolean = false;
 
     /**
      * Initializing help.
@@ -27,12 +27,31 @@ export default class Canvas {
      */
     public getSizeFactor() 
     {
-        if ( this.fullSizeContent && this.wrapperWidth !== undefined )
+        if(  this.fullSizeContent == false || this.wrapperWidth === undefined || this.wrapperHeight === undefined )
         {
-            return this.wrapperWidth / this.getItemsWidth();
+            return 1;
         }
+
+        let widthFactor  = this.wrapperWidth / this.getItemsWidth();
+        let heightFactor = this.wrapperHeight / this.getItemsHeight();
+
+        console.log( 'Width Wrapper: ' + this.wrapperWidth );   
+        console.log( 'Width Item: ' + this.getItemsWidth() );   
+        console.log( 'Width Factor: ' + widthFactor );
         
-        return 1;
+        console.log( 'Height Wrapper: ' + this.wrapperHeight );   
+        console.log( 'Height Item: ' + this.getItemsHeight() );
+        console.log( 'Height Factor: ' + heightFactor );
+        
+        if( widthFactor > heightFactor )
+        {
+            console.log( 'Using height factor');
+            return heightFactor
+        }
+
+        console.log( 'Using width factor');        
+        
+        return widthFactor;
     }
 
     /**
