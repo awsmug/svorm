@@ -1,13 +1,28 @@
 <script lang="ts">
-    import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
+    import {tweened} from 'svelte/motion';
 
+    import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
+    
     export let canvasItem: HasCanvasItemData;
     export let key: number;
 
     let element;
+
+    let tweenedWidth  = tweened( canvasItem.width );
+    let tweenedHeight = tweened( canvasItem.height );
+    let tweenedX      = tweened( canvasItem.x );
+    let tweenedY      = tweened( canvasItem.y );
+
+    $: tweenedWidth.set( canvasItem.width );
+    $: tweenedHeight.set( canvasItem.height );
+    $: tweenedX.set( canvasItem.x );
+    $: tweenedY.set( canvasItem.y );
+
+    $: console.log( tweenedWidth );
+
 </script>
 
-<div class="canvasItem" style="width: {canvasItem.width}px; height: {canvasItem.height}px; transform: translate({canvasItem.x}px, {canvasItem.y}px);" bind:this={element} >{key +1}</div>
+<div class="canvasItem" style="width: {$tweenedWidth}px; height: {$tweenedHeight}px; transform: translate({$tweenedX}px, {$tweenedY}px);" bind:this={element}>{key +1}</div>
 
 <style>
     div.canvasItem
