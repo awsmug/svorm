@@ -34,22 +34,11 @@ export default class Canvas {
 
         let widthFactor  = this.wrapperWidth / this.getItemsWidth();
         let heightFactor = this.wrapperHeight / this.getItemsHeight();
-
-        console.log( 'Width Wrapper: ' + this.wrapperWidth );   
-        console.log( 'Width Item: ' + this.getItemsWidth() );   
-        console.log( 'Width Factor: ' + widthFactor );
-        
-        console.log( 'Height Wrapper: ' + this.wrapperHeight );   
-        console.log( 'Height Item: ' + this.getItemsHeight() );
-        console.log( 'Height Factor: ' + heightFactor );
         
         if( widthFactor > heightFactor )
         {
-            console.log( 'Using height factor');
             return heightFactor
         }
-
-        console.log( 'Using width factor');        
         
         return widthFactor;
     }

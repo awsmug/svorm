@@ -85,7 +85,7 @@
     }
 </script>
 
-<h3>Form des Grundrisses</h3>
+<h3>Wählen Sie eine Form des Grundrisses</h3>
 
 <div class="presets">
     {#each presets as preset, i }
@@ -104,8 +104,16 @@
         padding: 0.5rem;
         margin: 0 0.5rem 0.5rem 0;
         background-color: lightgray;
+        box-sizing: border-box !important;
         cursor: pointer;
         text-align: center;
+        border: lightgray 1px solid;    
+    }
+    .preset:hover {
+        background-color: darkgray;
+    }
+    .preset:active {
+        background-color: white;
     }
     .preset-name {
         padding: 0.5rem 0.5rem 0 0.5rem;
