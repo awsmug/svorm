@@ -7,11 +7,11 @@
 
     export let canvas: Canvas ;
 
+    const dispatch = createEventDispatcher();
+
     const newItem = () => {
         dispatch( 'newItem' );
     };
-
-    const dispatch = createEventDispatcher();
 
     const deleteItem = ( e ) => {
         dispatch( 'deleteItem', e.detail );
@@ -21,7 +21,7 @@
 
 <div class="control-panel">
     <div class="parts">
-        {#each canvas.origItems as canvasItem, i }
+        {#each canvas.items as canvasItem, i }
             <ControlPanelItemComponent bind:canvasItem={canvasItem} key={i} on:deleteItem={deleteItem} />
         {/each}
     </div>

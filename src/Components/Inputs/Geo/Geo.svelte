@@ -2,36 +2,27 @@
     import { fade } from 'svelte/transition';
 
     import Canvas from '../../../Classes/Canvas';
-
-    import CanvasComponent from './Canvas.svelte'
-    import ControlPanelComponent from './ControlPanel.svelte';
-
     import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
     import type Field from '../../../Classes/Field';
-    import Presets from './Presets.svelte';
-import CanvasItem from './CanvasItem.svelte';
+
+    import PresetsComponent from './Presets.svelte';
+    import ControlPanelComponent from './ControlPanel.svelte';
+    import CanvasComponent from './Canvas.svelte';
     
     export let field: Field;
-
-    let canvasItems: HasCanvasItemData[] = [
-        {
-            width: 1,
-            height: 1,
-            x: 0,
-            y: 0
-        }
-    ];
+    let preset;
 
     let canvas = new Canvas( true );
 
-    canvasItems.forEach( ( canvasItem ) => {
-        canvas.addItem( canvasItem );
-    });
-
-    $: {
-        field.autoValue();
+    let canvasItems: HasCanvasItemData[] = field.value;
+    
+    if ( field.value !== undefined )
+    {
+        canvasItems.forEach( ( canvasItem ) => {
+            canvas.addItem( canvasItem );
+        });
     }
-
+    
     const newItem = () => {
         canvas.addItem({
             'width': 1,
@@ -40,31 +31,35 @@ import CanvasItem from './CanvasItem.svelte';
             'y': 0
         })
 
-        canvas.origItems = canvas.origItems;
+        canvas.items = canvas.items;
     };
 
     const deleteItem = ( e ) => {
         canvas.deleteItem( e.detail );
-        canvas.origItems = canvas.origItems;
+        canvas.items = canvas.items;
     }
 
     const setPreset = ( e ) => {
-        let preset = e.detail;
-
+        preset = e.detail;
         canvas = new Canvas( true );
         
         preset.data.forEach( canvasItem => {
-            console.log( canvasItem );
             canvas.addItem( canvasItem );
         });
         canvas.render();
     }
 
+    $: {
+        field.value = canvas.items;
+    }
+
 </script>
 
-<Presets on:setPreset={setPreset} />
+<PresetsComponent on:setPreset={setPreset} />
 
-<div class="geo-content" in:fade>
-    <CanvasComponent bind:canvas={canvas} />
-    <ControlPanelComponent bind:canvas={canvas} on:deleteItem={deleteItem} on:newItem={newItem} />
-</div>
+{#if preset !== undefined}
+    <div class="geo-content" in:fade>
+        <CanvasComponent bind:canvas={canvas} />
+        <ControlPanelComponent bind:canvas={canvas} on:deleteItem={deleteItem} on:newItem={newItem} />
+    </div>
+{/if}

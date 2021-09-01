@@ -1,9 +1,8 @@
 import type HasCanvasItemData from '../Interfaces/HasCanvasItemData';
-import CanvasItem from './CanvasItem';
 
 export default class Canvas {
-    public  items:     HasCanvasItemData[] = [];
-    public  origItems: HasCanvasItemData[] = [];
+    public  items: HasCanvasItemData[] = [];
+    public  renderItems: HasCanvasItemData[] = [];
 
     public wrapperWidth: number;
     public wrapperHeight: number;
@@ -57,7 +56,7 @@ export default class Canvas {
      */
     public addItem( canvasItem: HasCanvasItemData )
     {
-        this.origItems.push( canvasItem );
+        this.items.push( canvasItem );
     }
 
     /**
@@ -69,15 +68,15 @@ export default class Canvas {
     {
         let canvasItems: HasCanvasItemData[] = [];
 
-        for ( let currentKey in this.origItems ) 
+        for ( let currentKey in this.items ) 
         {         
             if( parseInt( currentKey ) != key )
             {
-                canvasItems.push( this.origItems[ currentKey ] );
+                canvasItems.push( this.items[ currentKey ] );
             }
         }
 
-        this.origItems = canvasItems;
+        this.items = canvasItems;
         this.render();
     }
 
@@ -91,7 +90,7 @@ export default class Canvas {
      */
     public update( key: number, canvasItem: HasCanvasItemData )
     {
-        this.origItems.splice( key, 1, canvasItem );
+        this.items.splice( key, 1, canvasItem );
     }
 
     /**
@@ -127,13 +126,13 @@ export default class Canvas {
      */
     public getItemsWidth() : number
     {
-        if( this.origItems.length == 0 )
+        if( this.items.length == 0 )
         {
             return 0;
         }
 
         let right: number[] = [];
-        this.origItems.forEach( ( item ) => {
+        this.items.forEach( ( item ) => {
             right.push( item.x + item.width );
         });
 
@@ -149,13 +148,13 @@ export default class Canvas {
      */
     public getItemsHeight() : number
     {
-        if( this.origItems.length == 0 )
+        if( this.items.length == 0 )
         {
             return 0;
         }
         
         let bottom: number[] = [];
-        this.origItems.forEach( ( item ) => {
+        this.items.forEach( ( item ) => {
             bottom.push( item.y + item.height );
         });
 
@@ -183,10 +182,10 @@ export default class Canvas {
      */
     public render()
     {
-        this.items = [];
+        this.renderItems = [];
 
-        this.origItems.forEach( (item) => {
-            this.items.push({
+        this.items.forEach( (item) => {
+            this.renderItems.push({
                 'width' : this.translateSize( item.width ),
                 'height': this.translateSize( item.height ),
                 'x'     : this.translateSize( item.x ),

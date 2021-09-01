@@ -20,7 +20,7 @@
 <div class="canvas-border">
     <div class="canvas-wrapper" bind:clientHeight={wrapperHeight} bind:clientWidth={wrapperWidth}>
         <div class="canvas" style="height: {canvas.getHeight()}; width:{canvas.getWidth()}">
-            {#each canvas.items as canvasItem, i }
+            {#each canvas.renderItems as canvasItem, i }
                 <CanvasItemComponent bind:canvasItem={canvasItem} key={i} />
             {/each}
         </div>

@@ -1,6 +1,6 @@
 {
     "name": "test-form",
-    "start": "projektadresse",
+    "start": "geometrischeErfassung",
     "classes": [ "test-form" ],
     "fieldsets": [
         {
