@@ -28,7 +28,7 @@
     div.canvasItem
     {
         background-color: orange;
-        border: 1px solid grey;
+        border: 2px solid darkgray;
         box-sizing: border-box !important;
         position: relative;
         display: flex;
