@@ -4,16 +4,17 @@
     import Canvas from '../../../Classes/Canvas';
     import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
     import type Field from '../../../Classes/Field';
-
+    import type HasPresetData from '../../../Interfaces/HasPresetData';    
     import PresetsComponent from './Presets.svelte';
     import ControlPanelComponent from './ControlPanel.svelte';
     import CanvasComponent from './Canvas.svelte';
     
     export let field: Field;
-    let preset;
 
+    let presets: HasPresetData[] = field.params.presets;
+    let preset : HasPresetData | boolean;
+    let presetSelected = false;
     let canvas = new Canvas( true );
-
     let canvasItems: HasCanvasItemData[] = field.value;
     let selectedItem: number = -1;
     
@@ -24,6 +25,19 @@
         });
     }
     
+    const setPreset = ( e ) => {
+        preset = e.detail;
+        canvas = new Canvas( true );
+
+        if( preset !== false ) {        
+            preset.data.forEach( canvasItem => {
+                canvas.addItem( canvasItem );
+            });            
+        }
+
+        canvas.render();  
+    }
+
     const newItem = () => {
         canvas.addItem({
             'width': 1,
@@ -40,23 +54,12 @@
         canvas.items = canvas.items;
     }
 
-    const setPreset = ( e ) => {
-        preset = e.detail;
-        canvas = new Canvas( true );
-        
-        preset.data.forEach( canvasItem => {
-            canvas.addItem( canvasItem );
-        });
-        canvas.render();
-    }
-
     $: {
         field.value = canvas.items;
     }
-
 </script>
 
-<PresetsComponent on:setPreset={setPreset} />
+<PresetsComponent on:setPreset={setPreset} bind:presetSelected presets={presets} />
 
 {#if preset !== undefined}
     <div class="geo-content" in:fade>

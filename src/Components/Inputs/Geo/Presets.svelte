@@ -1,92 +1,31 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
+    import type HasPresetData from '../../../Interfaces/HasPresetData';
+    
+    export let presetSelected: boolean;
+    export let presets       : HasPresetData[];
+    let        preset        : HasPresetData; 
+    let        key           : number;
+
     const dispatch = createEventDispatcher();
 
-    let presets = [
-            {
-                'name': 'Form A',
-                'img': 'assets/img/enon-form-1.svg',
-                'data': [
-                    {
-                        'width': 2,
-                        'height': 1,
-                        'x': 0,
-                        'y': 0
-                    }
-                ]
-            },
-            {
-                'name': 'Form B',
-                'img': 'assets/img/enon-form-2.svg',
-                'data': [
-                    {
-                        'width': 2,
-                        'height': 1,
-                        'x': 0,
-                        'y': 1
-                    },
-                    {
-                        'width': 1,
-                        'height': 2,
-                        'x': 2,
-                        'y': 0
-                    }
-                ]
-            },
-            {
-                'name': 'Form C',
-                'img': 'assets/img/enon-form-3.svg',
-                'data': [
-                    {
-                        'width': 1,
-                        'height': 1,
-                        'x': 1,
-                        'y': 0
-                    },
-                    {
-                        'width': 3,
-                        'height': 1,
-                        'x': 0,
-                        'y': 1
-                    }
-                ]
-            },
-            {
-                'name': 'Form D',
-                'img': 'assets/img/enon-form-4.svg',
-                'data': [
-                    {
-                        'width': 1,
-                        'height': 2,
-                        'x': 0,
-                        'y': 0
-                    },
-                    {
-                        'width': 1,
-                        'height': 1,
-                        'x': 1,
-                        'y': 1
-                    },
-                    ,
-                    {
-                        'width': 1,
-                        'height': 2,
-                        'x': 2,
-                        'y': 0
-                    }
-                ]
-            }
-    ];
-
     const setPreset = ( e ) => {
-        let key = e.target.dataset.id;
-        let preset = presets[key];
+        key = e.target.dataset.id;
+        preset = presets[key];
+        presetSelected = true;
+
         dispatch( 'setPreset', preset );
+    }
+
+    const withoutPreset = () => {
+        dispatch( 'setPreset', false );
     }
 </script>
 
-<h3>Wählen Sie eine Form des Grundrisses</h3>
 
+
+{#if ! presetSelected }
+<h3>Wählen Sie eine Form des Grundrisses</h3>
 <div class="presets">
     {#each presets as preset, i }
         <div class="preset" on:click={setPreset} data-id={i}>
@@ -94,7 +33,11 @@
             <div class="preset-name" data-id={i}>{preset.name}</div>
         </div>
     {/each}
+    <div class="preset" on:click={withoutPreset}>
+        <div class="preset-name">Benutzerdefiniert</div>
+    </div>
 </div>
+{/if}
 
 <style>
     .presets {

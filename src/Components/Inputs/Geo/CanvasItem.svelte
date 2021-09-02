@@ -1,27 +1,23 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
     import {tweened} from 'svelte/motion';
-
     import type HasCanvasItemData from '../../../Interfaces/HasCanvasItemData';
     
-    export let canvasItem: HasCanvasItemData;
-    export let key: number;
+    export let canvasItem  : HasCanvasItemData;
+    export let key         : number;
     export let selectedItem: number;
-
-    let element;
-    let cssArray = [];
-    let css: string;
+    let        cssArray    : string[] = [];
+    let        css         : string;
+    let        tweenedWidth   = tweened( canvasItem.width );
+    let        tweenedHeight  = tweened( canvasItem.height );
+    let        tweenedX       = tweened( canvasItem.x );
+    let        tweenedY       = tweened( canvasItem.y );
 
     const dispatch = createEventDispatcher();
 
     const selectItem = () => {
         dispatch('selectItem', key );
     }
-
-    let tweenedWidth  = tweened( canvasItem.width );
-    let tweenedHeight = tweened( canvasItem.height );
-    let tweenedX      = tweened( canvasItem.x );
-    let tweenedY      = tweened( canvasItem.y );
 
     $: tweenedWidth.set( canvasItem.width );
     $: tweenedHeight.set( canvasItem.height );
@@ -42,7 +38,7 @@
     }
 </script>
 
-<div class="canvasItem {css}" style="width: {$tweenedWidth}px; height: {$tweenedHeight}px; transform: translate({$tweenedX}px, {$tweenedY}px);" bind:this={element} on:click={selectItem} >{key +1}</div>
+<div class="canvasItem {css}" style="width: {$tweenedWidth}px; height: {$tweenedHeight}px; transform: translate({$tweenedX}px, {$tweenedY}px);" on:click={selectItem} >{key +1}</div>
 
 <style>
     .canvasItem

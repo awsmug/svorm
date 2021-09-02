@@ -1,8 +1,6 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-
     import type Canvas from '../../../Classes/Canvas';
-
     import ControlPanelItemComponent from './ControlPanelItem.svelte';
 
     export let canvas: Canvas ;

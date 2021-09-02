@@ -525,13 +525,6 @@
             "nextFieldset": "basisdaten",
             "fields": [
                 {
-                    "name": "eines",
-                    "label": "Ihre Email-Adresse",
-                    "type": "workspace",
-                    "classes": [ "w1of1", "spacer2top" ], 
-                    "required": true
-                },
-                {
                     "name": "orientierung",
                     "label": "Orientierung",
                     "type": "choice-select",
@@ -582,9 +575,100 @@
                     ],
                     "help": {
                         "type": "info",
-                        "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
+                        "content": "<h3>Orientierung des Grundrisses</h3><p>Geben Sie an in welche Himmelsrichtung die obere Seite des Grundrisses zeigt.</p>"
                     }        
-                }
+                },
+                {
+                    "name": "eines",
+                    "label": "Gebäudegeometrie",
+                    "type": "workspace",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true,
+                    "params":
+                    {
+                        "presets": [
+                            {
+                                "name": "Form A",
+                                "img": "assets/img/enon-form-1.svg",
+                                "data": [
+                                    {
+                                        "width": 2,
+                                        "height": 1,
+                                        "x": 0,
+                                        "y": 0
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Form B",
+                                "img": "assets/img/enon-form-2.svg",
+                                "data": [
+                                    {
+                                        "width": 2,
+                                        "height": 1,
+                                        "x": 0,
+                                        "y": 1
+                                    },
+                                    {
+                                        "width": 1,
+                                        "height": 2,
+                                        "x": 2,
+                                        "y": 0
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Form C",
+                                "img": "assets/img/enon-form-3.svg",
+                                "data": [
+                                    {
+                                        "width": 1,
+                                        "height": 1,
+                                        "x": 1,
+                                        "y": 0
+                                    },
+                                    {
+                                        "width": 3,
+                                        "height": 1,
+                                        "x": 0,
+                                        "y": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Form D",
+                                "img": "assets/img/enon-form-4.svg",
+                                "data": [
+                                    {
+                                        "width": 1,
+                                        "height": 2,
+                                        "x": 0,
+                                        "y": 0
+                                    },
+                                    {
+                                        "width": 1,
+                                        "height": 1,
+                                        "x": 1,
+                                        "y": 1
+                                    },
+                                    {
+                                        "width": 1,
+                                        "height": 2,
+                                        "x": 2,
+                                        "y": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "conditions": [
+                        {
+                            "field": "orientierung",
+                            "value": "",
+                            "operator": "!="
+                        }
+                    ]
+                }                
             ]
         }       
     ]

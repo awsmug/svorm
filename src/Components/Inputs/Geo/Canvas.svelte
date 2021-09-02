@@ -1,23 +1,21 @@
 <script lang="ts">
     import type Canvas from '../../../Classes/Canvas';
-
     import CanvasItemComponent from './CanvasItem.svelte';
 
     export let canvas: Canvas;
-    export let selectedItem: number;
+    export let selectedItem:  number;
+    let        wrapperWidth:  number;
+    let        wrapperHeight: number;    
 
-    let wrapperWidth;
-    let wrapperHeight;
+    const selectItem = ( e ) => {
+        selectedItem = e.detail;
+    }
 
     $:{
         if( wrapperWidth !== undefined && wrapperHeight !== undefined )
         {
             canvas.setWrapperSize( wrapperWidth, wrapperHeight );
         }
-    } 
-
-    const selectItem = ( e ) => {
-        selectedItem = e.detail;
     }
 </script>
 
