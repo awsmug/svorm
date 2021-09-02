@@ -4,6 +4,7 @@
     import CanvasItemComponent from './CanvasItem.svelte';
 
     export let canvas: Canvas;
+    export let selectedItem: number;
 
     let wrapperWidth;
     let wrapperHeight;
@@ -12,16 +13,19 @@
         if( wrapperWidth !== undefined && wrapperHeight !== undefined )
         {
             canvas.setWrapperSize( wrapperWidth, wrapperHeight );
-            canvas.render();
         }
     } 
+
+    const selectItem = ( e ) => {
+        selectedItem = e.detail;
+    }
 </script>
 
 <div class="canvas-border">
     <div class="canvas-wrapper" bind:clientHeight={wrapperHeight} bind:clientWidth={wrapperWidth}>
         <div class="canvas" style="height: {canvas.getHeight()}; width:{canvas.getWidth()}">
             {#each canvas.renderItems as canvasItem, i }
-                <CanvasItemComponent bind:canvasItem={canvasItem} key={i} />
+                <CanvasItemComponent bind:canvasItem={canvasItem} key={i} bind:selectedItem on:selectItem={selectItem} />
             {/each}
         </div>
     </div>

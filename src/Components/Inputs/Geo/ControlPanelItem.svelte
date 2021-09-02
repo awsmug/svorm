@@ -5,15 +5,36 @@
 
     export let canvasItem: HasCanvasItemData;
     export let key:  number;
+    export let selectedItem: number;
+
+    let cssArray = [];
+    let css: string;
 
     const dispatch = createEventDispatcher();
+
+    const selectItem = () => {
+        selectedItem = key;
+    }
 
     const deleteItem = () => {
         dispatch( 'deleteItem', key );
     }
+
+    $: {
+        if( selectedItem === key )
+        {
+            cssArray.push( 'selected' );
+        } else {
+            cssArray = cssArray.filter( ( value ) => {
+                value !== 'selected';
+            });
+        }
+
+        css = cssArray.join( ' ' );
+    }
 </script>
 
-<div class="canvas-item">
+<div class="canvas-item {css}" on:click={selectItem}>
     <div class="canvas-item-header">
         <div class="canvas-item-title" role="definition">Gebäudeteil {key+1}</div><button class="button-alert" on:click={deleteItem}>X</button>
     </div>
@@ -48,6 +69,13 @@
     {
         border-bottom: 1px solid lightgray;
         font-size: small;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+    .canvas-item.selected
+    {        
+        background-color: #FBBF24;
+        border: 1px dotted white;
     }
     .canvas-item .canvas-item-header
     {

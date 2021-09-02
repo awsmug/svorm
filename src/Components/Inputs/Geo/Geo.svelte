@@ -15,6 +15,7 @@
     let canvas = new Canvas( true );
 
     let canvasItems: HasCanvasItemData[] = field.value;
+    let selectedItem: number = -1;
     
     if ( field.value !== undefined )
     {
@@ -59,7 +60,7 @@
 
 {#if preset !== undefined}
     <div class="geo-content" in:fade>
-        <CanvasComponent bind:canvas={canvas} />
-        <ControlPanelComponent bind:canvas={canvas} on:deleteItem={deleteItem} on:newItem={newItem} />
+        <CanvasComponent bind:canvas bind:selectedItem />
+        <ControlPanelComponent bind:canvas bind:selectedItem on:deleteItem={deleteItem} on:newItem={newItem} />
     </div>
 {/if}

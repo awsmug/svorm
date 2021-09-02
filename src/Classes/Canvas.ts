@@ -181,6 +181,7 @@ export default class Canvas {
     {
         this.wrapperWidth  = width;
         this.wrapperHeight = height;
+        this.render();
     }
 
     /**
