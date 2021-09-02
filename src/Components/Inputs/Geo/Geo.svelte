@@ -8,6 +8,7 @@
     import PresetsComponent from './Presets.svelte';
     import ControlPanelComponent from './ControlPanel.svelte';
     import CanvasComponent from './Canvas.svelte';
+    import DialogComponent from '../../Dialog.svelte';
     
     export let field: Field;
 
@@ -57,7 +58,31 @@
     $: {
         field.value = canvas.items;
     }
+
+    let dialogText = 'Ein kleiner Test';
+    let dialogOptions = [
+        {
+            "text": "Option 1",
+            "callback": function() {
+                alert('Option 1');
+            }
+        },
+        {
+            "text": "Option 2",
+            "callback": function() {
+                toggleDialog();
+            }
+        }
+    ]
+     
+    let showDialog = false;
+    const toggleDialog = () => {
+        showDialog = ! showDialog;
+    }
 </script>
+<div on:click={toggleDialog}>showdialog</div>
+
+<DialogComponent bind:text={dialogText} bind:options={dialogOptions} bind:show={showDialog} />
 
 <PresetsComponent on:setPreset={setPreset} bind:presetSelected presets={presets} />
 
