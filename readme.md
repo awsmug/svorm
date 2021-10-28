@@ -4,7 +4,9 @@ Create a svelte form by using a json config file.
 
 ## Install SvelteForm
 
-## Initializing a form
+## Form
+
+## Fieldsets
 
 ## Components
 
@@ -36,7 +38,6 @@ Create a svelte form by using a json config file.
 {
     "name": "test-form",
     "start": "conditional-logic",
-    "classes": [ "test-form" ],
     "fieldsets": [
         {
             "label": "Conditional Logic",
@@ -46,11 +47,9 @@ Create a svelte form by using a json config file.
                     "name": "show",
                     "label": "Show Textfield",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
-                    "required": true,
                     "choices": [                        
                         {
-                            "label": "Yes",
+                            "label": "Ja",
                             "value": "yes"
                         },
                         {
