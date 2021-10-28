@@ -1,8 +1,14 @@
 import App from './App.svelte';
 import './Global.scss';
 
-const app = new App({
-	target: document.getElementById('my-form'),
-});
+let components = document.querySelectorAll('[data-component]');
 
-export default app;
+components.forEach( ( item ) => {
+	const form = item.dataset.form;
+	const app = new App({
+		target: item,
+		props: {
+			jsonFile: form
+		}
+	});
+});

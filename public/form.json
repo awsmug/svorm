@@ -1,0 +1,68 @@
+{
+    "name": "test-form",
+    "start": "contact",
+    "classes": [ "test-form" ],
+    "fieldsets": [
+        {
+            "label": "Projektdaten2",
+            "name": "contact",
+            "nextFieldset": "basisdaten",
+            "fields": [
+                {
+                    "name": "name",
+                    "label": "Name",
+                    "type": "text",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true
+                },
+                {
+                    "name": "email",
+                    "label": "Email-Adresse",
+                    "type": "text",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "email",
+                            "error": "Email-Adresse ist ungültig"
+                        }
+                    ]
+                },
+                {
+                    "name": "subject",
+                    "label": "Betreff",
+                    "type": "text",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true
+                },
+                {
+                    "name": "content",
+                    "label": "Ihr Anliegen",
+                    "type": "textarea",
+                    "classes": [ "w1of1", "spacer2top" ], 
+                    "required": true
+                },
+                {
+                    "name": "privacy",
+                    "label": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
+                    "type": "checkbox",
+                    "classes": [ "w1of1", "spacer1top" ], 
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "isChecked",
+                            "error": "Sie müssen die Datenschutzerklärung lesen und akzeptieren bevor Sie fortfahren."
+                        }
+                    ]
+                },
+                {
+                    "name": "contact",
+                    "classes": [ "w1of1", "spacer2bottom" ], 
+                    "label": "Hiermit bestätige ich, dass Energieausweis-online-erstellen.de mich bei Fragen zu meinen Energieausweis-Angaben kontaktieren darf.",
+                    "type": "checkbox"
+                }
+            ]
+        }
+    ]
+}
+

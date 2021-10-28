@@ -1,9 +1,28 @@
 <script lang="ts">    
     import Form from './Components/Form.svelte';
-    import FormData from './contact.json';
+    export let jsonFile;
+
+    async function loadForm() {
+		const response = await fetch( jsonFile );
+		const content = await response.json();
+
+		if ( response.ok ) {
+			return content;
+		} else {
+			throw new Error(content);
+		}
+	}
 </script>
 
-<Form formData={FormData} />
+
+{#await loadForm()}
+	<p>...waiting</p>
+{:then FormData}
+    <Form formData={FormData} />
+{:catch error}
+	<p style="color: red">{error.message}</p>
+{/await}
+
 
 <style global lang="postcss">
     @tailwind base;
