@@ -49,7 +49,7 @@ Create a svelte form by using a json config file.
                     "required": true,
                     "choices": [                        
                         {
-                            "label": "Ja",
+                            "label": "Yes",
                             "value": "yes"
                         },
                         {
