@@ -1,7 +1,6 @@
 {
     "name": "test-form",
     "start": "conditional-logic",
-    "classes": [ "test-form" ],
     "fieldsets": [
         {
             "label": "Conditional Logic",
@@ -11,7 +10,6 @@
                     "name": "show",
                     "label": "Show Textfield",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
                         {
