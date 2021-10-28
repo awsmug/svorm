@@ -111,7 +111,7 @@ fieldset {
                     margin: 0 0.25rem 0.25rem 0.5rem;
                 }
                 
-                input[type=text], input[type=number], select {
+                input[type=text], input[type=number], select, textarea {
                     border: none;
                     border-left: 0.125rem solid lightgrey;
                     border-bottom: 0.125rem solid lightgrey;
@@ -123,6 +123,11 @@ fieldset {
                     &:-internal-autofill-selected {
                         outline: none;
                     }                 
+                }
+
+                textarea 
+                {
+                    height: 15rem;
                 }
 
                 &.validated {
