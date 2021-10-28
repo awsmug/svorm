@@ -32,7 +32,8 @@ Create a svelte form by using a json config file.
 
 ## Conditional logic
 
-```js{
+```js
+{
     "name": "test-form",
     "start": "conditional-logic",
     "classes": [ "test-form" ],
@@ -73,4 +74,5 @@ Create a svelte form by using a json config file.
             ]
         }
     ]
-}```
+}
+```
