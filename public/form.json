@@ -10,7 +10,6 @@
                     "name": "show",
                     "label": "Show Textfield",
                     "type": "choice-radio",
-                    "required": true,
                     "choices": [                        
                         {
                             "label": "Ja",
