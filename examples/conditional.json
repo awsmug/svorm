@@ -1,6 +1,6 @@
 {
     "name": "test-form",
-    "start": "conditional-logic",
+    "start": "contact",
     "classes": [ "test-form" ],
     "fieldsets": [
         {
@@ -26,7 +26,7 @@
                 },
                 {
                     "name": "my-text",
-                    "value": "You can see me!",
+                    "label": "You can see me!",
                     "type": "headline",
                     "conditions": [
                         {
@@ -34,7 +34,7 @@
                             "value": "yes",
                             "operator": "=="
                         }
-                    ]
+                    ],
                 }
             ]
         }

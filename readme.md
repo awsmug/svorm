@@ -1,4 +1,38 @@
-{
+# SvelteForm
+
+Create a svelte form by using a json config file.
+
+## Install SvelteForm
+
+## Initializing a form
+
+## Components
+
+### Input elements
+
+#### Text
+
+#### Textarea
+
+#### Choice Select
+
+#### Choice Radio
+
+#### Choice Image
+
+#### Range
+
+### Content elements
+
+## Validation
+
+### How to validate
+
+### Validation types
+
+## Conditional logic
+
+`{
     "name": "test-form",
     "start": "conditional-logic",
     "classes": [ "test-form" ],
@@ -39,5 +73,4 @@
             ]
         }
     ]
-}
-
+}`
