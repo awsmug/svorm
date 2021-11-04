@@ -82,9 +82,9 @@ If you have more than one fieldset, the form starts with the first fieldset occu
 }
 ```
 
-### Element
+### Field
 
-An element can be an input field or content which have to be shown. 
+A field can be an input or a content field and have to be placed in the fields array of the fieldset.
 
 ```json
 {
