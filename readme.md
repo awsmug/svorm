@@ -2,7 +2,9 @@
 
 This is a form framework based on svelte and typescript.
 
-## Install SvelteForm
+## Get started
+
+### Installation
 
 Download the repository and run npm to install all necessary packages.
 
@@ -10,12 +12,11 @@ Download the repository and run npm to install all necessary packages.
 git clone git@github.com:awsmug/SvelteForm.git && cd SvelteForm && npm i
 ```
 
-## Use SvelteForm as npm depency
+### Use SvelteForm as npm depency
 
 ```cmd
 npm i awsmug/SvelteForm
 ```
-
 
 ## Form
 
