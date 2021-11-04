@@ -24,7 +24,6 @@ The form is the base wrapper for all content. It contains all settings. The form
 ```json
 {
     "fieldsets": [
-       /* ... */
     ]
 }
 ```
