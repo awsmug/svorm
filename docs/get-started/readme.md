@@ -1,6 +1,6 @@
 # Get started
 
-## Install SvelteForm
+## Installation
 
 ```cmd
 npm install --save awsmug/SvelteForm

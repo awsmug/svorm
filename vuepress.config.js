@@ -14,8 +14,7 @@ module.exports = {
             },
             {
                 text: 'Get Started',
-                link: '/get-started/',
-                children: []
+                link: '/get-started/'
             },
             {
                 text: 'JSON Structure',
