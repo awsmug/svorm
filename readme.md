@@ -1,5 +1,5 @@
 # SvelteForm
 
-This is a form framework based on [svelte](https://svelte.dev/) and [typescript](https://www.typescriptlang.org/).
+This is a JavaScript form framework based on [SVELTE](https://svelte.dev/) and [TypeScript](https://www.typescriptlang.org/).
 
-Read our [Documentation](https://awsmug.github.io/SvelteForm/).
+Read our [documentation](https://awsmug.github.io/SvelteForm/).
