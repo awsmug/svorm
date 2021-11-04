@@ -18,7 +18,7 @@ git clone git@github.com:awsmug/SvelteForm.git && cd SvelteForm && npm i
 npm i awsmug/SvelteForm
 ```
 
-## Form
+## JSON Documentation
 
 The form is the base wrapper for all content. It contains all settings. The form must contain the paramater *fieldsets*.
 
@@ -34,9 +34,9 @@ List of *form* parameters:
 - **name** - Name of the form, used in HTML form tag.
 - **start** - ID the fieldset where the form will start.
 
-## Fieldsets
+### Fieldsets
 
-The fieldset is  a set if elements which will be shown. The form can only showo one fieldset at a time. This is the current fieldset.
+The fieldset is  a set if elements which will be shown. The form can only show one fieldset at a time. This is the current fieldset.
 
 ```json
 {
@@ -51,7 +51,8 @@ The fieldset is  a set if elements which will be shown. The form can only showo 
 }
 ```
 
-### Start fieldset
+#### Start fieldset
+
 You can have multiple fieldsets. If you have more than one fieldset, the form starts with the first fieldset occuring in the fieldsets array. You also can set a start fieldset.
 
 ```json
@@ -85,37 +86,37 @@ You can have multiple fieldsets. If you have more than one fieldset, the form st
 ```
 
 
-## Components
+### Components
 
-### Input elements
+#### Input elements
 
-#### Text
+##### Text
 
-#### Textarea
+##### Textarea
 
-#### Choice Select
+##### Choice Select
 
-#### Choice Radio
+##### Choice Radio
 
-#### Choice Image
+##### Choice Image
 
-#### Range
+##### Range
 
-### Content elements
+#### Content elements
 
-## Validation
+### Validation
 
-### How to validate
+#### How to validate
 
-### Validation types
+#### Validation types
 
-## Conditional logic
+### Conditional logic
 
 Conditionall logic allows you to **show** or **hide** elements depending on content of input fields. 
 
 Here is an example of a text element which is shown depending on the value of the choice of the input with the name *show*.
 
-```js
+```json
 {
     "name": "test-form",
     "start": "conditional-logic",
@@ -125,7 +126,6 @@ Here is an example of a text element which is shown depending on the value of th
             "name": "conditional-logic",
             "fields": [
                 {
-                    // Input: Radio choice with yes or no
                     "name": "show",
                     "label": "Show Textfield",
                     "type": "choice-radio",
@@ -141,7 +141,6 @@ Here is an example of a text element which is shown depending on the value of th
                     ]
                 },
                 {
-                    // Element: Text which is shown depending on input element
                     "name": "my-text",
                     "value": "You can see me!",
                     "type": "headline",
