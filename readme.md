@@ -41,11 +41,12 @@ The fieldset is  a set if elements which will be shown. The form can only showo 
 ```json
 {
     "fieldsets": [
-        "label": "Fieldset Label",
+        {
+            "label": "Fieldset Label",
             "name": "my-fieldset",
             "fields": [
             ]
-        ]
+        }
     ]
 }
 ```
