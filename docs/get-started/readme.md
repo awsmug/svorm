@@ -2,6 +2,8 @@
 
 ## Installation
 
+SvelteForm can be installed by using the node package manager *npm*.
+
 ```cmd
 npm install --save awsmug/SvelteForm
 ```
