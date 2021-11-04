@@ -6,7 +6,8 @@
     "dev": "rollup -c -w",
     "start": "sirv public",
     "validate": "svelte-check",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev docs"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
