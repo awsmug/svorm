@@ -24,7 +24,7 @@ The form is the base wrapper for all content. It contains all settings. The form
 ```json
 {
     "fieldsets": [
-        ...
+       /* ... */
     ]
 }
 ```
@@ -44,7 +44,7 @@ The fieldset is  a set if elements which will be shown. The form can only showo 
         "label": "Fieldset Label",
             "name": "my-fieldset",
             "fields": [
-                ...
+                /* ... */
             ]
         ]
     ]
@@ -63,7 +63,7 @@ You can have multiple fieldsets. If you have more than one fieldset, the form st
             "name": "part-one",
             "fields": [
                 {
-                    // Input: Radio choice with yes or no
+                    /* Input: Radio choice with yes or no */
                     "name": "name",
                     "label": "Tell us your name",
                     "type": "text"
@@ -75,7 +75,7 @@ You can have multiple fieldsets. If you have more than one fieldset, the form st
             "name": "part-two",
             "fields": [
                 {
-                    // Input: Radio choice with yes or no
+                    /* Input: Radio choice with yes or no */
                     "name": "content",
                     "label": "Tell us why you are here",
                     "type": "textarea"
