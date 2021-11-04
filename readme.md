@@ -1,6 +1,6 @@
 # SvelteForm
 
-Create a svelte form by using a json config file.
+This is a form framework based on svelte and typescript.
 
 ## Install SvelteForm
 
