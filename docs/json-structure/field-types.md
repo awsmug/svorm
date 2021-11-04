@@ -20,7 +20,7 @@ Parameters:
 - **label** (string) Label which will be shown in frontend.
 - **required** (true|false) Whether the field is required or not.
 - **classes** (string) Additional CSS classes.
-- **validations** (array) An array with [validations](/SvelteForms/json-structures/validation) which have to be passed.
+- **validations** (array) An array with [validations](/SvelteForms/json-structure/validation) which have to be passed.
 
 ### Textarea
 
@@ -40,7 +40,7 @@ Parameters:
 - **label** (string) Label which will be shown in frontend.
 - **required** (true|false) Whether the field is required or not.
 - **classes** (string) Additional CSS classes.
-- **validations** (array) An array with [validations](/SvelteForms/json-structures/validation) which have to be passed.
+- **validations** (array) An array with [validations](/SvelteForms/json-structure/validation) which have to be passed.
 
 ### Choice Select
 
@@ -71,7 +71,7 @@ Parameters:
 - **required** (true|false) Whether the field is required or not.
 - **classes** (string) Additional CSS classes.
 - **choices** (array) An array of [choices](#choices).
-- **validations** (array) An array with [validations](/SvelteForms/json-structures/validation) which have to be passed.
+- **validations** (array) An array with [validations](/SvelteForms/json-structure/validation) which have to be passed.
 
 ### Choice Radio
 
@@ -102,7 +102,7 @@ Parameters:
 - **required** (true|false) Whether the field is required or not.
 - **classes** (string) Additional CSS classes.
 - **choices** (array) An array of [choices](#choices).
-- **validations** (array) An array with [validations](/SvelteForms/json-structures/validation) which have to be passed.
+- **validations** (array) An array with [validations](/SvelteForms/json-structure/validation) which have to be passed.
 
 ### Choice Image
 
@@ -135,7 +135,7 @@ Parameters:
 - **required** (true|false) Whether the field is required or not.
 - **classes** (string) Additional CSS classes.
 - **choices** (array) An array of [choices](#choices).
-- **validations** (array) An array with [validations](/SvelteForms/json-structures/validation) which have to be passed.
+- **validations** (array) An array with [validations](/SvelteForms/json-structure/validation) which have to be passed.
 
 ### Choices
 
