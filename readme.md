@@ -20,7 +20,7 @@ npm i awsmug/SvelteForm
 
 ## JSON Documentation
 
-The form is the base wrapper for all content. It contains all settings. The form must contain the paramater *fieldsets*.
+The root is the base wrapper for all content. It contains all settings for the form: Where it starts, where the data will be sent behavour, style and so on. The form at least must contain the paramater *fieldsets*.
 
 ```json
 {
@@ -36,7 +36,9 @@ List of *form* parameters:
 
 ### Fieldsets
 
-The fieldset is  a set if elements which will be shown. The form can only show one fieldset at a time. This is the current fieldset.
+The fieldsets param is an array of fieldsets which will be shown. The form can only show one fieldset at a time which is the *current fieldset*.
+
+The single fieldset must contain a label, an id and the fields parameter.
 
 ```json
 {
@@ -53,7 +55,7 @@ The fieldset is  a set if elements which will be shown. The form can only show o
 
 #### Start fieldset
 
-You can have multiple fieldsets. If you have more than one fieldset, the form starts with the first fieldset occuring in the fieldsets array. You also can set a start fieldset.
+If you have more than one fieldset, the form starts with the first fieldset occuring in the fieldsets array. You also can set a start fieldset.
 
 ```json
 {
@@ -63,11 +65,6 @@ You can have multiple fieldsets. If you have more than one fieldset, the form st
             "label": "I will be skipped",
             "name": "part-one",
             "fields": [
-                {
-                    "name": "name",
-                    "label": "Tell us your name",
-                    "type": "text"
-                }
             ]
         },
         {
@@ -85,6 +82,27 @@ You can have multiple fieldsets. If you have more than one fieldset, the form st
 }
 ```
 
+### Element
+
+An element can be an input field or content which have to be shown. 
+
+```json
+{
+    "fieldsets": [
+        {
+            "label": "Fieldset Label",
+            "name": "my-fieldset",
+            "fields": [
+                {
+                    "name": "content",
+                    "label": "Tell us why you are here",
+                    "type": "textarea"
+                }
+            ]
+        }
+    ]
+}
+```
 
 ### Components
 
