@@ -1,5 +1,5 @@
 module.exports = {
-    title: 'SvelteForm',
+    title: 'svorm',
     description: 'A form framework based on SVELTE and TypeScript',
     base: '/',
     themeConfig: {
