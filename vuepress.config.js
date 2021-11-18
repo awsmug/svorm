@@ -1,7 +1,7 @@
 module.exports = {
     title: 'SvelteForm',
     description: 'A form framework based on SVELTE and TypeScript',
-    base: '/SvelteForm/',
+    base: '/',
     themeConfig: {
         logo: 'https://vuejs.org/images/logo.png',
         navbar: [
