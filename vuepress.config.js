@@ -1,6 +1,6 @@
 module.exports = {
-    title: 'svorm',
-    description: 'A form framework based on SVELTE and TypeScript',
+    title: 'SVORM - A JavaScript form framework based on SVELTE and TypeScript',
+    description: 'A JavaScript form framework based on SVELTE and TypeScript',
     base: '/',
     themeConfig: {
         logo: 'https://vuejs.org/images/logo.png',
