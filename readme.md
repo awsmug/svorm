@@ -4,4 +4,4 @@ A JavaScript form framework based on [SVELTE](https://svelte.dev/) and [TypeScri
 
 ## Documentation
 
-https://awsmug.github.io/svorm/
+https://docs.svorm.dev
