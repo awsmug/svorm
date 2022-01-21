@@ -92,8 +92,8 @@ export default class Form {
      * 
      * @since 1.0.0
      */
-    public getClasses(): string {
-        if ( this.classes.length > 0  ) {
+    public getClasses(): string { 
+        if ( this.classes !== undefined &&  this.classes.length > 0  ) {
             return this.classes.join(' ');
         }
 
