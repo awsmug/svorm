@@ -2,10 +2,10 @@
 
 ## Installation
 
-SvelteForm can be installed by using the node package manager *npm*.
+Svorm can be installed by using the node package manager *npm*.
 
 ```cmd
-npm install --save awsmug/SvelteForm
+npm i @svenwagener/svorm
 ```
 
 ## Add scripts to HTML
@@ -13,7 +13,7 @@ npm install --save awsmug/SvelteForm
 1. Add HTML to your HTML header.
 
 ```html
-<script type="text/javascript" src="node_modules/SvelteForms/public/build.js"></script>
+<script type="text/javascript" src="node_modules/Svorm/public/build.js"></script>
 ```
 
 2. Include JSON config file to your HTML body.

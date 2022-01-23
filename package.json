@@ -1,6 +1,13 @@
 {
-  "name": "svorm",
-  "version": "0.0.1",
+  "name": "@svenwagener/svorm",
+  "description": "A JavaScript form framework based on Svelte and TypeScript.",
+  "version": "0.1.0",
+  "keywords": [
+    "form",
+    "forms",
+    "framework",
+    "conditional logic"
+  ],
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
