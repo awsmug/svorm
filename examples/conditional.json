@@ -1,7 +1,6 @@
 {
     "name": "test-form",
-    "start": "contact",
-    "classes": [ "test-form" ],
+    "start": "conditional-logic",
     "fieldsets": [
         {
             "label": "Conditional Logic",
@@ -11,8 +10,6 @@
                     "name": "show",
                     "label": "Show Textfield",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
-                    "required": true,
                     "choices": [                        
                         {
                             "label": "Ja",
@@ -26,7 +23,7 @@
                 },
                 {
                     "name": "my-text",
-                    "label": "You can see me!",
+                    "value": "You can see me!",
                     "type": "headline",
                     "conditions": [
                         {
@@ -34,7 +31,7 @@
                             "value": "yes",
                             "operator": "=="
                         }
-                    ],
+                    ]
                 }
             ]
         }

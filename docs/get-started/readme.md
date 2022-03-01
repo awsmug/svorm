@@ -10,13 +10,36 @@ npm i @svenwagener/svorm
 
 ## Add scripts to HTML
 
-1. Add HTML to your HTML header.
+1. Add HTML into to your HTML header.
 
 ```html
-<script type="text/javascript" src="node_modules/Svorm/public/build.js"></script>
+<script defer src="/node_modules/@svenwagener/svorm/dist/svorm.js"></script>
+<link rel="stylesheet" href="/node_modules/@svenwagener/svorm/dist/svorm.css" />
 ```
 
-2. Include JSON config file to your HTML body.
+2. Add a form json to you project. For example in a file named form.json.
+
+```json
+{
+    "name": "test-form",
+    "start": "test-fieldset",
+    "fieldsets": [
+        {
+            "label": "Test fieldset",
+            "name": "test-fieldset",
+            "fields": [
+                {
+                    "name": "show",
+                    "label": "A Textfield",
+                    "type": "text"
+                }
+            ]
+        }
+    ]
+}
+```
+
+3. Include JSON config file to your HTML body.
 
 ```html
 <div data-component="form" data-form="form.json"></div>
