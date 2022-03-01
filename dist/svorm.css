@@ -1,0 +1,449 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/**
+* Basic form CSS
+**/
+fieldset .fields {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+fieldset .fields .input {
+  display: block;
+  /**
+  * Input element sizes
+  **/
+}
+fieldset .fields .input input[type=text],
+fieldset .fields .input textarea,
+fieldset .fields .input select {
+  width: 100%;
+}
+fieldset .fields .input.w1of1 {
+  width: 100%;
+}
+fieldset .fields .input.w1of2 {
+  width: 50%;
+}
+fieldset .fields .input.w1of3 {
+  width: 33.333333%;
+}
+fieldset .fields .input.w2of3 {
+  width: 66.666666%;
+}
+fieldset .fields .input.w1of4 {
+  width: 25%;
+}
+fieldset .fields .input.w3of4 {
+  width: 75%;
+}
+fieldset .fields .input.w1of5 {
+  width: 20%;
+}
+fieldset .fields .input.w2of5 {
+  width: 40%;
+}
+fieldset .fields .input.w3of5 {
+  width: 60%;
+}
+fieldset .fields .input.w4of5 {
+  width: 80%;
+}
+fieldset .fields .input.spacer1top {
+  margin-top: 1rem;
+}
+fieldset .fields .input.spacer2top {
+  margin-top: 2rem;
+}
+fieldset .fields .input.spacer1bottom {
+  margin-bottom: 1rem;
+}
+fieldset .fields .input.spacer2bottom {
+  margin-bottom: 2rem;
+}
+
+/**
+ * Basic styling CSS
+ */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.9rem;
+}
+body fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+body fieldset h2 {
+  display: block;
+  width: 100%;
+  margin: 0.5rem;
+}
+body fieldset p {
+  display: block;
+  width: 100%;
+  margin: 0.5rem;
+  font-weight: 300;
+}
+body fieldset legend {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0;
+  margin: 0.5rem;
+}
+body fieldset .fields .input {
+  box-sizing: border-box;
+  margin: 0.5rem 0 0.5rem;
+}
+body fieldset .fields .input label {
+  display: block;
+  margin-bottom: 0.25rem;
+  margin: 0 0.25rem 0.25rem 0.5rem;
+}
+body fieldset .fields .input input[type=text], body fieldset .fields .input input[type=number], body fieldset .fields .input select, body fieldset .fields .input textarea {
+  border: none;
+  border-left: 0.125rem solid lightgrey;
+  border-bottom: 0.125rem solid lightgrey;
+  padding: 0.5rem;
+  line-height: 1rem;
+  font-family: "Courier New", Courier, monospace;
+}
+body fieldset .fields .input input[type=text]:focus, body fieldset .fields .input input[type=text]:-internal-autofill-selected, body fieldset .fields .input input[type=number]:focus, body fieldset .fields .input input[type=number]:-internal-autofill-selected, body fieldset .fields .input select:focus, body fieldset .fields .input select:-internal-autofill-selected, body fieldset .fields .input textarea:focus, body fieldset .fields .input textarea:-internal-autofill-selected {
+  outline: none;
+}
+body fieldset .fields .input textarea {
+  height: 15rem;
+}
+body fieldset .fields .input.validated input[type=text] {
+  border-left: 0.125rem solid #2d7d15;
+  border-bottom: 0.125rem solid #2d7d15;
+}
+body fieldset .fields .input.error input[type=text] {
+  border-left: 0.125rem solid red;
+  border-bottom: 0.125rem solid red;
+}
+body fieldset .fields .input .errors ul {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+body fieldset .fields .input .errors ul li .error-triangle {
+  width: 0px;
+  height: 0px;
+  -webkit-transform: rotate(360deg);
+  border-style: solid;
+  border-width: 0 1rem 1rem 1rem;
+  border-color: transparent transparent red transparent;
+  margin-left: 1rem;
+}
+body fieldset .fields .input .errors ul li .error-content {
+  background-color: red;
+  color: white;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
+body fieldset .fields .input .icon-question,
+body fieldset .fields .input .icon-info {
+  cursor: pointer;
+  display: inline;
+  padding-top: 5px;
+}
+body fieldset .fields .input .icon-question svg,
+body fieldset .fields .input .icon-info svg {
+  width: 18px;
+  height: 18px;
+}
+body fieldset .fields .input .icon-question:hover,
+body fieldset .fields .input .icon-info:hover {
+  color: #2d7d15;
+}
+body fieldset .fields .input .input-help {
+  margin: 0 0 0.5rem;
+}
+body fieldset .fields .input .input-help .input-help-triangle {
+  width: 0px;
+  height: 0px;
+  -webkit-transform: rotate(360deg);
+  border-style: solid;
+  border-width: 0 1rem 1rem 1rem;
+  border-color: transparent transparent black transparent;
+  margin-left: 1rem;
+}
+body fieldset .fields .input .input-help .input-help-content {
+  font-size: 0.8rem;
+  color: white;
+  display: block;
+  border: black 1px solid;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  background-color: black;
+}
+body nav {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5rem 0 0.5rem;
+}
+body nav button {
+  padding: 12px 16px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  border-width: 0.1rem;
+  border-color: #2d7d15;
+  background-color: #2d7d15;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 10rem;
+  transition: 0.25s;
+  box-shadow: 0.125rem 0.125rem 0.125rem grey;
+}
+body nav button:hover {
+  background-color: white;
+  color: #2d7d15;
+  transition: 0.25s;
+}
+body nav button:active {
+  box-shadow: 0rem 0rem 0rem;
+}
+body .button {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-width: 0.1rem;
+  border-color: #2d7d15;
+  background-color: #2d7d15;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: 0.25s;
+  box-shadow: 0.125rem 0.125rem 0.125rem grey;
+}
+body .button:hover {
+  background-color: white;
+  color: #2d7d15;
+  transition: 0.25s;
+}
+body .button:active {
+  box-shadow: 0rem 0rem 0rem;
+}
+body .button-alert {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-width: 0.1rem;
+  border-color: #ff0000;
+  background-color: #ff0000;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: 0.25s;
+  box-shadow: 0.125rem 0.125rem 0.125rem grey;
+}
+body .button-alert:hover {
+  background-color: white;
+  color: #ff0000;
+  transition: 0.25s;
+}
+body .button-alert:active {
+  box-shadow: 0rem 0rem 0rem;
+}
+
+.percentage.svelte-h0i7g2 {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+.percentage-bar.svelte-h0i7g2 {
+  position: absolute;
+  width: 0%;
+  z-index: 2;
+}
+
+.percentage-text.svelte-h0i7g2 {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  z-index: 3;
+}
+
+label.svelte-1251773 {
+  cursor: pointer;
+}
+
+label.svelte-wryltr {
+  cursor: pointer;
+}
+
+input[type=radio].svelte-wryltr {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.dialog-wrapper.svelte-rj7s1i.svelte-rj7s1i {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.73);
+}
+
+.dialog.svelte-rj7s1i.svelte-rj7s1i {
+  margin: auto;
+  background-color: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  border: black 1px solid;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.dialog-text.svelte-rj7s1i.svelte-rj7s1i {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 1rem;
+}
+
+.dialog-options.svelte-rj7s1i.svelte-rj7s1i {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog-options.svelte-rj7s1i button.svelte-rj7s1i {
+  flex-grow: 1;
+  margin: 0.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.presets.svelte-1to9tx7 {
+  display: flex;
+}
+
+.preset.svelte-1to9tx7 {
+  padding: 0.5rem;
+  margin: 0 0.5rem 0.5rem 0;
+  background-color: lightgray;
+  box-sizing: border-box !important;
+  cursor: pointer;
+  text-align: center;
+  border: lightgray 1px solid;
+}
+
+.preset.svelte-1to9tx7:hover {
+  background-color: darkgray;
+}
+
+.preset.svelte-1to9tx7:active {
+  background-color: white;
+}
+
+.preset-name.svelte-1to9tx7 {
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.control-panel.svelte-13qjy8w.svelte-13qjy8w {
+  border: lightgray solid 1px;
+}
+
+.control-panel.svelte-13qjy8w .control-panel-menu.svelte-13qjy8w {
+  padding: 1rem;
+  background-color: lightgray;
+}
+
+.canvas-border.svelte-5qb390.svelte-5qb390 {
+  padding: 1rem;
+  background-color: lightgray;
+}
+
+.reset-canvas.svelte-5qb390.svelte-5qb390 {
+  width: 30px;
+  cursor: pointer;
+  color: red;
+}
+
+.canvas-wrapper.svelte-5qb390.svelte-5qb390 {
+  height: 600;
+  overflow: hidden;
+}
+
+.canvas-wrapper.svelte-5qb390 .canvas.svelte-5qb390 {
+  margin: auto;
+  background-color: lightgray;
+  overflow: hidden;
+}
+
+.button-alert.svelte-3tbb6f.svelte-3tbb6f {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.1rem;
+}
+
+.canvas-item.svelte-3tbb6f.svelte-3tbb6f {
+  border-bottom: 1px solid lightgray;
+  font-size: small;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.canvas-item.selected.svelte-3tbb6f.svelte-3tbb6f {
+  background-color: #FBBF24;
+  border: 1px dotted white;
+}
+
+.canvas-item.svelte-3tbb6f .canvas-item-header.svelte-3tbb6f {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.canvas-item.svelte-3tbb6f .canvas-item-header .canvas-item-title.svelte-3tbb6f {
+  font-size: medium;
+  font-weight: 700;
+}
+
+.canvas-item.svelte-3tbb6f .canvas-item-inputs.svelte-3tbb6f {
+  display: flex;
+}
+
+.canvas-item.svelte-3tbb6f .canvas-item-inputs .canvas-item-input.svelte-3tbb6f {
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+.canvas-item.svelte-3tbb6f .canvas-item-inputs .canvas-item-input input.svelte-3tbb6f {
+  width: 50%;
+}
+
+.canvasItem.svelte-onxwxp {
+  background-color: orange;
+  border: 2px solid #E5E7EB;
+  box-sizing: border-box !important;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 400;
+  box-sizing: border-box;
+  position: absolute;
+  cursor: pointer;
+}
+
+.canvasItem.svelte-onxwxp:hover {
+  background-color: #FBBF24;
+}
+
+.canvasItem.selected.svelte-onxwxp {
+  border: 2px dotted #E5E7EB;
+  background-color: #FBBF24;
+}
