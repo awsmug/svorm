@@ -1,9 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 /**
-* Basic form CSS
-**/
+ * Basic form CSS
+ **/
 fieldset .fields {
   display: flex;
   flex-wrap: wrap;
@@ -249,6 +246,9 @@ body .button-alert:active {
   box-shadow: 0rem 0rem 0rem;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .percentage.svelte-h0i7g2 {
   position: relative;
   width: 100%;

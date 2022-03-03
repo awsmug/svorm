@@ -12,7 +12,7 @@ export default class Svorm {
      * 
      * @since 1.0.0
      */
-	constructor( formElements:[] ) {
+	constructor( formElements:[any] ) {
 		let components = document.querySelectorAll('[data-component]');
 
 		components.forEach( ( item ) => {
