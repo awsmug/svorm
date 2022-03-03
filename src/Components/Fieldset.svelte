@@ -15,6 +15,9 @@
     import Geo from './Inputs/Geo/Geo.svelte';
     
     export let fieldset: Fieldset;
+    export let formElements;
+
+    console.log( formElements );
 
     $: fields = fieldset.fields;
 

@@ -12,15 +12,16 @@ export default class Svorm {
      * 
      * @since 1.0.0
      */
-	constructor() {
+	constructor( formElements:[] ) {
 		let components = document.querySelectorAll('[data-component]');
 
 		components.forEach( ( item ) => {
 			const form = item.dataset.form;
-			const app = new App({
+			new App({
 				target: item,
 				props: {
-					jsonFile: form
+					jsonFile: form,
+                    formElements: formElements
 				}
 			});
 		});
