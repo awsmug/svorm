@@ -7167,15 +7167,15 @@
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "dialog-text svelte-rj7s1i");
+    			attr_dev(div0, "class", "dialog-text svelte-12sb3au");
     			add_location(div0, file$5, 11, 8, 354);
-    			attr_dev(div1, "class", "dialog-options svelte-rj7s1i");
+    			attr_dev(div1, "class", "dialog-options svelte-12sb3au");
     			add_location(div1, file$5, 12, 8, 400);
-    			attr_dev(div2, "class", "dialog svelte-rj7s1i");
+    			attr_dev(div2, "class", "dialog svelte-12sb3au");
     			set_style(div2, "width", /*width*/ ctx[2]);
     			set_style(div2, "height", /*height*/ ctx[3]);
     			add_location(div2, file$5, 10, 4, 248);
-    			attr_dev(div3, "class", "dialog-wrapper svelte-rj7s1i");
+    			attr_dev(div3, "class", "dialog-wrapper svelte-12sb3au");
     			add_location(div3, file$5, 9, 0, 207);
     		},
     		m: function mount(target, anchor) {
@@ -7270,7 +7270,7 @@
     		c: function create() {
     			button = element("button");
     			t = text(t_value);
-    			attr_dev(button, "class", "svelte-rj7s1i");
+    			attr_dev(button, "class", "svelte-12sb3au");
     			add_location(button, file$5, 14, 12, 478);
     		},
     		m: function mount(target, anchor) {
@@ -8268,7 +8268,7 @@
     		c: function create() {
     			p = element("p");
     			t = text(t_value);
-    			add_location(p, file$3, 60, 24, 2796);
+    			add_location(p, file$3, 60, 24, 2797);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -8305,7 +8305,7 @@
     		c: function create() {
     			h2 = element("h2");
     			t = text(t_value);
-    			add_location(h2, file$3, 58, 24, 2686);
+    			add_location(h2, file$3, 58, 24, 2687);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -9796,7 +9796,7 @@
     const { Error: Error_1 } = globals;
     const file = "src/App.svelte";
 
-    // (20:0) {:catch error}
+    // (19:0) {:catch error}
     function create_catch_block(ctx) {
     	let p;
     	let t_value = /*error*/ ctx[3].message + "";
@@ -9807,7 +9807,7 @@
     			p = element("p");
     			t = text(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 20, 1, 422);
+    			add_location(p, file, 19, 1, 421);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -9825,14 +9825,14 @@
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(20:0) {:catch error}",
+    		source: "(19:0) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (18:0) {:then FormData}
+    // (17:0) {:then FormData}
     function create_then_block(ctx) {
     	let form;
     	let current;
@@ -9869,14 +9869,14 @@
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(18:0) {:then FormData}",
+    		source: "(17:0) {:then FormData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (16:19)   <p>...waiting</p> {:then FormData}
+    // (15:19)   <p>...waiting</p> {:then FormData}
     function create_pending_block(ctx) {
     	let p;
 
@@ -9884,7 +9884,7 @@
     		c: function create() {
     			p = element("p");
     			p.textContent = "...waiting";
-    			add_location(p, file, 16, 1, 338);
+    			add_location(p, file, 15, 1, 337);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -9901,7 +9901,7 @@
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(16:19)   <p>...waiting</p> {:then FormData}",
+    		source: "(15:19)   <p>...waiting</p> {:then FormData}",
     		ctx
     	});
 
@@ -10046,16 +10046,32 @@
     	}
     }
 
-    let components = document.querySelectorAll('[data-component]');
-    components.forEach((item) => {
-        const form = item.dataset.form;
-        new App({
-            target: item,
-            props: {
-                jsonFile: form
-            }
-        });
-    });
+    /**
+     * Svorm class for export
+     *
+     * @since 1.0.0
+     */
+    class Svorm {
+        /**
+         * Constructor
+         *
+         * @since 1.0.0
+         */
+        constructor() {
+            let components = document.querySelectorAll('[data-component]');
+            components.forEach((item) => {
+                const form = item.dataset.form;
+                new App({
+                    target: item,
+                    props: {
+                        jsonFile: form
+                    }
+                });
+            });
+        }
+    }
+
+    new Svorm();
 
 })();
 //# sourceMappingURL=svorm.js.map

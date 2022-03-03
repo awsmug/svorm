@@ -29,7 +29,7 @@ npm i @svenwagener/svorm
             "name": "test-fieldset",
             "fields": [
                 {
-                    "name": "show",
+                    "name": "a-textfield",
                     "label": "A Textfield",
                     "type": "text"
                 }

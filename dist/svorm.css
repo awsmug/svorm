@@ -285,7 +285,7 @@ input[type=radio].svelte-wryltr {
   height: 0;
 }
 
-.dialog-wrapper.svelte-rj7s1i.svelte-rj7s1i {
+.dialog-wrapper.svelte-12sb3au.svelte-12sb3au {
   position: fixed;
   z-index: 1;
   left: 0;
@@ -296,7 +296,7 @@ input[type=radio].svelte-wryltr {
   background: rgba(0, 0, 0, 0.73);
 }
 
-.dialog.svelte-rj7s1i.svelte-rj7s1i {
+.dialog.svelte-12sb3au.svelte-12sb3au {
   margin: auto;
   background-color: white;
   padding: 2rem;
@@ -305,19 +305,19 @@ input[type=radio].svelte-wryltr {
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
-.dialog-text.svelte-rj7s1i.svelte-rj7s1i {
+.dialog-text.svelte-12sb3au.svelte-12sb3au {
   text-align: center;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 1rem;
 }
 
-.dialog-options.svelte-rj7s1i.svelte-rj7s1i {
+.dialog-options.svelte-12sb3au.svelte-12sb3au {
   display: flex;
   justify-content: space-between;
 }
 
-.dialog-options.svelte-rj7s1i button.svelte-rj7s1i {
+.dialog-options.svelte-12sb3au button.svelte-12sb3au {
   flex-grow: 1;
   margin: 0.25rem;
   padding: 0.5rem;

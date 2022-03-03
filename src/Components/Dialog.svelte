@@ -23,7 +23,7 @@
 {/if}
 
 <style>
-    .dialog-wrapper 
+    .dialog-wrapper
     {
         position: fixed;
         z-index: 1;

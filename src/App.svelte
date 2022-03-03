@@ -14,7 +14,6 @@
 	}
 </script>
 
-
 {#await loadForm()}
 	<p>...waiting</p>
 {:then FormData}

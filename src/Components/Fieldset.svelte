@@ -38,6 +38,7 @@
     }
 
     let percentageCurrent = fieldset.form.navigation.getCurrentFieldset().percentage;
+
 </script>
 
 <fieldset class={fieldset.getClasses()} in:fade>
@@ -63,7 +64,7 @@
                         <ChoiceRadio field={field} on:update={update} />
                     {:else if field.type === 'choice-image'}
                         <ChoiceImage field={field} on:update={update} />
-                    {:else if field.type === 'workspace'}
+                    {:else if field.type === 'workspace'} 
                         <Geo field={field} on:update={update} />                        
                     {:else if field.type === 'headline'}
                         <h2>{field.getValue()}</h2>
