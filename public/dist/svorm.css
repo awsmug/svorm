@@ -1,6 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /**
- * Basic form CSS
- **/
+* Basic form CSS
+**/
 fieldset .fields {
   display: flex;
   flex-wrap: wrap;
@@ -246,9 +249,6 @@ body .button-alert:active {
   box-shadow: 0rem 0rem 0rem;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 .percentage.svelte-h0i7g2 {
   position: relative;
   width: 100%;
@@ -324,6 +324,28 @@ input[type=radio].svelte-wryltr {
   cursor: pointer;
 }
 
+.canvas-border.svelte-5qb390.svelte-5qb390 {
+  padding: 1rem;
+  background-color: lightgray;
+}
+
+.reset-canvas.svelte-5qb390.svelte-5qb390 {
+  width: 30px;
+  cursor: pointer;
+  color: red;
+}
+
+.canvas-wrapper.svelte-5qb390.svelte-5qb390 {
+  height: 600;
+  overflow: hidden;
+}
+
+.canvas-wrapper.svelte-5qb390 .canvas.svelte-5qb390 {
+  margin: auto;
+  background-color: lightgray;
+  overflow: hidden;
+}
+
 .presets.svelte-1to9tx7 {
   display: flex;
 }
@@ -359,26 +381,28 @@ input[type=radio].svelte-wryltr {
   background-color: lightgray;
 }
 
-.canvas-border.svelte-5qb390.svelte-5qb390 {
-  padding: 1rem;
-  background-color: lightgray;
-}
-
-.reset-canvas.svelte-5qb390.svelte-5qb390 {
-  width: 30px;
+.canvasItem.svelte-onxwxp {
+  background-color: orange;
+  border: 2px solid #E5E7EB;
+  box-sizing: border-box !important;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 400;
+  box-sizing: border-box;
+  position: absolute;
   cursor: pointer;
-  color: red;
 }
 
-.canvas-wrapper.svelte-5qb390.svelte-5qb390 {
-  height: 600;
-  overflow: hidden;
+.canvasItem.svelte-onxwxp:hover {
+  background-color: #FBBF24;
 }
 
-.canvas-wrapper.svelte-5qb390 .canvas.svelte-5qb390 {
-  margin: auto;
-  background-color: lightgray;
-  overflow: hidden;
+.canvasItem.selected.svelte-onxwxp {
+  border: 2px dotted #E5E7EB;
+  background-color: #FBBF24;
 }
 
 .button-alert.svelte-3tbb6f.svelte-3tbb6f {
@@ -422,28 +446,4 @@ input[type=radio].svelte-wryltr {
 
 .canvas-item.svelte-3tbb6f .canvas-item-inputs .canvas-item-input input.svelte-3tbb6f {
   width: 50%;
-}
-
-.canvasItem.svelte-onxwxp {
-  background-color: orange;
-  border: 2px solid #E5E7EB;
-  box-sizing: border-box !important;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-weight: 400;
-  box-sizing: border-box;
-  position: absolute;
-  cursor: pointer;
-}
-
-.canvasItem.svelte-onxwxp:hover {
-  background-color: #FBBF24;
-}
-
-.canvasItem.selected.svelte-onxwxp {
-  border: 2px dotted #E5E7EB;
-  background-color: #FBBF24;
 }

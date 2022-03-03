@@ -3,6 +3,7 @@
     import Fieldset from './Fieldset.svelte';
     import Navigation from './Navigation.svelte';
 
+    export let formData;
     export let formElements;
     
     let form = new Form( formData );

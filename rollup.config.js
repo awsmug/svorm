@@ -38,7 +38,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'dist/svorm.js'
+		file: 'public/dist/svorm.js'
 	},
 	plugins: [
 		svelte({

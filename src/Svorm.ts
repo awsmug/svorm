@@ -12,7 +12,7 @@ export default class Svorm {
      * 
      * @since 1.0.0
      */
-	constructor( formElements:[any] ) {
+	constructor( formElements = [] ) {
 		let components = document.querySelectorAll('[data-component]');
 
 		components.forEach( ( item ) => {
@@ -20,8 +20,7 @@ export default class Svorm {
 			new App({
 				target: item,
 				props: {
-					jsonFile: form,
-                    formElements: formElements
+					jsonFile: form
 				}
 			});
 		});
