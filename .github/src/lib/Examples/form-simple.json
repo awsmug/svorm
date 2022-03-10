@@ -1,0 +1,22 @@
+{
+    "name": "test-form",
+    "start": "test-fieldset",
+    "fieldsets": [
+        {
+            "label": "Test fieldset",
+            "name": "test-fieldset",
+            "fields": [
+                {
+                    "name": "a-textfield",
+                    "label": "A Textfield",
+                    "type": "text"
+                },
+                {
+                    "name": "a-textfield",
+                    "label": "A Textfield",
+                    "type": "textarea"
+                }
+            ]
+        }
+    ]
+}
