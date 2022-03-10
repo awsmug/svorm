@@ -1,8 +1,8 @@
 export const siteData = {
-  "base": "/SvelteForm/",
+  "base": "/",
   "lang": "en-US",
-  "title": "SvelteForm",
-  "description": "A form framework based on SVELTE and TypeScript",
+  "title": "",
+  "description": "",
   "head": [],
   "locales": {}
 }

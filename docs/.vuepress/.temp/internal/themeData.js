@@ -1,39 +1,16 @@
 export const themeData = {
-  "logo": "https://vuejs.org/images/logo.png",
-  "navbar": [
-    {
-      "text": "Home",
-      "link": "/"
-    }
-  ],
-  "sidebar": [
-    {
-      "text": "Home",
-      "link": "/"
-    },
-    {
-      "text": "Get Started",
-      "link": "/get-started/"
-    },
-    {
-      "text": "JSON Structure",
-      "link": "/json-structure/",
-      "children": [
-        "/json-structure/field-types",
-        "/json-structure/validation",
-        "/json-structure/conditional-logic"
-      ]
-    }
-  ],
-  "repo": "awsmug/SvelteForm",
   "locales": {
     "/": {
       "selectLanguageName": "English"
     }
   },
+  "navbar": [],
+  "logo": null,
   "darkMode": true,
+  "repo": null,
   "selectLanguageText": "Languages",
   "selectLanguageAriaLabel": "Select language",
+  "sidebar": "auto",
   "sidebarDepth": 2,
   "editLink": true,
   "editLinkText": "Edit this page",

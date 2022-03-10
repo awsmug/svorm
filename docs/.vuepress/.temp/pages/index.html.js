@@ -6,17 +6,17 @@ export const data = {
   "frontmatter": {},
   "excerpt": "",
   "headers": [],
-  "filePathRelative": "readme.md",
   "git": {
-    "updatedTime": 1636040967000,
+    "updatedTime": 1646924025000,
     "contributors": [
       {
         "name": "Sven Wagener",
         "email": "sven@awesome.ug",
-        "commits": 2
+        "commits": 4
       }
     ]
-  }
+  },
+  "filePathRelative": "readme.md"
 }
 
 if (import.meta.webpackHot) {

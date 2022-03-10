@@ -19,17 +19,17 @@ export const data = {
       "children": []
     }
   ],
-  "filePathRelative": "get-started/readme.md",
   "git": {
-    "updatedTime": 1636041115000,
+    "updatedTime": 1646924025000,
     "contributors": [
       {
         "name": "Sven Wagener",
         "email": "sven@awesome.ug",
-        "commits": 2
+        "commits": 8
       }
     ]
-  }
+  },
+  "filePathRelative": "get-started/readme.md"
 }
 
 if (import.meta.webpackHot) {

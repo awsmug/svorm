@@ -6,11 +6,17 @@ export const data = {
   "frontmatter": {},
   "excerpt": "",
   "headers": [],
-  "filePathRelative": "json-structure/choices.md",
   "git": {
-    "updatedTime": null,
-    "contributors": []
-  }
+    "updatedTime": 1646924025000,
+    "contributors": [
+      {
+        "name": "Sven Wagener",
+        "email": "sven@awesome.ug",
+        "commits": 3
+      }
+    ]
+  },
+  "filePathRelative": "json-structure/choices.md"
 }
 
 if (import.meta.webpackHot) {
