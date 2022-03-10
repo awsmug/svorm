@@ -26,6 +26,6 @@ module.exports = {
                 ]
             }
         ],
-        repo: 'awsmug/SvelteForm'
+        repo: 'awsmug/svorm'
     },
 }
