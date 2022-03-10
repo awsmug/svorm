@@ -35,7 +35,7 @@
     "svelte2tsx": "^0.5.5",
     "tslib": "^2.3.1",
     "typescript": "~4.5.4",
-    "vuepress": "^2.0.0-beta.27"
+    "vuepress": "^2.0.0-beta.36"
   },
   "type": "module"
 }
