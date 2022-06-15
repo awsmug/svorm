@@ -88,12 +88,15 @@ export default class Navigation {
      */
     public nextFieldset() : Navigation {
         this.currentFieldset.validate();
-        
+
+        console.log( this.currentFieldset );
+
         if ( this.currentFieldset.hasValidationErrors() ) {
             return this;
         }
         
         let nextFieldset = this.getNextFieldset();
+        
 
         if ( nextFieldset !== undefined ) {
             this.recentFieldsets.push( this.currentFieldset.name );

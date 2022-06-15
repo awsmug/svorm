@@ -1,6 +1,10 @@
 import Text from '$lib/Components/Inputs/Text.svelte';
 import Textarea from '$lib/Components/Inputs/Textarea.svelte';
+import Range from '$lib/Components/Inputs/Range.svelte';
 import Checkbox from '$lib/Components/Inputs/Checkbox.svelte';
+import ChoiceSelect from '$lib/Components/Inputs/ChoiceSelect.svelte';
+import ChoiceImage from '$lib/Components/Inputs/ChoiceImage.svelte';
+import ChoiceRadio from '$lib/Components/Inputs/ChoiceRadio.svelte';
 
 export default class Registration {
     private elements = [];
@@ -20,6 +24,10 @@ export default class Registration {
     private registerDefaults() {
         this.addElement( 'text', Text );
         this.addElement( 'textarea', Textarea );
-        this.addElement( 'Checkbox', Checkbox );
+        this.addElement( 'textarea', Range );
+        this.addElement( 'checkbox', Checkbox );
+        this.addElement( 'choice-select', ChoiceSelect );
+        this.addElement( 'choice-image', ChoiceImage );
+        this.addElement( 'choice-radio', ChoiceRadio );
     }
 }

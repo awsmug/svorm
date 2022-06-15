@@ -1,6 +1,6 @@
 {
     "name": "test-form",
-    "start": "geometrischeErfassung",
+    "start": "projektadresse",
     "classes": [ "test-form" ],
     "fieldsets": [
         {
@@ -577,98 +577,7 @@
                         "type": "info",
                         "content": "<h3>Orientierung des Grundrisses</h3><p>Geben Sie an in welche Himmelsrichtung die obere Seite des Grundrisses zeigt.</p>"
                     }        
-                },
-                {
-                    "name": "eines",
-                    "label": "Gebäudegeometrie",
-                    "type": "workspace",
-                    "classes": [ "w1of1", "spacer2top" ], 
-                    "required": true,
-                    "params":
-                    {
-                        "presets": [
-                            {
-                                "name": "Form A",
-                                "img": "assets/img/enon-form-1.svg",
-                                "data": [
-                                    {
-                                        "width": 2,
-                                        "height": 1,
-                                        "x": 0,
-                                        "y": 0
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Form B",
-                                "img": "assets/img/enon-form-2.svg",
-                                "data": [
-                                    {
-                                        "width": 2,
-                                        "height": 1,
-                                        "x": 0,
-                                        "y": 1
-                                    },
-                                    {
-                                        "width": 1,
-                                        "height": 2,
-                                        "x": 2,
-                                        "y": 0
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Form C",
-                                "img": "assets/img/enon-form-3.svg",
-                                "data": [
-                                    {
-                                        "width": 1,
-                                        "height": 1,
-                                        "x": 1,
-                                        "y": 0
-                                    },
-                                    {
-                                        "width": 3,
-                                        "height": 1,
-                                        "x": 0,
-                                        "y": 1
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Form D",
-                                "img": "assets/img/enon-form-4.svg",
-                                "data": [
-                                    {
-                                        "width": 1,
-                                        "height": 2,
-                                        "x": 0,
-                                        "y": 0
-                                    },
-                                    {
-                                        "width": 1,
-                                        "height": 1,
-                                        "x": 1,
-                                        "y": 1
-                                    },
-                                    {
-                                        "width": 1,
-                                        "height": 2,
-                                        "x": 2,
-                                        "y": 0
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    "conditions": [
-                        {
-                            "field": "orientierung",
-                            "value": "",
-                            "operator": "!="
-                        }
-                    ]
-                }                
+                }          
             ]
         }       
     ]
