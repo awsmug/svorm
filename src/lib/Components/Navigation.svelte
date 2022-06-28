@@ -25,9 +25,9 @@
 
 <nav>
     {#if ! disabledPrev }
-    <button on:click={ () => navigate('prev') } disabled={disabledPrev}>Zurück</button>
+    <button on:click={ () => navigate('prev') } disabled={disabledPrev} class="btn btn-primary">Zurück</button>
     {/if}
     {#if ! disabledNext }    
-    <button on:click={ () => navigate('next') } disabled={disabledNext}>Weiter</button>
+    <button on:click={ () => navigate('next') } disabled={disabledNext} class="btn btn-primary">Weiter</button>
     {/if}
 </nav>
