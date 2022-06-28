@@ -16,7 +16,6 @@
 
     function update( form ) {
         dispatch( 'update', form.detail );
-        console.log( form );
     }
 
     let percentageStart: number;

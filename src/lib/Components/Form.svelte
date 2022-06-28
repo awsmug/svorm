@@ -12,6 +12,7 @@
 
     let update = ( e ) => {
         form = e.detail;
+        console.log(form);
     }
 </script>
 
