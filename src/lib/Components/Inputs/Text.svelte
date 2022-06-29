@@ -22,12 +22,9 @@
     }
 </script>
 
-<label for={field.name}>
-    {field.label} 
-    <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-</label>
+<label for={field.name}>{field.label}</label>
 
-<div class="input-group">
+<div class="input-group input-text">
     <input class="form-control" type=text name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
     <div class="input-group-append">
         <span class="input-group-text" id="{field.name}-help">?</span>

@@ -22,12 +22,14 @@
     }
 </script>
 
-<label for={field.name}>
-    {field.label}:  {field.value} {#if field.params.unit !== undefined}{field.params.unit}{/if}
-    <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-</label>
-<div class="input-range-field">
-    <input name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
+<label for={field.name}>{field.label}</label>
+
+<div class="input group input-range-field">
+    <input class="form-range" name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
+    <div class="input-group-append">
+        <span class="input-group-text" id="{field.name}-help">?</span>
+    </div>
 </div>
+
 <Errors field={field} />
 <Help field={field} show={showHelp} />

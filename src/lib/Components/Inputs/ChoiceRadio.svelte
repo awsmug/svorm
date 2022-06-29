@@ -33,16 +33,13 @@
 {/if}
 
 {#each field.choices as choice}
-    <label>
-        <input type=radio bind:group={field.value} value={choice.value} on:change={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+<div class="form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" type=radio bind:group={field.value} value={choice.value} on:change={setValue} />
         {choice.label}
     </label>
+</div>
 {/each}
+
 <Errors field="{field}" />
 <Help field={field} show={showHelp} />
-
-<style>
-    label {        
-        cursor: pointer;
-    }
- </style>
