@@ -48,7 +48,7 @@
     {/if}
     <div class="fields {fieldset.getFieldsClasses()}">
         {#each fields as field}
-            {@html field.getMulticolHTML()}
+            {field.getMulticolHTML()}
             {#if field.conditionsFullfilled() }
                 <div class={field.getClasses()} in:fade>
                     <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
