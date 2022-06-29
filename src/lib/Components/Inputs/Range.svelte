@@ -24,12 +24,9 @@
 
 <label for={field.name}>{field.label}</label>
 
-<div class="input group input-range-field">
+<div class="input-range-field mb-3">
     <input class="form-range" name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
     <div class="input-group-append">
         <span class="input-group-text" id="{field.name}-help">?</span>
     </div>
 </div>
-
-<Errors field={field} />
-<Help field={field} show={showHelp} />

@@ -24,12 +24,9 @@
 
 <label for={field.name}>{field.label}</label>
 
-<div class="input-group input-text">
+<div class="input-group input-text mb-3">
     <input class="form-control" type=text name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
     <div class="input-group-append">
         <span class="input-group-text" id="{field.name}-help">?</span>
     </div>
 </div>
-
-<Errors field={field} />
-<Help field={field} show={showHelp} />

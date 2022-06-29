@@ -23,13 +23,8 @@
 
 <label for={field.name}>{field.label}</label>
 
-<div class="input-select">
-    <select class="custom-select" name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
-        {#each field.choices as choice}
-            <option value={choice.value}>{choice.label}</option>
-        {/each}
-    </select>
-</div>
-<Errors field={field} />
-<Help field={field} show={showHelp} />
-
+<select class="custom-select mb-3" name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
+    {#each field.choices as choice}
+        <option value={choice.value}>{choice.label}</option>
+    {/each}
+</select>

@@ -26,12 +26,9 @@
     }
 </script>
 
-<div class="input-checkbox-field">
+<div class="input-checkbox-field mb-3">
     <label for={field.name}>
         <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
         {field.label}
     </label>
 </div>
-
-<Errors field={field} />
-<Help field={field} show={showHelp} />
