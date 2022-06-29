@@ -28,3 +28,5 @@
         <option value={choice.value}>{choice.label}</option>
     {/each}
 </select>
+
+<Errors field="{field}" />

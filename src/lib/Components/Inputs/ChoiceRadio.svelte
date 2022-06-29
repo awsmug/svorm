@@ -39,4 +39,3 @@
 {/each}
 
 <Errors field="{field}" />
-<Help field={field} show={showHelp} />
