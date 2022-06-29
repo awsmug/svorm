@@ -26,10 +26,7 @@
 </script>
 
 {#if field.label !== undefined}
-    <legend>
-        {field.label}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </legend>
+    <legend>{field.label}</legend>
 {/if}
 
 {#each field.choices as choice}

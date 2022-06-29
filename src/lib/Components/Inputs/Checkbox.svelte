@@ -30,7 +30,6 @@
     <label for={field.name}>
         <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
         {field.label}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
     </label>
 </div>
 

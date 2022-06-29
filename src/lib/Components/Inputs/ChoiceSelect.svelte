@@ -23,15 +23,12 @@
 
 <label for={field.name}>{field.label}</label>
 
-<div class="input-group input-select">
+<div class="input-select">
     <select class="custom-select" name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
         {#each field.choices as choice}
             <option value={choice.value}>{choice.label}</option>
         {/each}
     </select>
-    <div class="input-group-append">
-        <span class="input-group-text" id="{field.name}-help">?</span>
-    </div>
 </div>
 <Errors field={field} />
 <Help field={field} show={showHelp} />
