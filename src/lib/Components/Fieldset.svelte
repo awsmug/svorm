@@ -48,25 +48,10 @@
     {/if}
     <div class="fields {fieldset.getFieldsClasses()}">
         {#each fields as field}
+            {@html field.getMulticolHTML()}
             {#if field.conditionsFullfilled() }
-                <div class={field.getClasses()} in:fade>  
-                    {#if field.type === 'h1'}
-                        <h1>{field.getValue()}</h1>
-                    {:else if field.type === 'h2'}
-                        <h2>{field.getValue()}</h2>
-                    {:else if field.type === 'h3'}
-                        <h3>{field.getValue()}</h3>
-                    {:else if field.type === 'h4'}
-                        <h4>{field.getValue()}</h4>
-                    {:else if field.type === 'h5'}
-                        <h5>{field.getValue()}</h5>
-                    {:else if field.type === 'h6'}
-                        <h6>{field.getValue()}</h6>
-                    {:else if field.type === 'p'}
-                        <p>{field.getValue()}</p>
-                    {:else}
-                        <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
-                    {/if}
+                <div class={field.getClasses()} in:fade>
+                    <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
                 </div>
             {/if}            
         {/each}

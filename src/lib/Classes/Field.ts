@@ -19,6 +19,7 @@ export default class Field implements HasFieldData {
     readonly type        : string;    
     readonly label       : string;
     readonly placeholder : string;
+    readonly multicol    : number;
     readonly required    : boolean;
     readonly defaultValue: any[];
     readonly dynamicValue: any[];
@@ -50,6 +51,7 @@ export default class Field implements HasFieldData {
         this.type         = field.type;
         this.label        = field.label;
         this.placeholder  = field.placeholder;
+        this.multicol     = field.multicol === undefined ? 0 : field.multicol;
         this.help         = field.help === undefined ? undefined : new Help( field.help );
         this.choices      = field.choices === undefined ? []: field.choices;
         this.params       = field.params === undefined ? []: field.params;
@@ -186,6 +188,53 @@ export default class Field implements HasFieldData {
         let classes = genericClasses.concat( this.classes );
         
         return classes.join(' ');
+    }
+
+    /**
+     * Is field a multi column field.
+     * 
+     * @returns True if it is multicol, false if not.
+     * 
+     * @since 1.0.0
+     */
+    public isMulticol(): boolean {
+        return this.multicol > 0;
+    }
+
+    /**
+     * Get multicol size.
+     * 
+     * @returns Multicol size.
+     * 
+     * @since 1.0.0
+     */
+    public getMultiColSize(): number {
+        return this.multicol;
+    }
+
+    /**
+     * Returns multicol HTML.
+     * 
+     * @returns Multicol HTML.
+     * 
+     * @since 1.0.0
+     */
+    public getMulticolHTML(): string{
+        if(startedMulticol === undefined) {
+            var startedMulticol = false;
+        }
+
+        if( this.isMulticol() && startedMulticol === false) {
+            startedMulticol = true;
+            return '<div class="row">';
+        }
+
+        if( ! this.isMulticol() && startedMulticol === true) {
+            startedMulticol = false;
+            return '</div>';
+        }
+
+        return '';
     }
 
     /**
