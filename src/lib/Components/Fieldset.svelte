@@ -6,6 +6,7 @@
     
     import Percentage from './Percentage.svelte';
     import Registration from '$lib/Classes/Registration';
+    import Group from './Elements/Group.svelte';
     
     export let fieldset: Fieldset;
     export let customElements;
@@ -48,12 +49,21 @@
     {/if}
     <div class="fields {fieldset.getFieldsClasses()}">
         {#each fields as field}
-            {field.getMulticolHTML()}
-            {#if field.conditionsFullfilled() }
-                <div class={field.getClasses()} in:fade>
-                    <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
-                </div>
-            {/if}            
+            {#if field.type === 'group'}
+                <Group>
+                    {#each field.fields as groupedfield}
+                    <div class={groupedfield.getClasses()} in:fade>
+                        <svelte:component this={registration.getElement(groupedfield.type)} field={groupedfield} on:update={update} />
+                    </div>
+                    {/each}
+                </Group>                
+            {:else}
+                {#if field.conditionsFullfilled() }
+                    <div class={field.getClasses()} in:fade>
+                        <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
+                    </div>
+                {/if}
+            {/if}           
         {/each}
     </div>
 </fieldset>

@@ -7,69 +7,73 @@
             "label": "Basisdaten",
             "name": "basisdaten",
             "nextFieldset": "geometrischeErfassung",
-            "fields": [                
+            "fields": [
                 {
-                    "name": "grund",
-                    "label": "Grund der Erstellung des Energieausweises",
-                    "type": "choice-select",
-                    "classes": [ "w1of1" ], 
-                    "required": true,
-                    "choices": [
+                    "type": "group",
+                    "fields": [
                         {
-                            "label": "Bitte wählen..."
+                            "name": "grund",
+                            "label": "Grund der Erstellung des Energieausweises",
+                            "type": "choice-select",
+                            "required": true,
+                            "gridsize": 6,
+                            "choices": [
+                                {
+                                    "label": "Bitte wählen..."
+                                },
+                                {
+                                    "label": "Modernisierung / Erweiterung",
+                                    "value": "Modernisierung / Erweiterung"
+                                },
+                                {
+                                    "label": "Vermietung",
+                                    "value": "Vermietung"
+                                },
+                                {
+                                    "label": "Verkauf",
+                                    "value": "Verkauf"
+                                },
+                                {
+                                    "label": "Sonstiges",
+                                    "value": "Sonstiges"
+                                }
+                            ],
+                            "validations": [
+                                {
+                                    "type": "empty",
+                                    "error": "Bitte wählen Sie einen Grund der Erstellung aus"
+                                }
+                            ]               
                         },
                         {
-                            "label": "Modernisierung / Erweiterung",
-                            "value": "Modernisierung / Erweiterung"
-                        },
-                        {
-                            "label": "Vermietung",
-                            "value": "Vermietung"
-                        },
-                        {
-                            "label": "Verkauf",
-                            "value": "Verkauf"
-                        },
-                        {
-                            "label": "Sonstiges",
-                            "value": "Sonstiges"
+                            "name": "gebaeudedaten",
+                            "label": "Gebäudedaten",
+                            "type": "choice-select",
+                            "required": true,
+                            "gridsize": 6,
+                            "choices": [                        
+                                {
+                                    "label": "Bestand",
+                                    "value": "Bestand"
+                                },
+                                {
+                                    "label": "Neubau",
+                                    "value": "Neubau"
+                                }
+                            ],
+                            "validations": [
+                                {
+                                    "type": "empty",
+                                    "error": "Bitte wählen Sie einen einen Wert aus"
+                                }
+                            ]             
                         }
-                    ],
-                    "validations": [
-                        {
-                            "type": "empty",
-                            "error": "Bitte wählen Sie einen Grund der Erstellung aus"
-                        }
-                    ]               
-                },
-                {
-                    "name": "gebaeudedaten",
-                    "label": "Gebäudedaten",
-                    "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
-                    "required": true,
-                    "choices": [                        
-                        {
-                            "label": "Bestand",
-                            "value": "Bestand"
-                        },
-                        {
-                            "label": "Neubau",
-                            "value": "Neubau"
-                        }
-                    ],
-                    "validations": [
-                        {
-                            "type": "empty",
-                            "error": "Bitte wählen Sie einen einen Wert aus"
-                        }
-                    ]             
+                    ]
                 },
                 {
                     "name": "nutzung",
                     "label": "Nutzung",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
                         {
@@ -100,7 +104,6 @@
                     "name": "wohneinheiten",
                     "label": "Anzahl der Wohneinheiten",
                     "type": "text",
-                    "classes": [ "w1of1" ], 
                     "required": true,
                     "validations": [
                         {
@@ -128,7 +131,6 @@
                     "name": "wohnnutzung",
                     "label": "Flächenanteil Wohnnutzung",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
                         {
@@ -156,7 +158,6 @@
                     "name": "gebaeudetyp",
                     "label": "Gebäudetyp",
                     "type": "choice-radio",
-                    "classes": [ "w1of1" ], 
                     "required": true,
                     "choices": [                        
                         {
@@ -187,7 +188,7 @@
                     "name": "baujahr",
                     "label": "Baujahr:",
                     "type": "text",
-                    "classes": [ "w1of1" ], 
+                    "gridsize": 1,
                     "required": true,
                     "validations": [
                         {
@@ -206,16 +207,10 @@
                     }
                 },
                 {
-                    "type": "headline",
-                    "name": "headlineNumberOfFloors",
-                    "value": "Anzahl der Geschosse",
-                    "classes": [ "w1of1", "spacer2top" ]
-                },
-                {
                     "name": "geschosseSpitzboden",
                     "label": "Spitzboden",
                     "type": "text",
-                    "classes": [ "w1of5" ], 
+                    "gridsize": 3,
                     "required": true,
                     "validations": [
                         {
@@ -242,7 +237,6 @@
                     "name": "geschosseDachgeschosse",
                     "label": "Dachgeschosse",
                     "type": "text",
-                    "classes": [ "w1of5" ], 
                     "required": true,
                     "validations": [
                         {
@@ -259,7 +253,6 @@
                     "name": "geschosseObergeschosse",
                     "label": "Obergeschosse:",
                     "type": "text",
-                    "classes": [ "w1of5" ], 
                     "required": true,
                     "validations": [
                         {
@@ -276,7 +269,6 @@
                     "name": "geschosseErdgeschoss",
                     "label": "Erdgeschoss",
                     "type": "text",
-                    "classes": [ "w1of5" ], 
                     "required": true,
                     "validations": [
                         {
@@ -293,7 +285,6 @@
                     "name": "geschossKeller",
                     "label": "Keller",
                     "type": "text",
-                    "classes": [ "w1of5" ], 
                     "required": true,
                     "validations": [
                         {
@@ -317,7 +308,6 @@
                     "name": "orientierung",
                     "label": "Orientierung",
                     "type": "choice-select",
-                    "classes": [ "w1of1", "spacer2bottom" ], 
                     "required": true,
                     "choices": [
                         {

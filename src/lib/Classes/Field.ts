@@ -17,6 +17,7 @@ var startedMulticol = false;
  */
 export default class Field implements HasFieldData {
     readonly fieldset    : Fieldset;
+    readonly fields      : Field[] = [];
     readonly name        : string;
     readonly type        : string;    
     readonly label       : string;
@@ -30,6 +31,7 @@ export default class Field implements HasFieldData {
     readonly choices     : HasChoicesData[];
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
+    readonly gridsize   : number;
 
     public   value       : any;
     private  classes     : string[];
@@ -61,7 +63,14 @@ export default class Field implements HasFieldData {
         this.defaultValue = field.defaultValue === undefined ? undefined: field.defaultValue;
         this.dynamicValue = field.dynamicValue === undefined ? undefined: field.dynamicValue;
         this.validations  = field.validations === undefined ? []: field.validations;
-        this.conditions   = field.conditions === undefined ? []: field.conditions;  
+        this.conditions   = field.conditions === undefined ? []: field.conditions;
+        this.gridsize    = field.gridsize;
+
+        if( field.fields !== undefined ) {
+            field.fields.forEach( field => {
+                this.fields.push( new Field( this.fieldset, field ) );
+            });
+        }
 
         this.value        = field.value;
         this.classes      = field.classes === undefined ? []: field.classes;
@@ -187,6 +196,9 @@ export default class Field implements HasFieldData {
      */
     public getClasses( additionalClasses: string[] = []): string {
         let genericClasses = [ 'input', 'input-' + this.type ];
+        if( this.gridsize !== undefined ) {
+            genericClasses.push('col-' + this.gridsize);
+        }
         let classes = genericClasses.concat( this.classes );
         
         return classes.join(' ');
