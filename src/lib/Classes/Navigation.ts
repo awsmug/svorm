@@ -89,8 +89,6 @@ export default class Navigation {
     public nextFieldset() : Navigation {
         this.currentFieldset.validate();
 
-        console.log( this.currentFieldset );
-
         if ( this.currentFieldset.hasValidationErrors() ) {
             return this;
         }

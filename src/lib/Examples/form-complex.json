@@ -1,7 +1,6 @@
 {
     "name": "test-form",
     "start": "basisdaten",
-    "classes": [ "test-form" ],
     "fieldsets": [
         {
             "label": "Basisdaten",
@@ -46,7 +45,10 @@
                     "label": "Gebäudedaten",
                     "type": "choice-select",
                     "required": true,
-                    "choices": [                        
+                    "choices": [     
+                        {
+                            "label": "Bitte wählen..."
+                        },                   
                         {
                             "label": "Bestand",
                             "value": "Bestand"

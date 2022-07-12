@@ -12,7 +12,6 @@ export default interface HasFieldsetData {
     readonly label         : string;    
     readonly params        : [];
     readonly classes       : [];
-    readonly fieldsClasses : [];
     readonly fields        : Field[];
     readonly conditions    : HasConditionData[];
     

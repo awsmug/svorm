@@ -4,6 +4,7 @@ import type Field from './Field';
 
 import Fieldset from './Fieldset';
 import Navigation from './Navigation';
+import CSSElement from './CSSElement';
 
 
 /**
@@ -11,9 +12,8 @@ import Navigation from './Navigation';
  * 
  * @since 1.0.0
  */
-export default class Form {
+export default class Form extends CSSElement {
     readonly name           : string;
-    readonly classes        : [];
     readonly navigation     : Navigation;
     readonly fieldsets      : Fieldset[];
 
@@ -25,13 +25,15 @@ export default class Form {
      * @since 1.0.0
      */
     public constructor( formData: HasFormData ) {
+        super();
+
         this.name      = formData.name;
-        this.classes   = formData.classes;
         this.fieldsets = [];
         
-        formData.fieldsets.forEach( ( fieldset: HasFieldsetData ) => {
-            this.fieldsets.push( new Fieldset( this, fieldset ) );
-        });
+        this.addClass('needs-validation'); // BS5 class
+
+        formData.classes?.forEach( className => this.addClass(className) );
+        formData.fieldsets.forEach( fieldset => this.fieldsets.push( new Fieldset( this, fieldset ) ) );
 
         this.navigation = new Navigation( this, formData.start );
     }
@@ -85,29 +87,12 @@ export default class Form {
      * @since 1.0.0
      */
     public hasValidationErrors() : boolean {
-        let hasValidationErrors = false;       
         this.fieldsets.forEach( ( fieldset: Fieldset ) => {
             if( fieldset.hasValidationErrors() ) {
-                hasValidationErrors = true;
-                return;
+                return true;
             }
         });
 
-        return hasValidationErrors;
-    }
-
-    /**
-     * Get CSS Classes.
-     * 
-     * @return String of CSS classes.
-     * 
-     * @since 1.0.0
-     */
-    public getClasses(): string { 
-        if ( this.classes !== undefined &&  this.classes.length > 0  ) {
-            return this.classes.join(' ');
-        }
-
-        return '';
+        return false;
     }
 }

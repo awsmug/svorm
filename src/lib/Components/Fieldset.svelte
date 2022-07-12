@@ -47,7 +47,7 @@
     {#if fieldset.percentage !== undefined}
         <Percentage start={percentageStart} percentage={percentageCurrent} />
     {/if}
-    <div class="fields {fieldset.getFieldsClasses()}">
+    <div class="fields">
         {#each fields as field}
             {#if field.type === 'group'}
                 <Group>

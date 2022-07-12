@@ -2,9 +2,9 @@
     import {createEventDispatcher} from 'svelte';
 
     import type Field from "../../Classes/Field";
-    import Help from '../Help.svelte';
-    import HelpIcon from '../HelpIcon.svelte';
+
     import Errors from '../Errors.svelte';
+import ChoiceSelect from './ChoiceSelect.svelte';
 
     export let field: Field;
 
@@ -13,29 +13,25 @@
     const dispatch = createEventDispatcher();
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
-        
-        if ( field.params.setNextFieldset ) {
-            field.fieldset.form.navigation.nextFieldset();
-        }
     }
 
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }
+    field.addInputClass('form-check-input');
+
+    let count = 0;
 </script>
 
 {#if field.label !== undefined}
     <legend>{field.label}</legend>
 {/if}
 
-{#each field.choices as choice}
+{#each field.choices as choice, i}
 <div class="form-check">
-    <label class="form-check-label">
-        <input class="form-check-input" type=radio bind:group={field.value} value={choice.value} on:change={setValue} />
-        {choice.label}
-    </label>
+    <input type=radio class={field.getInputClasses()} id={field.name} bind:group={field.value} value={choice.value} on:change={setValue} />
+    <label class="form-check-label" for={field.name}>{choice.label}</label>
+    {#if field.choices.length === i + 1}
+        <Errors field="{field}" />
+    {/if}
 </div>
 {/each}
 
-<Errors field="{field}" />
+

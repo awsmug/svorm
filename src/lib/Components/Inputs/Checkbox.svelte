@@ -3,8 +3,6 @@
 
     import type Field from '../../Classes/Field';
 
-    import Help from '../Help.svelte';
-    import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -28,7 +26,7 @@
 
 <div class="input-checkbox-field mb-3">
     <label for={field.name}>
-        <input type=checkbox name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
+        <input type=checkbox id={field.name} name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
         {field.label}
     </label>
 </div>

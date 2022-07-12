@@ -7,6 +7,7 @@ import Validator from './Validator';
 import type HasChoicesData from '../Interfaces/HasChoicesData';
 import type HasValidationData from '../Interfaces/HasValidationData';
 import DynamicValue from './DynamicValue';
+import CSSElement from './CSSElement';
 
 var startedMulticol = false;
 
@@ -15,7 +16,7 @@ var startedMulticol = false;
  * 
  * @since 1.0.0
  */
-export default class Field implements HasFieldData {
+export default class Field extends CSSElement implements HasFieldData {
     readonly fieldset    : Fieldset;
     readonly fields      : Field[] = [];
     readonly name        : string;
@@ -31,12 +32,12 @@ export default class Field implements HasFieldData {
     readonly choices     : HasChoicesData[];
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
-    readonly gridsize   : number;
+    readonly gridsize    : number;
 
-    public   value       : any;
-    private  classes     : string[];
-    private  validated   : boolean = false;    
-    private  errors      : string[] = [];
+    public  value        : any;
+    private validated    : boolean = false;    
+    private errors       : string[] = [];
+    private inputClasses : string[] = [];
 
     /**
      * Initializing field.
@@ -50,6 +51,8 @@ export default class Field implements HasFieldData {
         fieldset : Fieldset,
         field    : Field
     ){
+        super();
+
         this.fieldset     = fieldset;
         this.name         = field.name;
         this.type         = field.type;
@@ -66,14 +69,9 @@ export default class Field implements HasFieldData {
         this.conditions   = field.conditions === undefined ? []: field.conditions;
         this.gridsize    = field.gridsize;
 
-        if( field.fields !== undefined ) {
-            field.fields.forEach( field => {
-                this.fields.push( new Field( this.fieldset, field ) );
-            });
-        }
+        field.fields?.forEach( field => this.fields.push( new Field( this.fieldset, field ) ) );
 
         this.value        = field.value;
-        this.classes      = field.classes === undefined ? []: field.classes;
     }
 
     /**
@@ -163,48 +161,6 @@ export default class Field implements HasFieldData {
     }
 
     /**
-     * Add a CSS class to field.
-     * 
-     * @param className CSS class name.
-     * 
-     * @since 1.0.0
-     */
-    public addClass( className: string ) : void {
-        this.removeClass( className ); // Remove maybe existing class
-        this.classes.push( className );
-    }
-
-    /**
-     * Add a CSS class to field.
-     * 
-     * @param className CSS class name.
-     * 
-     * @since 1.0.0
-     */
-    public removeClass( className: string ) : void {
-        this.classes = this.classes.filter( function( value ){ 
-            return value !== className;
-        });
-    }
-
-    /**
-     * Get CSS Classes.
-     * 
-     * @return String of CSS classes.
-     * 
-     * @since 1.0.0
-     */
-    public getClasses( additionalClasses: string[] = []): string {
-        let genericClasses = [ 'input', 'input-' + this.type ];
-        if( this.gridsize !== undefined ) {
-            genericClasses.push('col-' + this.gridsize);
-        }
-        let classes = genericClasses.concat( this.classes );
-        
-        return classes.join(' ');
-    }
-
-    /**
      * Is field a multi column field.
      * 
      * @returns True if it is multicol, false if not.
@@ -234,20 +190,17 @@ export default class Field implements HasFieldData {
      * @since 1.0.0
      */
     public validate() : string[] {
-        if( ! this.conditionsFullfilled() )
-        {
-            return [];
-        }
+        if( ! this.conditionsFullfilled() ) return [];
 
         let validator = new Validator( this.value, this.validations );
         this.errors = validator.check();
         
         if ( this.errors.length > 0 ) {
-            this.addClass( 'error' );
-            this.removeClass( 'validated' )
+            this.addClass( 'is-invalid' );
+            this.removeClass( 'is-valid' );
         } else {
-            this.removeClass( 'error' );
-            this.addClass( 'validated' );
+            this.addClass( 'is-valid' );
+            this.removeClass( 'is-invalid' );
         }
 
         this.validated = true;
@@ -293,9 +246,9 @@ export default class Field implements HasFieldData {
     }
 
     /**
-     * Conditions fullfilled.
+     * Checks if conditions are fullfilled.
      * 
-     * @return True if fullfilled, false if not.
+     * @returns True if conditions are fullfilled, false if not.
      * 
      * @since 1.0.0
      */
@@ -333,5 +286,54 @@ export default class Field implements HasFieldData {
        
 
         return ! fullfillments.includes( false );
+    }
+
+    /**
+     * Add input class.
+     * 
+     * @param string Name of css class to add.
+     * 
+     * @since 1.0.0
+     */
+    public addInputClass(name: string) {
+        if( this.inputClasses.indexOf(name) !== -1) {
+            return;
+        }
+
+        this.inputClasses.push(name);
+    }
+
+    /**
+     * Remove input class.
+     * 
+     * @param string Name of css class to remove.
+     * 
+     * @since 1.0.0
+     */
+    public removeInputClass(name: string) {
+        this.inputClasses = this.inputClasses.filter( className => className !== name );
+    }
+
+    /**
+     * Get input classes.
+     * 
+     * @return String of CSS classes.
+     * 
+     * @since 1.0.0
+     */
+    public getInputClasses(): string {
+        if( ! this.hasBeenValidated() ) {
+            return this.inputClasses.join(' ');
+        }
+
+        if( ! this.hasValidationErrors() ) {
+            this.addInputClass('is-valid');
+            this.removeInputClass('is-invalid');
+        } else {
+            this.addInputClass('is-invalid');
+            this.removeInputClass('is-valid');
+        }
+
+        return this.inputClasses.join(' ');
     }
 }

@@ -25,7 +25,7 @@
 <label for={field.name}>{field.label}</label>
 
 <div class="input-range-field mb-3">
-    <input class="form-range" name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
+    <input class="form-range" id={field.name} name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
     <div class="input-group-append">
         <span class="input-group-text" id="{field.name}-help">?</span>
     </div>

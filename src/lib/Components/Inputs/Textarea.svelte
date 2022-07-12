@@ -25,7 +25,7 @@
 <label for={field.name}>{field.label}</label>
 
 <div class="input-group input-textarea mb-3">
-    <textarea class="form-control" name="{field.name}" placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea>
+    <textarea class="form-control" id={field.name} name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea>
 </div>
 
 <Errors field="{field}" />

@@ -4,6 +4,7 @@ import type HasConditionData from '../Interfaces/HasConditionData';
 
 import Field from './Field';
 import type HasSubmissionData from '../Interfaces/HasSubmissionData';
+import CSSElement from './CSSElement';
 
 
 /**
@@ -11,19 +12,17 @@ import type HasSubmissionData from '../Interfaces/HasSubmissionData';
  * 
  * @since 1.0.0
  */
-export default class Fieldset implements HasFieldsetData {
+export default class Fieldset extends CSSElement {
     readonly form          : Form;
     readonly name          : string;
     readonly label         : string;
     readonly percentage    : number;
-    readonly params        : [];  
-    readonly classes       : [];
-    readonly fieldsClasses : [];    
+    readonly params        : [];
     readonly conditions    : HasConditionData[];
-    readonly submission    : HasSubmissionData | undefined;    
+    readonly submission    : HasSubmissionData | undefined;
 
     readonly nextFieldset: string;
-    readonly prevFieldset: string;    
+    readonly prevFieldset: string;
 
     readonly fields      : Field[] = [];
    
@@ -36,24 +35,32 @@ export default class Fieldset implements HasFieldsetData {
      * @since 1.0.0
      */
     public constructor( form: Form, fieldset: HasFieldsetData ) {
+        super();
+        
         this.form           = form;
         this.name           = fieldset.name;
         this.label          = fieldset.label;
         this.percentage     = fieldset.percentage;
         this.params         = undefined === fieldset.params ? []: fieldset.params;
-        this.classes        = undefined === fieldset.classes ? []: fieldset.classes;
-        this.fieldsClasses  = undefined === fieldset.fieldsClasses ? []: fieldset.fieldsClasses;
         this.conditions     = undefined === fieldset.conditions ? []: fieldset.conditions;
         this.submission     = fieldset.submission;
 
         this.nextFieldset = fieldset.nextFieldset;
         this.prevFieldset = fieldset.prevFieldset;
-        
-        fieldset.fields.forEach( field => {
-            this.fields.push( new Field( this, field ) );
-        });
+
+        this.addClass('fieldset-' +  this.name);
+
+        fieldset.classes?.forEach( className => this.addClass(className) );
+        fieldset.fields.forEach( field => this.fields.push( new Field( this, field ) ) );
     }
 
+    /**
+     * Checks if conditions are fullfilled.
+     * 
+     * @returns True if conditions are fullfilled, false if not.
+     * 
+     * @since 1.0.0
+     */
     public conditionsFullfilled() : boolean {
         if ( this.conditions.length === 0 ) {
             return true;
@@ -115,37 +122,6 @@ export default class Fieldset implements HasFieldsetData {
     }
 
     /**
-     * Get CSS classes for fieldset wrapper.
-     * 
-     * @return String of CSS classes.
-     * 
-     * @since 1.0.0
-     */
-    public getClasses(): string {
-        if ( this.classes.length > 0  ) {
-            return this.classes.join(' ');
-        }
-
-        return '';
-    }
-
-
-    /**
-     * Get CSS classes for field wrapper div.
-     * 
-     * @return String of CSS classes.
-     * 
-     * @since 1.0.0
-     */
-    public getFieldsClasses(): string {
-        if ( this.fieldsClasses.length > 0  ) {
-            return this.fieldsClasses.join(' ');
-        }
-
-        return '';
-    }
-
-    /**
      * Validate fieldset.
      * 
      * @return True on successful validation, false on errors.
@@ -160,7 +136,7 @@ export default class Fieldset implements HasFieldsetData {
                     if( field.validate().length > 0 && ! foundError  ) {
                         foundError = true;   
                     }
-                });
+                }); 
             } else if ( field.validate().length > 0 && ! foundError ) {
                 foundError = true;                
             }

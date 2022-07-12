@@ -16,7 +16,7 @@
     }
 </script>
 
-<form name={form.name} class={form.getClasses()} on:submit|preventDefault>
+<form name={form.name} class={form.getClasses()} on:submit|preventDefault novalidate>
     <div class="fieldsets">
         {#each form.fieldsets as fieldset}
             {#if fieldset.name === form.navigation.getCurrentFieldset().name }
