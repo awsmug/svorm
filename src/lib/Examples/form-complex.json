@@ -157,7 +157,7 @@
                             "name": "wohneinheiten",
                             "label": "Wohneinheiten",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -185,7 +185,7 @@
                             "name": "baujahr",
                             "label": "Baujahr",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -207,7 +207,7 @@
                             "name": "geschosseSpitzboden",
                             "label": "Spitzböden",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -234,7 +234,7 @@
                             "name": "geschosseDachgeschosse",
                             "label": "Dachgeschosse",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -251,7 +251,7 @@
                             "name": "geschosseObergeschosse",
                             "label": "Obergeschosse",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -268,7 +268,7 @@
                             "name": "geschosseErdgeschoss",
                             "label": "Erdgeschosse",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -285,7 +285,7 @@
                             "name": "geschossKeller",
                             "label": "Keller",
                             "type": "text",
-                            "gridsize": 1,
+                            "gridsize": 4,
                             "required": true,
                             "validations": [
                                 {
@@ -362,6 +362,9 @@
                 }          
             ]
         }       
+    ],
+    "checks": [
+        
     ]
 }
 
