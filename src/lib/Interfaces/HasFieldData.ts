@@ -1,3 +1,4 @@
+import type Field from "$lib/Classes/Field";
 import type HasChoicesData from "./HasChoicesData";
 import type HasConditionData from "./HasConditionData";
 import type HasValidationData from "./HasValidationData";
@@ -11,6 +12,8 @@ export default interface HasFieldData {
     readonly type        : string;
     readonly name        : string;    
     readonly label       : string;
+    readonly classes     : any[];
+    readonly fields      : Field[];
     readonly params      : any[];
     readonly choices     : HasChoicesData[];
     readonly defaultValue: any;

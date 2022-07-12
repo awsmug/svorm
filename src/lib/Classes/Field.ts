@@ -32,7 +32,6 @@ export default class Field extends CSSElement implements HasFieldData {
     readonly choices     : HasChoicesData[];
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
-    readonly gridsize    : number;
 
     public  value        : any;
     private validated    : boolean = false;    
@@ -49,7 +48,7 @@ export default class Field extends CSSElement implements HasFieldData {
      */
     public constructor(
         fieldset : Fieldset,
-        field    : Field
+        field    : HasFieldData
     ){
         super();
 
@@ -67,14 +66,13 @@ export default class Field extends CSSElement implements HasFieldData {
         this.dynamicValue = field.dynamicValue === undefined ? undefined: field.dynamicValue;
         this.validations  = field.validations === undefined ? []: field.validations;
         this.conditions   = field.conditions === undefined ? []: field.conditions;
-        this.gridsize     = field.gridsize;
 
         this.addClass('mb-3');
-        this.addClass('col-' + this.gridsize);
-        
+
+        field.classes?.forEach( className => this.addClass(className) );
         field.fields?.forEach( field => this.fields.push( new Field( this.fieldset, field ) ) );
 
-        this.value        = field.value;
+        this.value = field.value;
     }
 
     /**
@@ -161,28 +159,6 @@ export default class Field extends CSSElement implements HasFieldData {
     public hasChoices() : boolean 
     {
         return this.choices.length > 0;
-    }
-
-    /**
-     * Is field a multi column field.
-     * 
-     * @returns True if it is multicol, false if not.
-     * 
-     * @since 1.0.0
-     */
-    public isMulticol(): boolean {
-        return this.multicol > 0;
-    }
-
-    /**
-     * Get multicol size.
-     * 
-     * @returns Multicol size.
-     * 
-     * @since 1.0.0
-     */
-    public getMultiColSize(): number {
-        return this.multicol;
     }
 
     /**
