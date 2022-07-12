@@ -68,9 +68,12 @@
                 {
                     "name": "nutzung",
                     "label": "Nutzung",
-                    "type": "choice-radio",
+                    "type": "choice-select",
                     "required": true,
-                    "choices": [                        
+                    "choices": [    
+                        {
+                            "label": "Bitte wählen..."
+                        },                    
                         {
                             "label": "Einfamilienhaus",
                             "value": "Einfamilienhaus"
@@ -98,9 +101,12 @@
                 {
                     "name": "wohnnutzung",
                     "label": "Flächenanteil Wohnnutzung",
-                    "type": "choice-radio",
+                    "type": "choice-select",
                     "required": true,
-                    "choices": [                        
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },                     
                         {
                             "label": "über 50%",
                             "value": "majority"
@@ -125,9 +131,12 @@
                 {
                     "name": "gebaeudetyp",
                     "label": "Gebäudetyp",
-                    "type": "choice-radio",
+                    "type": "choice-select",
                     "required": true,
-                    "choices": [                        
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },                   
                         {
                             "label": "Freistehendes Haus",
                             "value": "Freistehendes Haus"

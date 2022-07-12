@@ -53,7 +53,7 @@
                 <Group>
                     {#each field.fields as groupedfield}
                         {#if groupedfield.conditionsFullfilled() }
-                        <div class="mb-3 {groupedfield.getClasses()}" in:fade>
+                        <div class="{groupedfield.getClasses()}" in:fade>
                             <svelte:component this={registration.getElement(groupedfield.type)} field={groupedfield} on:update={update} />
                         </div>
                         {/if}
@@ -61,7 +61,7 @@
                 </Group>                
             {:else}
                 {#if field.conditionsFullfilled() }
-                    <div class="{field.getClasses()} mb-3" in:fade>
+                    <div class="{field.getClasses()}" in:fade>
                         <svelte:component this={registration.getElement(field.type)} field={field} on:update={update} />
                     </div>
                 {/if}

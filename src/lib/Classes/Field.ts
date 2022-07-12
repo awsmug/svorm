@@ -67,8 +67,11 @@ export default class Field extends CSSElement implements HasFieldData {
         this.dynamicValue = field.dynamicValue === undefined ? undefined: field.dynamicValue;
         this.validations  = field.validations === undefined ? []: field.validations;
         this.conditions   = field.conditions === undefined ? []: field.conditions;
-        this.gridsize    = field.gridsize;
+        this.gridsize     = field.gridsize;
 
+        this.addClass('mb-3');
+        this.addClass('col-' + this.gridsize);
+        
         field.fields?.forEach( field => this.fields.push( new Field( this.fieldset, field ) ) );
 
         this.value        = field.value;
