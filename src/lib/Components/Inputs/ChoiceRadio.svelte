@@ -30,7 +30,7 @@
 {/if}
 
 {#each field.choices as choice}
-<div class="form-check mb-3">
+<div class="form-check">
     <label class="form-check-label">
         <input class="form-check-input" type=radio bind:group={field.value} value={choice.value} on:change={setValue} />
         {choice.label}

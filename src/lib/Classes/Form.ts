@@ -45,22 +45,33 @@ export default class Form {
      * @since 1.0.0
      */
     public getFieldset( name: string ) : Fieldset {
-        let fieldsets = this.fieldsets.filter( ( fieldset: Fieldset ) => {
-            return fieldset.name === name;
+        let foundFieldset: Fieldset;
+
+        this.fieldsets.forEach( ( fieldset: Fieldset ) => {
+            if( fieldset.name === name ) {
+                foundFieldset = fieldset;
+            }
         });
 
-        return fieldsets[0];
+        return foundFieldset;
     }
 
+    /**
+     * Get a specific field.
+     * 
+     * @param name Name of field.
+     * @return Field object. Undefined if nothing was found.
+     * 
+     * @since 1.0.0
+     */
     public getField( name: string ) : Field {
         let foundField: Field;
 
-        this.fieldsets.forEach( ( fieldset: HasFieldsetData ) => {
-            fieldset.fields.forEach( ( field: Field ) => {
-                if( field.name === name ) {
-                    foundField = field;
-                }
-            });
+        this.fieldsets.forEach( ( fieldset: Fieldset ) => {
+            let field = fieldset.getField(name);
+            if( field !== undefined ) {
+                foundField = field;
+            }
         });
 
         return foundField;

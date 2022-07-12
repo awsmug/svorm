@@ -9,66 +9,59 @@
             "nextFieldset": "geometrischeErfassung",
             "fields": [
                 {
-                    "type": "group",
-                    "fields": [
+                    "name": "grund",
+                    "label": "Grund der Erstellung des Energieausweises",
+                    "type": "choice-select",
+                    "required": true,
+                    "choices": [
                         {
-                            "name": "grund",
-                            "label": "Grund der Erstellung des Energieausweises",
-                            "type": "choice-select",
-                            "required": true,
-                            "gridsize": 6,
-                            "choices": [
-                                {
-                                    "label": "Bitte wählen..."
-                                },
-                                {
-                                    "label": "Modernisierung / Erweiterung",
-                                    "value": "Modernisierung / Erweiterung"
-                                },
-                                {
-                                    "label": "Vermietung",
-                                    "value": "Vermietung"
-                                },
-                                {
-                                    "label": "Verkauf",
-                                    "value": "Verkauf"
-                                },
-                                {
-                                    "label": "Sonstiges",
-                                    "value": "Sonstiges"
-                                }
-                            ],
-                            "validations": [
-                                {
-                                    "type": "empty",
-                                    "error": "Bitte wählen Sie einen Grund der Erstellung aus"
-                                }
-                            ]               
+                            "label": "Bitte wählen..."
                         },
                         {
-                            "name": "gebaeudedaten",
-                            "label": "Gebäudedaten",
-                            "type": "choice-select",
-                            "required": true,
-                            "gridsize": 6,
-                            "choices": [                        
-                                {
-                                    "label": "Bestand",
-                                    "value": "Bestand"
-                                },
-                                {
-                                    "label": "Neubau",
-                                    "value": "Neubau"
-                                }
-                            ],
-                            "validations": [
-                                {
-                                    "type": "empty",
-                                    "error": "Bitte wählen Sie einen einen Wert aus"
-                                }
-                            ]             
+                            "label": "Modernisierung / Erweiterung",
+                            "value": "Modernisierung / Erweiterung"
+                        },
+                        {
+                            "label": "Vermietung",
+                            "value": "Vermietung"
+                        },
+                        {
+                            "label": "Verkauf",
+                            "value": "Verkauf"
+                        },
+                        {
+                            "label": "Sonstiges",
+                            "value": "Sonstiges"
                         }
-                    ]
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen Grund der Erstellung aus"
+                        }
+                    ]               
+                },
+                {
+                    "name": "gebaeudedaten",
+                    "label": "Gebäudedaten",
+                    "type": "choice-select",
+                    "required": true,
+                    "choices": [                        
+                        {
+                            "label": "Bestand",
+                            "value": "Bestand"
+                        },
+                        {
+                            "label": "Neubau",
+                            "value": "Neubau"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        }
+                    ]             
                 },
                 {
                     "name": "nutzung",
@@ -99,33 +92,6 @@
                         "type": "info",
                         "content": "<h3>Lorem ipsum</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
                     }              
-                },
-                {
-                    "name": "wohneinheiten",
-                    "label": "Anzahl der Wohneinheiten",
-                    "type": "text",
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "empty",
-                            "error": "Bitte wählen Sie einen einen Wert aus"
-                        },
-                        {
-                            "type": "min",
-                            "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
-                        },
-                        {
-                            "type": "max",
-                            "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
-                        }
-                    ],
-                    "conditions": [
-                        {
-                            "field": "nutzung",
-                            "value": "Mehrfamilienhaus",
-                            "operator": "=="
-                        }
-                    ]
                 },
                 {
                     "name": "wohnnutzung",
@@ -185,118 +151,155 @@
                     }           
                 },
                 {
-                    "name": "baujahr",
-                    "label": "Baujahr:",
-                    "type": "text",
-                    "gridsize": 1,
-                    "required": true,
-                    "validations": [
+                    "type": "group",
+                    "fields": [
                         {
-                            "type": "int",
-                            "error": "Bitte geben sie ein gültiges Jahr an"
+                            "name": "wohneinheiten",
+                            "label": "Wohneinheiten",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "empty",
+                                    "error": "Bitte wählen Sie einen einen Wert aus"
+                                },
+                                {
+                                    "type": "min",
+                                    "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
+                                },
+                                {
+                                    "type": "max",
+                                    "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an"
+                                }
+                            ],
+                            "conditions": [
+                                {
+                                    "field": "nutzung",
+                                    "value": "Mehrfamilienhaus",
+                                    "operator": "=="
+                                }
+                            ]
                         },
                         {
-                            "type": "min",
-                            "value": 1800,
-                            "error": "Das Baujahr darf nicht vor 1800 liegen."
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Was ist ein Obergeschoss?</p>"
-                    }
-                },
-                {
-                    "name": "geschosseSpitzboden",
-                    "label": "Spitzboden",
-                    "type": "text",
-                    "gridsize": 3,
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "int",
-                            "error": "Geben Sie 1 oder 0 Spitzböden an"
+                            "name": "baujahr",
+                            "label": "Baujahr",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben sie ein gültiges Jahr an"
+                                },
+                                {
+                                    "type": "min",
+                                    "value": 1800,
+                                    "error": "Das Baujahr darf nicht vor 1800 liegen."
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Was ist ein Obergeschoss?</p>"
+                            }
                         },
                         {
-                            "type": "min",
-                            "value": 0,
-                            "error": "Weniger als 0 nicht möglich"
+                            "name": "geschosseSpitzboden",
+                            "label": "Spitzböden",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Geben Sie 1 oder 0 Spitzböden an"
+                                },
+                                {
+                                    "type": "min",
+                                    "value": 0,
+                                    "error": "Weniger als 0 nicht möglich"
+                                },
+                                {
+                                    "type": "max",
+                                    "value": 1,
+                                    "error": "Mehr als 1 nicht möglich"
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Was ist ein Spitzboden?</p>"
+                            }
                         },
                         {
-                            "type": "max",
-                            "value": 1,
-                            "error": "Mehr als 1 nicht möglich"
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Was ist ein Spitzboden?</p>"
-                    }
-                },
-                {
-                    "name": "geschosseDachgeschosse",
-                    "label": "Dachgeschosse",
-                    "type": "text",
-                    "required": true,
-                    "validations": [
+                            "name": "geschosseDachgeschosse",
+                            "label": "Dachgeschosse",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Das Dachgeschoss zählt nur als Vollgeschoss, wenn eine lichte Höhe im DG von min. 2,30 m auf einer Fläche erreicht wird, die mehr als 2/3 des darunter liegenden Geschosses aufweist.</p>"
+                            }
+                        },
                         {
-                            "type": "int",
-                            "error": "Bitte geben Sie eine ganze Zahl an."
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Das Dachgeschoss zählt nur als Vollgeschoss, wenn eine lichte Höhe im DG von min. 2,30 m auf einer Fläche erreicht wird, die mehr als 2/3 des darunter liegenden Geschosses aufweist.</p>"
-                    }
-                },
-                {
-                    "name": "geschosseObergeschosse",
-                    "label": "Obergeschosse:",
-                    "type": "text",
-                    "required": true,
-                    "validations": [
+                            "name": "geschosseObergeschosse",
+                            "label": "Obergeschosse",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Was ist ein Obergeschoss?</p>"
+                            }
+                        },
                         {
-                            "type": "int",
-                            "error": "Bitte geben Sie eine ganze Zahl an."
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Was ist ein Obergeschoss?</p>"
-                    }
-                },
-                {
-                    "name": "geschosseErdgeschoss",
-                    "label": "Erdgeschoss",
-                    "type": "text",
-                    "required": true,
-                    "validations": [
+                            "name": "geschosseErdgeschoss",
+                            "label": "Erdgeschosse",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Wie kann es 0 Erdgeschosse geben?</p>"
+                            }
+                        },
                         {
-                            "type": "int",
-                            "error": "Bitte geben Sie eine ganze Zahl an."
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Wie kann es 0 Erdgeschosse geben?</p>"
-                    }
-                },
-                {
-                    "name": "geschossKeller",
-                    "label": "Keller",
-                    "type": "text",
-                    "required": true,
-                    "validations": [
-                        {
-                            "type": "int",
-                            "error": "Bitte geben Sie eine ganze Zahl an."
-                        }
-                    ],
-                    "help": {
-                        "type": "question",
-                        "content": "<p>Der Keller ist ein Vollgeschoss, wenn die Höhe von Oberkante Gelände bis zur Oberkante Kellerdecke im Mittel mehr als 1,60 m beträgt, wenn die Geschosshöhe mindestens 2,30 m umfasst.</p>"
-                    }
-                }      
+                            "name": "geschossKeller",
+                            "label": "Keller",
+                            "type": "text",
+                            "gridsize": 1,
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ],
+                            "help": {
+                                "type": "question",
+                                "content": "<p>Der Keller ist ein Vollgeschoss, wenn die Höhe von Oberkante Gelände bis zur Oberkante Kellerdecke im Mittel mehr als 1,60 m beträgt, wenn die Geschosshöhe mindestens 2,30 m umfasst.</p>"
+                            }
+                        } 
+                    ]
+                }     
             ]
         },
         {

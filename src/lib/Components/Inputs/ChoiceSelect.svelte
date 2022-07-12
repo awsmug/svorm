@@ -23,7 +23,7 @@
 
 <label for={field.name}>{field.label}</label>
 
-<select class="form-control custom-select mb-3" name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
+<select class="form-select custom-select" name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
     {#each field.choices as choice}
         <option value={choice.value}>{choice.label}</option>
     {/each}

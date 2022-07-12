@@ -227,34 +227,6 @@ export default class Field implements HasFieldData {
     }
 
     /**
-     * Returns multicol HTML.
-     * 
-     * @returns Multicol HTML.
-     * 
-     * @since 1.0.0
-     */
-    public getMulticolHTML(): string{
-        console.log( 'Global: ' + startedMulticol );
-        console.log( this.name + ' is Multicol: ' + this.isMulticol() );
-
-        if( this.isMulticol() && startedMulticol === false) {
-            startedMulticol = true;
-            console.log(this.name + '<div class="row">');
-            return '<div class="row">';
-        }
-
-        if( ! this.isMulticol() && startedMulticol === true) {
-            startedMulticol = false;
-            console.log(this.name + '</div>');
-            return '</div>';
-        }
-
-        console.log('NOTHING');
-
-        return '';
-    }
-
-    /**
      * Validate the field.
      * 
      * @return Array of errors, empty array on no errors.
@@ -357,6 +329,8 @@ export default class Field implements HasFieldData {
 
             fullfillments.push( fullfilled );
         });
+
+       
 
         return ! fullfillments.includes( false );
     }

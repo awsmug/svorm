@@ -28,10 +28,10 @@ export default class Fieldset implements HasFieldsetData {
     readonly fields      : Field[] = [];
    
     /**
+     * @param fieldset Fieldset data.
      * Initializing fieldset.
      * 
      * @param form Form object.
-     * @param fieldset Fieldset data.
      * 
      * @since 1.0.0
      */
@@ -79,15 +79,39 @@ export default class Fieldset implements HasFieldsetData {
                     fullfilled = condition.value !== field.getValue();
                     break;
                 default:
-                    throw new Error( 'Operator "' + condition.operator + '" does not exist.')                             
+                    throw new Error( 'Operator "' + condition.operator + '" does not exist.');                        
             }
 
             fullfillments.push( fullfilled );
         });
 
-        
-
         return ! fullfillments.includes( false );
+    }
+
+    /**
+     * Get a specific field.
+     * 
+     * @param name Name of field.
+     * @return Field object. Undefined if nothing was found.
+     * 
+     * @since 1.0.0
+     */
+     public getField( name: string ) : Field {
+        let foundField;
+
+        this.fields.forEach( ( field: Field ) => {
+            if( field.type === 'group') {
+                field.fields.forEach( (field: Field) => {
+                    if( field.name === name ) {
+                        foundField = field;
+                    }
+                });
+            } else if( field.name === name ) {
+                foundField = field;
+            }
+        });
+
+        return foundField;
     }
 
     /**
@@ -104,7 +128,6 @@ export default class Fieldset implements HasFieldsetData {
 
         return '';
     }
-
 
 
     /**
@@ -132,7 +155,13 @@ export default class Fieldset implements HasFieldsetData {
     public validate () : boolean {
         let foundError = false;
         this.fields.forEach( ( field: Field, i ) => {
-            if ( field.validate().length > 0 && ! foundError ) {
+            if( field.type === 'group') {
+                field.fields.forEach( (field: Field) => {
+                    if( field.validate().length > 0 && ! foundError  ) {
+                        foundError = true;   
+                    }
+                });
+            } else if ( field.validate().length > 0 && ! foundError ) {
                 foundError = true;                
             }
         });
@@ -150,7 +179,13 @@ export default class Fieldset implements HasFieldsetData {
     public hasValidationErrors() : boolean {
         let foundError = false;
         this.fields.forEach( ( field: Field ) => {
-            if( field.hasValidationErrors() && ! foundError ) {
+            if( field.type === 'group') {
+                field.fields.forEach( (field: Field) => {
+                    if( field.hasValidationErrors() && ! foundError  ) {
+                        foundError = true;   
+                    }
+                });
+            } else if( field.hasValidationErrors() && ! foundError ) {
                 foundError = true;
             }
         });
