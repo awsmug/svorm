@@ -1,6 +1,7 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
     import type Field from '../../Classes/Field';
+    import Help from '../Help.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -23,9 +24,7 @@
             <option value={choice.value}>{choice.label}</option>
         {/each}
     </select>
-    {#if field.help !== undefined}
-        <span class="input-group-text" id="{field.name}-help" data-bs-toggle="tooltip" data-bs-html="true" title={field.help.content}>?</span>
-    {/if}
+    <Help {field} />
 </div>
 
-<Errors field="{field}" />
+<Errors {field} />

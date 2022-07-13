@@ -24,7 +24,7 @@ export default class Registration {
     private registerDefaults() {
         this.addElement( 'text', Text );
         this.addElement( 'textarea', Textarea );
-        this.addElement( 'textarea', Range );
+        this.addElement( 'range', Range );
         this.addElement( 'checkbox', Checkbox );
         this.addElement( 'choice-select', ChoiceSelect );
         this.addElement( 'choice-image', ChoiceImage );

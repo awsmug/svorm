@@ -67,6 +67,7 @@ export default class Field extends CSSElement implements HasFieldData {
         this.validations  = field.validations === undefined ? []: field.validations;
         this.conditions   = field.conditions === undefined ? []: field.conditions;
 
+        this.addClass('field-' + this.type );
         this.addClass('mb-3');
 
         field.classes?.forEach( className => this.addClass(className) );

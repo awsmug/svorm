@@ -1,10 +1,6 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-
     import type Field from "../../Classes/Field";
-    
-    import Help from '../Help.svelte';
-    import HelpIcon from '../HelpIcon.svelte';
     import Errors from "../Errors.svelte";
     
     export let field: Field;
@@ -15,20 +11,12 @@
     const setValue = () => {
         dispatch( 'update', field.fieldset.form );
     }
-
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }
+    
+    field.addInputClass('form-range');
 </script>
 
-<label for={field.name}>{field.label}</label>
-
-<div class="input-range-field mb-3">
-    <input class="form-range" id={field.name} name={field.name} type=range bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
-    <div class="input-group-append">
-        <span class="input-group-text" id="{field.name}-help">?</span>
-    </div>
+<div class="input-group">
+    <label for={field.name}>{field.label}</label>
+    <input type=range  id={field.name}  class={field.getInputClasses()} bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
+    <Errors {field} />
 </div>
-
-<Errors field="{field}" />

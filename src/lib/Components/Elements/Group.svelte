@@ -1,1 +1,1 @@
-<div class="row"><slot /></div>
+<div class="field-group row"><slot /></div>

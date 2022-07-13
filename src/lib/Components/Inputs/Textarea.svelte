@@ -1,10 +1,7 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-
     import type Field from '../../Classes/Field';
-
     import Help from '../Help.svelte';
-    import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -16,16 +13,13 @@
         dispatch( 'update', field.fieldset.form );
     }
 
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }
+    field.addInputClass('form-control');
 </script>
 
 <label for={field.name}>{field.label}</label>
 
-<div class="input-group input-textarea mb-3">
+<div class="input-group">
     <textarea class="form-control" id={field.name} name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea>
+    <Help {field} />
+    <Errors field="{field}" />  
 </div>
-
-<Errors field="{field}" />

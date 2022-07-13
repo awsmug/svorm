@@ -16,8 +16,6 @@ import ChoiceSelect from './ChoiceSelect.svelte';
     }
 
     field.addInputClass('form-check-input');
-
-    let count = 0;
 </script>
 
 {#if field.label !== undefined}
@@ -25,13 +23,13 @@ import ChoiceSelect from './ChoiceSelect.svelte';
 {/if}
 
 {#each field.choices as choice, i}
-<div class="form-check">
-    <input type=radio class={field.getInputClasses()} id={field.name} bind:group={field.value} value={choice.value} on:change={setValue} />
-    <label class="form-check-label" for={field.name}>{choice.label}</label>
-    {#if field.choices.length === i + 1}
-        <Errors field="{field}" />
-    {/if}
-</div>
+    <div class="form-check">
+        <input type=radio class={field.getInputClasses()} id={field.name} bind:group={field.value} value={choice.value} on:change={setValue} />
+        <label class="form-check-label" for={field.name}>{choice.label}</label>
+        {#if field.choices.length === i + 1}
+            <Errors field="{field}" />
+        {/if}
+    </div>
 {/each}
 
 
