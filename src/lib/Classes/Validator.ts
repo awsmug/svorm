@@ -47,8 +47,8 @@ export default class Validator {
                         errors.push( validation.error );
                     }
                     break;
-                case 'float':
-                    if ( ! ValidationMedhods.float( this.value ) ) {
+                case 'number':
+                    if ( ! ValidationMedhods.number( this.value ) ) {
                         errors.push( validation.error );
                     }
                     break;

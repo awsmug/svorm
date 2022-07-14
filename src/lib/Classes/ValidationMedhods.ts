@@ -37,15 +37,15 @@ export default class ValidationMedhods {
     }
 
     /**
-     * Is value of tye float?
+     * Is value of tye number?
      * 
      * @param value Value which have to be checked.
-     * @return boolean True if is of type float, false if not.
+     * @return boolean True if is of type number, false if not.
      * 
      * @since 1.0.0
      */
-     static float( value: any ) {
-        return Number(value) === value && value % 1 !== 0;
+     static number( value: any ) {
+        return ! isNaN(value );
     }
     
     /**
