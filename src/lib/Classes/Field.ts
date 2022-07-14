@@ -22,6 +22,8 @@ export default class Field extends CSSElement implements HasFieldData {
     readonly name        : string;
     readonly type        : string;    
     readonly label       : string;
+    readonly prefix      : string;
+    readonly suffix      : string;
     readonly placeholder : string;
     readonly multicol    : number;
     readonly required    : boolean;
@@ -56,6 +58,9 @@ export default class Field extends CSSElement implements HasFieldData {
         this.name         = field.name;
         this.type         = field.type;
         this.label        = field.label;
+        this.prefix       = field.prefix;
+        this.suffix       = field.suffix;
+        this.multicol     = field.multicol === undefined ? 0 : field.multicol;
         this.placeholder  = field.placeholder;
         this.multicol     = field.multicol === undefined ? 0 : field.multicol;
         this.help         = field.help === undefined ? undefined : new Help( field.help );
@@ -96,6 +101,50 @@ export default class Field extends CSSElement implements HasFieldData {
      */
     public getValue() : any {
         return this.value;
+    }
+
+    /**
+     * Is there a prefix?
+     * 
+     * @returns True if field has prefix.
+     * 
+     * @since 1.0.0
+     */
+    public hasPrefix() : boolean {
+        return this.prefix !== undefined;
+    }
+
+    /**
+     * Get prefix.
+     * 
+     * @returns Prefix.
+     * 
+     * @since 1.0.0
+     */
+    public getPrefix() : string {
+        return this.prefix;
+    }
+
+    /**
+     * Get suffix.
+     * 
+     * @returns Suffix.
+     * 
+     * @since 1.0.0
+     */
+    public getSuffix() : string {
+        return this.prefix;
+    }
+
+    /**
+     * Is there a suffix?
+     * 
+     * @returns True if field has suffix.
+     * 
+     * @since 1.0.0
+     */
+    public hasSuffix() : boolean {
+        return this.prefix !== undefined;
     }
 
     /**

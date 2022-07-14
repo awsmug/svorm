@@ -12,6 +12,8 @@ export default interface HasFieldData {
     readonly type        : string;
     readonly name        : string;    
     readonly label       : string;
+    readonly prefix      : string;
+    readonly suffix      : string;
     readonly classes     : any[];
     readonly fields      : Field[];
     readonly params      : any[];

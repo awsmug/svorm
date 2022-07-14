@@ -10,7 +10,8 @@
                 {
                     "name": "anumber",
                     "type": "number",
-                    "label": "Type in a number"
+                    "label": "Type in a number",
+                    "suffix": "cm"
                 }     
             ]
         }       

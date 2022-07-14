@@ -3,6 +3,8 @@
 	import type Field from '../../Classes/Field';
 	import Errors from '../Errors.svelte';
 	import Help from '../Help.svelte';
+	import Prefix from '../Prefix.svelte';
+	import Suffix from '../Suffix.svelte';
 
 	export let field: Field;
 
@@ -16,12 +18,12 @@
 
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
-        value = value.replace(',', '.');
+		value = value.replace(',', '.');
 
-        if (isNaN(value)) {
-            alert('Fehlerhafte Eingabe. Bitte geben Sie eine Zahl ein.')
-            return;
-        }
+		if (isNaN(value)) {
+			alert('Fehlerhafte Eingabe. Bitte geben Sie eine Zahl ein.');
+			return;
+		}
 
 		if (value !== undefined) {
 			value = parseFloat(value.replace(',', '.'));
@@ -39,6 +41,7 @@
 <label for={field.name}>{field.label}</label>
 
 <div class="input-group">
+	<Prefix {field} />
 	<input
 		type="text"
 		id={field.name}
@@ -48,6 +51,8 @@
 		on:blur={setValue}
 		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
 	/>
-	<Help {field} />
+	<Suffix {field} />
 	<Errors {field} />
 </div>
+
+<Help {field} />

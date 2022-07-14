@@ -3,6 +3,8 @@
 	import type Field from '../../Classes/Field';
 	import Errors from '../Errors.svelte';
 	import Help from '../Help.svelte';
+	import Prefix from '../Prefix.svelte';
+	import Suffix from '../Suffix.svelte';
 
 	export let field: Field;
 
@@ -19,6 +21,7 @@
 <label for={field.name}>{field.label}</label>
 
 <div class="input-group">
+	<Prefix {field} />
 	<input
 		type="text"
 		id={field.name}
@@ -28,6 +31,8 @@
 		on:blur={setValue}
 		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
 	/>
-	<Help {field} />
+	<Suffix {field} />
 	<Errors {field} />
 </div>
+
+<Help {field} />

@@ -3,6 +3,8 @@
     import type Field from '../../Classes/Field';
     import Help from '../Help.svelte';
     import Errors from '../Errors.svelte';
+    import Prefix from '../Prefix.svelte';
+    import Suffix from '../Suffix.svelte';
 
     export let field: Field;
 
@@ -19,11 +21,14 @@
 <label for={field.name}>{field.label}</label>
 
 <div class="input-group">
+    <Prefix {field} />
     <select id={field.name} class={field.getInputClasses()} name={field.name} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}>
         {#each field.choices as choice}
             <option value={choice.value}>{choice.label}</option>
         {/each}
     </select>
-    <Help {field} />
+    <Suffix {field} />
     <Errors {field} />
 </div>
+
+<Help {field} />
