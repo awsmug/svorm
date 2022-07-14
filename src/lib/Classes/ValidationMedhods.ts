@@ -35,6 +35,18 @@ export default class ValidationMedhods {
 
         return false;
     }
+
+    /**
+     * Is value of tye float?
+     * 
+     * @param value Value which have to be checked.
+     * @return boolean True if is of type float, false if not.
+     * 
+     * @since 1.0.0
+     */
+     static float( value: any ) {
+        return Number(value) === value && value % 1 !== 0;
+    }
     
     /**
      * Is value of tye string?
