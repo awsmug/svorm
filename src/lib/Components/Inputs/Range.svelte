@@ -1,22 +1,33 @@
 <script lang="ts">
-    import {createEventDispatcher} from 'svelte';
-    import type Field from "../../Classes/Field";
-    import Errors from "../Errors.svelte";
-    
-    export let field: Field;
+	import { createEventDispatcher } from 'svelte';
+	import type Field from '../../Classes/Field';
+	import Errors from '../Errors.svelte';
+	import Help from '../Help.svelte';
 
-    $: field.autoValue();
+	export let field: Field;
 
-    const dispatch = createEventDispatcher();
-    const setValue = () => {
-        dispatch( 'update', field.fieldset.form );
-    }
-    
-    field.addInputClass('form-range');
+	$: field.autoValue();
+
+	const dispatch = createEventDispatcher();
+	const setValue = () => {
+		dispatch('update', field.fieldset.form);
+	};
+
+	field.addInputClass('form-range');
 </script>
 
+<label for={field.name}>{field.label} <Help {field} /></label>
+
 <div class="input-group">
-    <label for={field.name}>{field.label}</label>
-    <input type=range  id={field.name}  class={field.getInputClasses()} bind:value={field.value} min={field.params.min} max={field.params.max} step={field.params.step} on:blur={setValue}  />
-    <Errors {field} />
+	<input
+		type="range"
+		id={field.name}
+		class={field.getInputClasses()}
+		bind:value={field.value}
+		min={field.params.min}
+		max={field.params.max}
+		step={field.params.step}
+		on:blur={setValue}
+	/>
+	<Errors {field} />
 </div>

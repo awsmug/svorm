@@ -4,6 +4,7 @@
     import type Field from '../../Classes/Field';
 
     import Errors from '../Errors.svelte';
+import Help from '../Help.svelte';
 
     export let field: Field;
 
@@ -17,15 +18,11 @@
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );
     }
-
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }
 </script>
 
+<label for={field.name}>{field.label} <Help {field} /></label>
+
 <div class="input-checkbox-field">
-    <label for={field.name}>{field.label}</label>
     <input type=checkbox id={field.name} name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />   
     <Errors field="{field}" />
 </div>

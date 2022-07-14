@@ -38,7 +38,7 @@
 	field.addInputClass('form-control');
 </script>
 
-<label for={field.name}>{field.label}</label>
+<label for={field.name}>{field.label} <Help {field} /></label>
 
 <div class="input-group">
 	<Prefix {field} />
@@ -55,4 +55,4 @@
 	<Errors {field} />
 </div>
 
-<Help {field} />
+

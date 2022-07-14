@@ -18,7 +18,7 @@
 	field.addInputClass('form-control');
 </script>
 
-<label for={field.name}>{field.label}</label>
+<label for={field.name}>{field.label} <Help {field} /></label>
 
 <div class="input-group">
 	<Prefix {field} />
@@ -32,7 +32,6 @@
 		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
 	/>
 	<Suffix {field} />
-	<span class="glyphicon glyphicon-info-sign"></span>
 	<Errors {field} />
 </div>
 

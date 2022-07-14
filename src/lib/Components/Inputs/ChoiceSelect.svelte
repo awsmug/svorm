@@ -18,7 +18,7 @@
     field.addInputClass('form-select');
 </script>
 
-<label for={field.name}>{field.label}</label>
+<label for={field.name}>{field.label} <Help {field} /></label>
 
 <div class="input-group">
     <Prefix {field} />
@@ -30,5 +30,3 @@
     <Suffix {field} />
     <Errors {field} />
 </div>
-
-<Help {field} />

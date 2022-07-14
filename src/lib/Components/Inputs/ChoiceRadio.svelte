@@ -1,35 +1,38 @@
 <script lang="ts">
-    import {createEventDispatcher} from 'svelte';
+	import { createEventDispatcher } from 'svelte';
+	import type Field from '../../Classes/Field';
+	import Errors from '../Errors.svelte';
+	import Help from '../Help.svelte';
 
-    import type Field from "../../Classes/Field";
+	export let field: Field;
 
-    import Errors from '../Errors.svelte';
-import ChoiceSelect from './ChoiceSelect.svelte';
+	$: field.autoValue();
 
-    export let field: Field;
+	const dispatch = createEventDispatcher();
+	const setValue = () => {
+		dispatch('update', field.fieldset.form);
+	};
 
-    $: field.autoValue();
-
-    const dispatch = createEventDispatcher();
-    const setValue = () => {      
-        dispatch( 'update', field.fieldset.form );
-    }
-
-    field.addInputClass('form-check-input');
+	field.addInputClass('form-check-input');
 </script>
 
 {#if field.label !== undefined}
-    <legend>{field.label}</legend>
+	<legend>{field.label} <Help {field} /></legend>
 {/if}
 
 {#each field.choices as choice, i}
-    <div class="form-check">
-        <input type=radio class={field.getInputClasses()} id={field.name} bind:group={field.value} value={choice.value} on:change={setValue} />
-        <label class="form-check-label" for={field.name}>{choice.label}</label>
-        {#if field.choices.length === i + 1}
-            <Errors field="{field}" />
-        {/if}
-    </div>
+	<div class="form-check">
+		<input
+			type="radio"
+			class={field.getInputClasses()}
+			id={field.name}
+			bind:group={field.value}
+			value={choice.value}
+			on:change={setValue}
+		/>
+		<label class="form-check-label" for={field.name}>{choice.label}</label>
+		{#if field.choices.length === i + 1}
+			<Errors {field} />
+		{/if}
+	</div>
 {/each}
-
-

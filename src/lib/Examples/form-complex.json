@@ -22,14 +22,60 @@
                             "type": "number",
                             "classes": ["col-auto"],
                             "label": "Type in a string",
-                            "prefix": "cm"
+                            "prefix": "cm",
+                            "help": {
+                                "type": "question",
+                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
+                            }
                         },
                         {
                             "name": "bnumber",
                             "type": "number",
                             "classes": ["col-auto"],
-                            "label": "Type in anything"
-                        }  
+                            "label": "Type in anything",
+                            "help": {
+                                "type": "info",
+                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
+                            }
+                        },
+                        {
+                            "name": "grund",
+                            "label": "Anlass der Berechnung",
+                            "type": "choice-select",
+                            "classes": ["col-auto"],
+                            "required": true,
+                            "choices": [
+                                {
+                                    "label": "Bitte wählen..."
+                                },
+                                {
+                                    "label": "Modernisierung / Erweiterung",
+                                    "value": "Modernisierung / Erweiterung"
+                                },
+                                {
+                                    "label": "Vermietung",
+                                    "value": "Vermietung"
+                                },
+                                {
+                                    "label": "Verkauf",
+                                    "value": "Verkauf"
+                                },
+                                {
+                                    "label": "Sonstiges",
+                                    "value": "Sonstiges"
+                                }
+                            ],
+                            "validations": [
+                                {
+                                    "type": "empty",
+                                    "error": "Bitte wählen Sie einen Grund der Erstellung aus"
+                                }
+                            ],
+                            "help": {
+                                "type": "info",
+                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
+                            }            
+                        }
                     ]
                } 
             ]
