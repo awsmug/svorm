@@ -26,9 +26,6 @@
 
 <div class="input-checkbox-field">
     <label for={field.name}>{field.label}</label>
-    <input type=checkbox id={field.name} name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />
-           
-    {#if field.choices.length === i + 1}
-        <Errors field="{field}" />
-    {/if}
+    <input type=checkbox id={field.name} name={field.name} placeholder={field.placeholder} bind:checked={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''} />   
+    <Errors field="{field}" />
 </div>

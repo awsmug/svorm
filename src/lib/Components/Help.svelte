@@ -1,7 +1,6 @@
 <script lang="ts">
     import type Field from '../Classes/Field';
     export let field: Field;
-    export let show: boolean;
 </script>
 
 {#if field.help !== undefined}
