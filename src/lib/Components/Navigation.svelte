@@ -23,11 +23,11 @@
     }
 </script>
 
-<nav>
+<nav class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
     {#if ! disabledPrev }
-    <button on:click={ () => navigate('prev') } disabled={disabledPrev} class="btn btn-primary">Zurück</button>
+    <button on:click={ () => navigate('prev') } disabled={disabledPrev} class="btn btn-primary px-5">Zurück</button>
     {/if}
     {#if ! disabledNext }    
-    <button on:click={ () => navigate('next') } disabled={disabledNext} class="btn btn-primary">Weiter</button>
+    <button on:click={ () => navigate('next') } disabled={disabledNext} class="btn btn-primary px-5">Weiter</button>
     {/if}
 </nav>

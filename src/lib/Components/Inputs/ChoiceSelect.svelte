@@ -25,6 +25,5 @@
         {/each}
     </select>
     <Help {field} />
+    <Errors {field} />
 </div>
-
-<Errors {field} />

@@ -1,6 +1,6 @@
 {
   "name": "svorm",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
