@@ -16,10 +16,9 @@
     field.addInputClass('form-control');
 </script>
 
-<label for={field.name}>{field.label}</label>
+<label for={field.name}>{field.label} <Help {field} /></label>
 
 <div class="input-group">
     <textarea class="form-control" id={field.name} name={field.name} placeholder={field.placeholder} bind:value={field.value} on:blur={setValue} aria-describedby={field.help !== undefined ? field.name + '-help': ''}></textarea>
-    <Help {field} />
     <Errors field="{field}" />  
 </div>

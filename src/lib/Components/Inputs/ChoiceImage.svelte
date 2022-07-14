@@ -3,7 +3,6 @@
 
     import type Field from '../../Classes/Field';
     import Help from '../Help.svelte';
-    import HelpIcon from '../HelpIcon.svelte';
     import Errors from '../Errors.svelte';
 
     export let field: Field;
@@ -18,18 +17,10 @@
             field.fieldset.form.navigation.nextFieldset();
         }
     }
-
-    let showHelp = false;
-    const toggleHelp = () => {
-        showHelp = ! showHelp;
-    }    
 </script>
 
 {#if field.label !== undefined}
-    <legend>
-        {field.label}
-        <HelpIcon field={field} on:toggleHelp={toggleHelp} />
-    </legend>
+    <legend>{field.label}  <Help {field} /></legend>
 {/if}
 
 
@@ -41,7 +32,6 @@
     </label>
 {/each}
 <Errors field="{field}" />
-<Help field={field} show={showHelp} />
 
 <style>
     label {        
@@ -54,5 +44,3 @@
         height: 0;
     }
 </style>
-
-<Errors field="{field}" />

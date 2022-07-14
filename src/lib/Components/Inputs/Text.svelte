@@ -34,5 +34,3 @@
 	<Suffix {field} />
 	<Errors {field} />
 </div>
-
-<Help {field} />
