@@ -7,12 +7,31 @@
             "name": "basisdaten",
             "nextFieldset": "geometrischeErfassung",
             "fields": [
-                {
-                    "name": "anumber",
-                    "type": "number",
-                    "label": "Type in a number",
-                    "suffix": "cm"
-                }     
+               {
+                    "type": "group",
+                    "fields": [
+                        {
+                            "name": "anumber",
+                            "type": "number",
+                            "classes": ["col-auto"],
+                            "label": "Type in a number",
+                            "suffix": "cm"
+                        },
+                        {
+                            "name": "bnumber",
+                            "type": "number",
+                            "classes": ["col-auto"],
+                            "label": "Type in a string",
+                            "prefix": "cm"
+                        },
+                        {
+                            "name": "bnumber",
+                            "type": "number",
+                            "classes": ["col-auto"],
+                            "label": "Type in anything"
+                        }  
+                    ]
+               } 
             ]
         }       
     ],
