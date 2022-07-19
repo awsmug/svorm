@@ -28,7 +28,7 @@
 		class={field.getInputClasses()}
 		name={field.name}
 		bind:value={field.value}
-		on:input={setValue}
+		on:change={setValue}
 		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
 	>
 		{#each field.choices as choice}
