@@ -42,6 +42,9 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
      static number( value: any ) {
+        if(value === undefined) {
+            return false;
+        }
         const parsedNumber = value.replace(',', '.');
         return ! isNaN( parsedNumber );
     }

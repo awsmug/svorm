@@ -5,14 +5,14 @@
         {
             "label": "Basisdaten",
             "name": "basisdaten",
-            "nextFieldset": "geometrischeErfassung",
+            "nextFieldset": "weiteredaten",
             "fields": [
                {
                     "type": "group",
                     "fields": [
 
                         {
-                            "name": "anumber",
+                            "name": "intBigger5",
                             "type": "text",
                             "classes": ["col-3", "mb-3"],
                             "label": "Int bigger 5",
@@ -29,7 +29,7 @@
                             ]
                         },
                         {
-                            "name": "bnumber",
+                            "name": "email",
                             "type": "text",
                             "classes": ["col-3", "mb-3"],
                             "label": "Email",
@@ -41,7 +41,7 @@
                             ]
                         },
                         {
-                            "name": "bnumber",
+                            "name": "number",
                             "type": "text",
                             "classes": ["col-3", "mb-3"],
                             "label": "Number",
@@ -95,6 +95,36 @@
                                 "type": "info",
                                 "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
                             }            
+                        }
+                    ]
+               } 
+            ]
+        },
+        {
+            "label": "Weitere Daten",
+            "name": "weiteredaten",
+            "nextFieldset": "geometrischeErfassung",
+            "fields": [
+               {
+                    "type": "group",
+                    "fields": [
+
+                        {
+                            "name": "anumber",
+                            "type": "text",
+                            "classes": ["col-3", "mb-3"],
+                            "label": "Int bigger 5",
+                            "validations": [
+                                {
+                                    "type": "min",
+                                    "value": 5,
+                                    "error": "Bitte geben Sie eine Zahl größer als 5 ein."
+                                },
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl ein."
+                                }
+                            ]
                         }
                     ]
                } 

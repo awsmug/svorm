@@ -240,6 +240,10 @@ export default class Field extends CSSElement {
             return;
         }
 
+        if(this.value === undefined) {
+            return;
+        }
+
         this.replacements.forEach(replacement => {
             this.value = this.value.replace(replacement.from, replacement.to);
         });
