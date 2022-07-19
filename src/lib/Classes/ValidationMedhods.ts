@@ -29,11 +29,8 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
      static int( value: any ) {
-        if ( Number.isInteger( parseInt( value ) ) ) {
-            return true;
-        }
-
-        return false;
+        const re = /^([0-9]{1,})$/;
+        return re.test( value );
     }
 
     /**
@@ -45,7 +42,7 @@ export default class ValidationMedhods {
      * @since 1.0.0
      */
      static number( value: any ) {
-        return ! isNaN(value );
+        return ! isNaN( value );
     }
     
     /**

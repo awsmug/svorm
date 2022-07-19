@@ -219,8 +219,6 @@ export default class Field extends CSSElement implements HasFieldData {
      * @since 1.0.0
      */
     public validate() : string[] {
-        if( ! this.conditionsFullfilled() ) return [];
-
         let validator = new Validator( this.value, this.validations );
         this.errors = validator.check();
         

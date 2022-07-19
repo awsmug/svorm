@@ -5,13 +5,16 @@
 
 {#if field.hasValidationErrors() }
 <div class="invalid-feedback">
-    <ul>
+    {#each field.getValidationErors() as errortext}
+        <span>{errortext}</span>
+    {/each}
+    <!-- <ul>
     {#each field.getValidationErors() as errortext}
         <li>
             <div class="error-triangle"></div>
             <div class="error-content">{errortext}</div>
         </li>
     {/each}
-    </ul>    
+    </ul>     -->
 </div>
 {/if}

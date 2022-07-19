@@ -12,26 +12,37 @@
                     "fields": [
                         {
                             "name": "anumber",
-                            "type": "number",
-                            "classes": ["col-auto"],
-                            "label": "Type in a number",
-                            "suffix": "cm"
+                            "type": "text",
+                            "classes": ["col-3"],
+                            "label": "Int bigger 5",
+                            "validations": [
+                                {
+                                    "type": "min",
+                                    "value": 5,
+                                    "error": "Bitte geben Sie eine Zahl größer als 5 ein."
+                                },
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl ein."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "bnumber",
+                            "type": "text",
+                            "classes": ["col-3"],
+                            "label": "Email",
+                            "validations": [
+                                {
+                                    "type": "email",
+                                    "error": "Bitte geben Sie eine gültige Email-Adresse ein."
+                                }
+                            ]
                         },
                         {
                             "name": "bnumber",
                             "type": "number",
-                            "classes": ["col-auto"],
-                            "label": "Type in a string",
-                            "prefix": "cm",
-                            "help": {
-                                "type": "question",
-                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
-                            }
-                        },
-                        {
-                            "name": "bnumber",
-                            "type": "number",
-                            "classes": ["col-auto"],
+                            "classes": ["col-3"],
                             "label": "Type in anything",
                             "help": {
                                 "type": "info",
@@ -42,7 +53,7 @@
                             "name": "grund",
                             "label": "Anlass der Berechnung",
                             "type": "choice-select",
-                            "classes": ["col-auto"],
+                            "classes": ["col-3"],
                             "required": true,
                             "choices": [
                                 {

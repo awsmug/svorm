@@ -12,6 +12,8 @@
 
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
+		field.validate();
+		console.log( field.value );
 		dispatch('update', field.fieldset.form);
 	};
 
@@ -20,7 +22,7 @@
 
 <label for={field.name}>{field.label} <Help {field} /></label>
 
-<div class="input-group">
+<div class="input-group has-validation">
 	<Prefix {field} />
 	<input
 		type="text"
@@ -28,7 +30,7 @@
 		class={field.getInputClasses()}
 		placeholder={field.placeholder}
 		bind:value={field.value}
-		on:blur={setValue}
+		on:input={setValue}
 		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
 	/>
 	<Suffix {field} />

@@ -21,8 +21,7 @@
 		value = value.replace(',', '.');
 
 		if (isNaN(value)) {
-			alert('Fehlerhafte Eingabe. Bitte geben Sie eine Zahl ein.');
-			return;
+			value = undefined;
 		}
 
 		if (value !== undefined) {
