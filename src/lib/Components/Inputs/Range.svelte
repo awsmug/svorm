@@ -10,6 +10,7 @@
 
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
+		field.validate();
 		dispatch('update', field.fieldset.form);
 	};
 
@@ -18,7 +19,7 @@
 
 <label for={field.name}>{field.label} <Help {field} /></label>
 
-<div class="input-group">
+<div class="input-group has-validation">
 	<input
 		type="range"
 		id={field.name}
@@ -27,7 +28,7 @@
 		min={field.params.min}
 		max={field.params.max}
 		step={field.params.step}
-		on:blur={setValue}
+		on:input={setValue}
 	/>
 	<Errors {field} />
 </div>

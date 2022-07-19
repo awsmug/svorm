@@ -10,6 +10,7 @@
 
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
+		field.validate();
 		dispatch('update', field.fieldset.form);
 	};
 
@@ -28,7 +29,7 @@
 			id={field.name}
 			bind:group={field.value}
 			value={choice.value}
-			on:change={setValue}
+			on:input={setValue}
 		/>
 		<label class="form-check-label" for={field.name}>{choice.label}</label>
 		{#if field.choices.length === i + 1}
