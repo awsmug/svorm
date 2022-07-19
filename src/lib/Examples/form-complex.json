@@ -10,10 +10,11 @@
                {
                     "type": "group",
                     "fields": [
+
                         {
                             "name": "anumber",
                             "type": "text",
-                            "classes": ["col-3"],
+                            "classes": ["col-3", "mb-3"],
                             "label": "Int bigger 5",
                             "validations": [
                                 {
@@ -30,7 +31,7 @@
                         {
                             "name": "bnumber",
                             "type": "text",
-                            "classes": ["col-3"],
+                            "classes": ["col-3", "mb-3"],
                             "label": "Email",
                             "validations": [
                                 {
@@ -42,7 +43,7 @@
                         {
                             "name": "bnumber",
                             "type": "text",
-                            "classes": ["col-3"],
+                            "classes": ["col-3", "mb-3"],
                             "label": "Number",
                             "replacements": [
                                 {
@@ -61,7 +62,7 @@
                             "name": "grund",
                             "label": "Anlass der Berechnung",
                             "type": "choice-select",
-                            "classes": ["col-3"],
+                            "classes": ["col-3", "mb-3"],
                             "required": true,
                             "choices": [
                                 {
