@@ -41,13 +41,21 @@
                         },
                         {
                             "name": "bnumber",
-                            "type": "number",
+                            "type": "text",
                             "classes": ["col-3"],
-                            "label": "Type in anything",
-                            "help": {
-                                "type": "info",
-                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
-                            }
+                            "label": "Number",
+                            "replacements": [
+                                {
+                                    "from": ".",
+                                    "to": ","
+                                }
+                            ],
+                            "validations": [
+                                {
+                                    "type": "number",
+                                    "error": "Bitte geben Sie eine Zahl ein."
+                                }
+                            ]
                         },
                         {
                             "name": "grund",

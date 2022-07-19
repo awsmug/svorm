@@ -13,7 +13,6 @@
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
 		field.validate();
-		console.log( field.value );
 		dispatch('update', field.fieldset.form);
 	};
 

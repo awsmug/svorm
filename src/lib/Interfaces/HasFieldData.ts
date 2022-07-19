@@ -1,6 +1,8 @@
 import type Field from "$lib/Classes/Field";
 import type HasChoicesData from "./HasChoicesData";
 import type HasConditionData from "./HasConditionData";
+import type HasHelpData from "./HasHelpData";
+import type HasReplacementData from "./HasReplacementData";
 import type HasValidationData from "./HasValidationData";
 
 /**
@@ -14,7 +16,8 @@ export default interface HasFieldData {
     readonly label       : string;
     readonly prefix      : string;
     readonly suffix      : string;
-    readonly classes     : any[];
+    readonly placeholder : string;
+    readonly classes     : string[];
     readonly fields      : Field[];
     readonly params      : any[];
     readonly choices     : HasChoicesData[];
@@ -22,5 +25,8 @@ export default interface HasFieldData {
     readonly dynamicValue: any;
     readonly conditions  : HasConditionData[];
     readonly validations : HasValidationData[];
+    readonly replacements: HasReplacementData[];
     readonly required    : boolean;
+    readonly help        : HasHelpData;
+    readonly value       : any;
 }

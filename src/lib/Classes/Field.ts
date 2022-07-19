@@ -8,37 +8,37 @@ import type HasChoicesData from '../Interfaces/HasChoicesData';
 import type HasValidationData from '../Interfaces/HasValidationData';
 import DynamicValue from './DynamicValue';
 import CSSElement from './CSSElement';
-
-var startedMulticol = false;
+import type HasReplacementData from '$lib/Interfaces/HasReplacementData';
 
 /**
  * Field class.
  * 
  * @since 1.0.0
  */
-export default class Field extends CSSElement implements HasFieldData {
-    readonly fieldset    : Fieldset;
-    readonly fields      : Field[] = [];
-    readonly name        : string;
-    readonly type        : string;    
-    readonly label       : string;
-    readonly prefix      : string;
-    readonly suffix      : string;
-    readonly placeholder : string;
-    readonly multicol    : number;
-    readonly required    : boolean;
+export default class Field extends CSSElement {
+    readonly fieldset: Fieldset;
+    readonly fields: Field[] = [];
+    readonly name: string;
+    readonly type: string;
+    readonly label: string;
+    readonly prefix: string;
+    readonly suffix: string;
+    readonly placeholder: string;
+    readonly required: boolean;
     readonly defaultValue: any[];
     readonly dynamicValue: any[];
-    readonly params      : any[];
-    readonly help        : HasHelpData;
-    readonly choices     : HasChoicesData[];
-    readonly conditions  : HasConditionData[];
-    readonly validations : HasValidationData[];
+    readonly params: any[];
+    readonly help: HasHelpData;
+    readonly choices: HasChoicesData[];
+    readonly conditions: HasConditionData[];
+    readonly validations: HasValidationData[];
+    readonly replacements: HasReplacementData[];
 
-    public  value        : any;
-    private validated    : boolean = false;    
-    private errors       : string[] = [];
-    private inputClasses : string[] = [];
+    public value: any;
+
+    private validated: boolean = false;
+    private errors: string[] = [];
+    private inputClasses: string[] = [];
 
     /**
      * Initializing field.
@@ -49,34 +49,32 @@ export default class Field extends CSSElement implements HasFieldData {
      * @since 1.0.0
      */
     public constructor(
-        fieldset : Fieldset,
-        field    : HasFieldData
-    ){
+        fieldset: Fieldset,
+        field: HasFieldData
+    ) {
         super();
 
-        this.fieldset     = fieldset;
-        this.name         = field.name;
-        this.type         = field.type;
-        this.label        = field.label;
-        this.prefix       = field.prefix;
-        this.suffix       = field.suffix;
-        this.multicol     = field.multicol === undefined ? 0 : field.multicol;
-        this.placeholder  = field.placeholder;
-        this.multicol     = field.multicol === undefined ? 0 : field.multicol;
-        this.help         = field.help === undefined ? undefined : new Help( field.help );
-        this.choices      = field.choices === undefined ? []: field.choices;
-        this.params       = field.params === undefined ? []: field.params;
-        this.required     = field.required === undefined ? false: true; 
-        this.defaultValue = field.defaultValue === undefined ? undefined: field.defaultValue;
-        this.dynamicValue = field.dynamicValue === undefined ? undefined: field.dynamicValue;
-        this.validations  = field.validations === undefined ? []: field.validations;
-        this.conditions   = field.conditions === undefined ? []: field.conditions;
+        this.fieldset = fieldset;
+        this.name = field.name;
+        this.type = field.type;
+        this.label = field.label;
+        this.prefix = field.prefix;
+        this.suffix = field.suffix;
+        this.placeholder = field.placeholder;
+        this.help = field.help === undefined ? undefined : new Help(field.help);
+        this.choices = field.choices === undefined ? [] : field.choices;
+        this.params = field.params === undefined ? [] : field.params;
+        this.required = field.required === undefined ? false : true;
+        this.defaultValue = field.defaultValue === undefined ? undefined : field.defaultValue;
+        this.dynamicValue = field.dynamicValue === undefined ? undefined : field.dynamicValue;
+        this.validations = field.validations === undefined ? [] : field.validations;
+        this.replacements = field.replacements === undefined ? [] : field.replacements;
+        this.conditions = field.conditions === undefined ? [] : field.conditions;
 
-        this.addClass('field-' + this.type );
-        this.addClass('mb-3');
+        this.addClass('field-' + this.type);
 
-        field.classes?.forEach( className => this.addClass(className) );
-        field.fields?.forEach( field => this.fields.push( new Field( this.fieldset, field ) ) );
+        field.classes?.forEach(className => this.addClass(className));
+        field.fields?.forEach(field => this.fields.push(new Field(this.fieldset, field)));
 
         this.value = field.value;
     }
@@ -88,7 +86,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public setValue( value: any ) {
+    public setValue(value: any) {
         this.value = value;
     }
 
@@ -99,7 +97,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getValue() : any {
+    public getValue(): any {
         return this.value;
     }
 
@@ -110,7 +108,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public hasPrefix() : boolean {
+    public hasPrefix(): boolean {
         return this.prefix !== undefined;
     }
 
@@ -121,7 +119,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getPrefix() : string {
+    public getPrefix(): string {
         return this.prefix;
     }
 
@@ -132,7 +130,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getSuffix() : string {
+    public getSuffix(): string {
         return this.prefix;
     }
 
@@ -143,7 +141,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public hasSuffix() : boolean {
+    public hasSuffix(): boolean {
         return this.prefix !== undefined;
     }
 
@@ -154,13 +152,12 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getDefaultValue() : any {
-        if( this.defaultValue === undefined )
-        {
+    public getDefaultValue(): any {
+        if (this.defaultValue === undefined) {
             return;
         }
-        
-        let dynamicValue = new DynamicValue( this.fieldset.form, this.defaultValue );
+
+        let dynamicValue = new DynamicValue(this.fieldset.form, this.defaultValue);
         return dynamicValue.getValue();
     }
 
@@ -171,13 +168,12 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-     public getDynamicValue() : any {
-        if(  this.dynamicValue === undefined )
-        {
+    public getDynamicValue(): any {
+        if (this.dynamicValue === undefined) {
             return;
         }
-        
-        let dynamicValue = new DynamicValue( this.fieldset.form, this.dynamicValue );
+
+        let dynamicValue = new DynamicValue(this.fieldset.form, this.dynamicValue);
         return dynamicValue.getValue();
     }
 
@@ -186,15 +182,13 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public autoValue()
-    {
-        if( this.value == undefined ) {
+    public autoValue() {
+        if (this.value == undefined) {
             this.value = this.getDefaultValue();
         }
 
         let dynamicValue = this.getDynamicValue();
-        if( dynamicValue !== undefined )
-        {
+        if (dynamicValue !== undefined) {
             this.value = dynamicValue;
         }
     }
@@ -206,8 +200,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public hasChoices() : boolean 
-    {
+    public hasChoices(): boolean {
         return this.choices.length > 0;
     }
 
@@ -218,21 +211,38 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public validate() : string[] {
-        let validator = new Validator( this.value, this.validations );
+    public validate(): string[] {
+        this.replace();
+
+        let validator = new Validator(this.value, this.validations);
         this.errors = validator.check();
-        
-        if ( this.errors.length > 0 ) {
-            this.addClass( 'is-invalid' );
-            this.removeClass( 'is-valid' );
+
+        if (this.errors.length > 0) {
+            this.addClass('is-invalid');
+            this.removeClass('is-valid');
         } else {
-            this.addClass( 'is-valid' );
-            this.removeClass( 'is-invalid' );
+            this.addClass('is-valid');
+            this.removeClass('is-invalid');
         }
 
         this.validated = true;
 
         return this.errors;
+    }
+
+    /**
+     * Do replacements.
+     * 
+     * @since 1.0.0
+     */
+    public replace() {
+        if (this.replacements.length === 0) {
+            return;
+        }
+
+        this.replacements.forEach(replacement => {
+            this.value = this.value.replace(replacement.from, replacement.to);
+        });
     }
 
     /**
@@ -242,7 +252,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public getValidationErors() : string[] {
+    public getValidationErors(): string[] {
         return this.errors;
     }
 
@@ -253,8 +263,8 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public hasValidationErrors() : boolean {
-        if ( this.errors.length > 0 ) {            
+    public hasValidationErrors(): boolean {
+        if (this.errors.length > 0) {
             return true;
         }
 
@@ -268,7 +278,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public hasBeenValidated() : boolean {
+    public hasBeenValidated(): boolean {
         return this.validated;
     }
 
@@ -279,18 +289,18 @@ export default class Field extends CSSElement implements HasFieldData {
      * 
      * @since 1.0.0
      */
-    public conditionsFullfilled() : boolean {
-        if ( this.conditions.length === 0 ) {
+    public conditionsFullfilled(): boolean {
+        if (this.conditions.length === 0) {
             return true;
         }
 
         let fullfillments = [];
 
-        this.conditions.forEach( ( condition: HasConditionData ) => {
+        this.conditions.forEach((condition: HasConditionData) => {
             let fullfilled = false;
-            let field = this.fieldset.form.getField( condition.field );
+            let field = this.fieldset.form.getField(condition.field);
 
-            switch ( condition.operator ) {
+            switch (condition.operator) {
                 case '==':
                     fullfilled = condition.value === field.getValue();
                     break;
@@ -299,20 +309,20 @@ export default class Field extends CSSElement implements HasFieldData {
                     break;
                 case '>':
                     fullfilled = condition.value !== field.getValue();
-                    break;                    
+                    break;
                 case '<':
                     fullfilled = condition.value !== field.getValue();
                     break;
                 default:
-                    throw new Error( 'Operator "' + condition.operator + '" does not exist.');                        
+                    throw new Error('Operator "' + condition.operator + '" does not exist.');
             }
 
-            fullfillments.push( fullfilled );
+            fullfillments.push(fullfilled);
         });
 
-       
 
-        return ! fullfillments.includes( false );
+
+        return !fullfillments.includes(false);
     }
 
     /**
@@ -323,7 +333,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * @since 1.0.0
      */
     public addInputClass(name: string) {
-        if( this.inputClasses.indexOf(name) !== -1) {
+        if (this.inputClasses.indexOf(name) !== -1) {
             return;
         }
 
@@ -338,7 +348,7 @@ export default class Field extends CSSElement implements HasFieldData {
      * @since 1.0.0
      */
     public removeInputClass(name: string) {
-        this.inputClasses = this.inputClasses.filter( className => className !== name );
+        this.inputClasses = this.inputClasses.filter(className => className !== name);
     }
 
     /**
@@ -349,11 +359,11 @@ export default class Field extends CSSElement implements HasFieldData {
      * @since 1.0.0
      */
     public getInputClasses(): string {
-        if( ! this.hasBeenValidated() ) {
+        if (!this.hasBeenValidated()) {
             return this.inputClasses.join(' ');
         }
 
-        if( ! this.hasValidationErrors() ) {
+        if (!this.hasValidationErrors()) {
             this.addInputClass('is-valid');
             this.removeInputClass('is-invalid');
         } else {
