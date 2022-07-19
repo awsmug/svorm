@@ -212,6 +212,8 @@ export default class Field extends CSSElement {
      * @since 1.0.0
      */
     public validate(): string[] {
+        if( ! this.conditionsFullfilled() ) return []; // Do not validate if field is not shown.
+
         this.replace();
 
         let validator = new Validator(this.value, this.validations);
@@ -240,7 +242,7 @@ export default class Field extends CSSElement {
             return;
         }
 
-        if(this.value === undefined) {
+        if(this.value == null) {
             return;
         }
 
