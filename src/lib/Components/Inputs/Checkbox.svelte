@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-
 	import type Field from '../../Classes/Field';
-
 	import Errors from '../Errors.svelte';
 	import Help from '../Help.svelte';
 
