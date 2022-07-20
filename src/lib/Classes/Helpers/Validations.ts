@@ -43,6 +43,11 @@ export default class Validations {
                         this.errors.push( validation.error );
                     }
                     break;
+                case 'letters':
+                    if ( ! ValidationMedhods.letters( this.field.value ) ) {
+                        this.errors.push( validation.error );
+                    }
+                    break;
                 case 'int':
                     if ( ! ValidationMedhods.int( this.field.value ) ) {
                         this.errors.push( validation.error );

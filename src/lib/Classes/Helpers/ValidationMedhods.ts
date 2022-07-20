@@ -21,6 +21,19 @@ export default class ValidationMedhods {
     }
 
     /**
+     * Is value containing only letters?
+     * 
+     * @param value Value which have to be checked.
+     * @return boolean True if is only containing letters, false if not.
+     * 
+     * @since 1.0.0
+     */
+     static letters( value: any ) {
+        const re = /^([a-zA-Z]{1,})$/;
+        return re.test( value );
+    }
+
+    /**
      * Is value of tye int?
      * 
      * @param value Value which have to be checked.
