@@ -33,19 +33,20 @@ import type Form from "../Form";
         this.conditions.forEach((condition: HasConditionData) => {
             let fullfilled = false;
             let field = this.form.getField(condition.field);
+            let compareValue = this.filterCompareValue( condition.value );
 
             switch (condition.operator) {
                 case '==':
-                    fullfilled = condition.value === field.value;
+                    fullfilled = compareValue === field.value;
                     break;
                 case '!=':
-                    fullfilled = condition.value !== field.value;
+                    fullfilled = compareValue !== field.value;
                     break;
                 case '>':
-                    fullfilled = condition.value !== field.value;
+                    fullfilled = compareValue !== field.value;
                     break;
                 case '<':
-                    fullfilled = condition.value !== field.value;
+                    fullfilled = compareValue !== field.value;
                     break;
                 default:
                     throw new Error('Operator "' + condition.operator + '" does not exist.');
@@ -55,5 +56,24 @@ import type Form from "../Form";
         });
 
         return !fullfillments.includes(false);
+    }
+
+    /**
+     * Filter compare value.
+     * 
+     * This makes values like "undefined" possible.
+     *
+     * @param value Value to filter.
+     * @returns Filtered value.
+     * 
+     * @since 1.0.0
+     */
+    private filterCompareValue(value: any) : any {
+        switch(value) {
+            case 'undefined':
+                return undefined;
+            default:
+                return value;
+        }
     }
  }
