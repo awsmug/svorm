@@ -119,7 +119,14 @@
                             "operator": "!=",
                             "value": "undefined"
                         }
-                    ]                    
+                    ],
+                    "validations": [
+                        {
+                            "type": "minLength",
+                            "value": 50,
+                            "error": "Der Text muss mindestens 50 Zeichen lang sein."
+                        }
+                    ]     
                 }
             ]
         }
