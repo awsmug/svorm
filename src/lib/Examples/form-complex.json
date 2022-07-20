@@ -24,6 +24,23 @@
                     ]
                 },
                 {
+                    "name": "type",
+                    "type": "choice-radio",
+                    "classes": ["mb-3"],
+                    "label": "Sind Sie bereits Kunde bei uns?",
+                    "choices": [
+                        {
+                            "label": "Ja",
+                            "value": "yes"
+                        },
+                        {
+                            "label": "Nein",
+                            "value": "no"
+                        }
+                    ],
+                    "valueDefault": "no"
+                },
+                {
                     "name": "email",
                     "type": "text",
                     "classes": ["mb-3"],
