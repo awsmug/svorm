@@ -6,12 +6,6 @@
 
 	export let field: Field;
 
-	$: field.autoValue();
-
-	if (field.value == undefined) {
-		field.value = false;
-	}
-
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
 		field.validate();

@@ -6,8 +6,6 @@
 
 	export let field: Field;
 
-	$: field.autoValue();
-
 	const dispatch = createEventDispatcher();
 	const setValue = () => {
 		field.validate();

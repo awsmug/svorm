@@ -4,10 +4,10 @@ import type Fieldset from './Fieldset';
 import type HasChoicesData from './Interfaces/HasChoicesData';
 import CSSElement from './Abstract/CSSElement';
 import Help from './Help';
-import valueCallback from './Helpers/valueCallback';
 import Validations from './Helpers/Validations';
 import Conditions from './Helpers/Conditions';
 import Replacements from './Helpers/Replacements';
+import DynamicValue from './Helpers/DynamicValue';
 
 /**
  * Field class.
@@ -35,7 +35,7 @@ export default class Field extends CSSElement {
     readonly valueCallback: any;
 
     public value: any;
-
+    private dynamicValue: DynamicValue;
     private validated: boolean = false;
     private inputClasses: string[] = [];
 
@@ -62,13 +62,34 @@ export default class Field extends CSSElement {
         this.suffix = field.suffix;
         this.placeholder = field.placeholder;
         this.choices = field.choices;
-        this.value = field.value;
-        this.valueDefault = field.valueDefault === undefined ? undefined : field.valueDefault;
-        this.valueCallback = field.valueCallback === undefined ? undefined : field.valueCallback;
 
-        this.validations = field.validations !== undefined ? new Validations(this, field.validations) : new Validations(this);
-        this.replacements = field.replacements !== undefined ? new Replacements(this, field.replacements) : new Replacements(this);
-        this.conditions = field.conditions !== undefined ? new Conditions(this.fieldset.form, field.conditions) : new Conditions(this.fieldset.form);
+        this.value = field.value;
+
+        this.dynamicValue = new DynamicValue(
+            this.fieldset.form,
+            this.value,
+            field.valueField !== undefined ? field.valueField : undefined,
+            field.valueDefault !== undefined ? field.valueDefault : undefined,
+            field.valueCallback !== undefined ? field.valueCallback : undefined
+        );
+
+        this.autoValue();
+
+        this.validations = new Validations(
+            this, 
+            field.validations !== undefined ? field.validations : []
+        );
+
+        this.replacements = new Replacements(
+            this, 
+            field.replacements !== undefined ? field.replacements : []
+        );
+
+        this.conditions = new Conditions(
+            this.fieldset.form,
+            field.conditions !== undefined ? field.conditions : []
+        );
+
         this.help = field.help === undefined ? undefined : new Help(field.help);
 
         field.classes?.forEach(className => this.addClass(className));
@@ -83,14 +104,7 @@ export default class Field extends CSSElement {
      * @since 1.0.0
      */
     public autoValue() {
-        if (this.value == undefined) {
-            this.value = this.getvalueDefault();
-        }
-
-        let valueCallback = this.getvalueCallback();
-        if (valueCallback !== undefined) {
-            this.value = valueCallback;
-        }
+        this.value = this.dynamicValue.get();
     }
 
     /**
@@ -179,7 +193,7 @@ export default class Field extends CSSElement {
             return this.inputClasses.join(' ');
         }
 
-        if (!this.hasValidationErrors()) {
+        if (!this.validations.hasErrors()) {
             this.addInputClass('is-valid');
             this.removeInputClass('is-invalid');
         } else {

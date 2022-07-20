@@ -7,8 +7,6 @@
 
     export let field: Field;
 
-    $: field.autoValue();
-
     const dispatch = createEventDispatcher();
     const setValue = () => {      
         dispatch( 'update', field.fieldset.form );

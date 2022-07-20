@@ -27,6 +27,7 @@ export default interface HasFieldData {
     readonly params: any;
     readonly paramsCallback: any;
     readonly value: any;
+    readonly valueField: string;
     readonly valueDefault: any;
     readonly valueCallback: any;
 }
