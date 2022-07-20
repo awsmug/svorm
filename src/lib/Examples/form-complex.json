@@ -1,135 +1,128 @@
 {
     "name": "test-form",
-    "start": "basisdaten",
+    "start": "kontaktdaten",
     "fieldsets": [
         {
-            "label": "Basisdaten",
-            "name": "basisdaten",
-            "nextFieldset": "weiteredaten",
+            "label": "Kontaktdaten",
+            "name": "kontaktdaten",
             "fields": [
-               {
-                    "type": "group",
-                    "fields": [
-
+                {
+                    "name": "name",
+                    "type": "text",
+                    "classes": ["mb-3"],
+                    "label": "Name",
+                    "validations": [
                         {
-                            "name": "intBigger5",
-                            "type": "text",
-                            "classes": ["col-3", "mb-3"],
-                            "label": "Int bigger 5",
-                            "validations": [
-                                {
-                                    "type": "min",
-                                    "value": 5,
-                                    "error": "Bitte geben Sie eine Zahl größer als 5 ein."
-                                },
-                                {
-                                    "type": "int",
-                                    "error": "Bitte geben Sie eine ganze Zahl ein."
-                                }
-                            ]
+                            "type": "minLength",
+                            "value": 2,
+                            "error": "Der Name muss aus mindestens zwei Buchstaben bestehen."
                         },
                         {
-                            "name": "email",
-                            "type": "text",
-                            "classes": ["col-3", "mb-3"],
-                            "label": "Email",
-                            "validations": [
-                                {
-                                    "type": "email",
-                                    "error": "Bitte geben Sie eine gültige Email-Adresse ein."
-                                }
-                            ]
-                        },
-                        {
-                            "name": "number",
-                            "type": "text",
-                            "classes": ["col-3", "mb-3"],
-                            "label": "Number",
-                            "replacements": [
-                                {
-                                    "from": ".",
-                                    "to": ","
-                                }
-                            ],
-                            "validations": [
-                                {
-                                    "type": "number",
-                                    "error": "Bitte geben Sie eine Zahl ein."
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grund",
-                            "label": "Anlass der Berechnung",
-                            "type": "choice-select",
-                            "classes": ["col-3", "mb-3"],
-                            "required": true,
-                            "choices": [
-                                {
-                                    "label": "Bitte wählen..."
-                                },
-                                {
-                                    "label": "Modernisierung / Erweiterung",
-                                    "value": "Modernisierung / Erweiterung"
-                                },
-                                {
-                                    "label": "Vermietung",
-                                    "value": "Vermietung"
-                                },
-                                {
-                                    "label": "Verkauf",
-                                    "value": "Verkauf"
-                                },
-                                {
-                                    "label": "Sonstiges",
-                                    "value": "Sonstiges"
-                                }
-                            ],
-                            "validations": [
-                                {
-                                    "type": "empty",
-                                    "error": "Bitte wählen Sie einen Grund der Erstellung aus"
-                                }
-                            ],
-                            "help": {
-                                "type": "info",
-                                "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
-                            }            
+                            "type": "letters",
+                            "error": "Bitte geben Sie nur Buchstaben an."
                         }
                     ]
-               } 
-            ]
-        },
-        {
-            "label": "Weitere Daten",
-            "name": "weiteredaten",
-            "nextFieldset": "geometrischeErfassung",
-            "fields": [
-               {
-                    "type": "group",
-                    "fields": [
-
+                },
+                {
+                    "name": "email",
+                    "type": "text",
+                    "classes": ["mb-3"],
+                    "label": "Email",
+                    "validations": [
                         {
-                            "name": "anumber",
-                            "type": "text",
-                            "classes": ["col-3", "mb-3"],
-                            "label": "Int bigger 5",
-                            "validations": [
-                                {
-                                    "type": "min",
-                                    "value": 5,
-                                    "error": "Bitte geben Sie eine Zahl größer als 5 ein."
-                                },
-                                {
-                                    "type": "int",
-                                    "error": "Bitte geben Sie eine ganze Zahl ein."
-                                }
-                            ]
+                            "type": "email",
+                            "error": "Bitte geben Sie eine gültige Email-Adresse ein."
                         }
                     ]
-               } 
+                },            
+                {
+                    "name": "reason",
+                    "label": "Grund der Anfrage",
+                    "type": "choice-select",
+                    "classes": ["mb-3"],
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },
+                        {
+                            "label": "Fragen zu Produkten",
+                            "value": "products"
+                        },
+                        {
+                            "label": "Defekt eines Produkts",
+                            "value": "defect"
+                        },
+                        {
+                            "label": "Fragen zum Versand",
+                            "value": "send"
+                        },
+                        {
+                            "label": "Sonstiges",
+                            "value": "Sonstiges"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen Grund der Anfrage aus"
+                        }
+                    ],
+                    "help": {
+                        "type": "info",
+                        "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
+                    }        
+                },            
+                {
+                    "name": "product",
+                    "label": "Um welches Produkt handelt es sich?",
+                    "type": "choice-select",
+                    "classes": ["mb-3"],
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },
+                        {
+                            "label": "Hosen",
+                            "value": "pants"
+                        },
+                        {
+                            "label": "T-Shirts",
+                            "value": "t-shirts"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen Grund der Anfrage aus"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "field": "reason",
+                            "operator": "==",
+                            "value": "products"
+                        }
+                    ],
+                    "help": {
+                        "type": "info",
+                        "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
+                    }        
+                },
+                {
+                    "name": "message",
+                    "label": "Ihre Nachricht",
+                    "type": "textarea",
+                    "classes": ["mb-3"],
+                    "conditions": [
+                        {
+                            "field": "reason",
+                            "operator": "!=",
+                            "value": "undefined"
+                        }
+                    ]                    
+                }
             ]
-        }       
+        }
     ],
     "triggers": [
         {
