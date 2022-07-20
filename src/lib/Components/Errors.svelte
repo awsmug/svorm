@@ -3,18 +3,15 @@
     export let field: Field;
 </script>
 
-{#if field.hasValidationErrors() }
+{#if field.validations.hasErrors() }
 <div class="invalid-feedback">
-    {#each field.getValidationErors() as errortext}
-        <span>{errortext}</span>
-    {/each}
-    <!-- <ul>
-    {#each field.getValidationErors() as errortext}
+    <ul>
+    {#each field.validations.getErrors() as errortext}
         <li>
             <div class="error-triangle"></div>
             <div class="error-content">{errortext}</div>
         </li>
     {/each}
-    </ul>     -->
+    </ul>    
 </div>
 {/if}

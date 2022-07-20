@@ -3,7 +3,7 @@
  * 
  * @since 1.0.0
  */
- export default class CSSElement {
+ export default abstract class CSSElement {
     /**
      * Classes.
      * 

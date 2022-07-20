@@ -1,5 +1,5 @@
 import type HasCallbackData from "../Interfaces/HasCallbackData";
-import type Form from "./Form";
+import type Form from "../Form";
 
 /**
  * Dynamic value class.
@@ -52,7 +52,7 @@ export default class DynamicValue {
             let field = this.form.getField( this.field );
             if( field !== undefined )
             {
-                return field.getValue();
+                return field.value;
             }   
         }
 

@@ -1,4 +1,4 @@
-import type Field from "../Classes/Field";
+import type Field from "../Field";
 import type HasSubmissionData from "./HasSubmissionData";
 import type HasConditionData from "./HasConditionData";
 

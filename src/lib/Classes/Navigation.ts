@@ -1,6 +1,11 @@
 import type Fieldset from "./Fieldset";
 import type Form from "./Form";
 
+/**
+ * Navigation class.
+ * 
+ * @since 1.0.0
+ */
 export default class Navigation {
     readonly form            : Form;
     private  currentFieldset : Fieldset;

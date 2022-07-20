@@ -8,4 +8,5 @@ export default interface HasFormData {
     classes:   [];
     start:     string;
     fieldsets: [];
+    actions:   Action[];
 }

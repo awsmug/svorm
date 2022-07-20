@@ -1,4 +1,4 @@
-import type HasHelpData from '../Interfaces/HasHelpData';
+import type HasHelpData from './Interfaces/HasHelpData';
 
 /**
  * Help class.

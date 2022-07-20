@@ -1,6 +1,6 @@
 <script lang="ts">
     import {fly, fade} from 'svelte/transition';
-    import type HasDialogOptionData from "../Interfaces/HasDialogOptionData";
+    import type HasDialogOptionData from "../Classes/Interfaces/HasDialogOptionData";
 
     export let text   : string;
     export let options: HasDialogOptionData[];

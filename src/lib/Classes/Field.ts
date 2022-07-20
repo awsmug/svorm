@@ -1,14 +1,13 @@
-import type HasFieldData from '../Interfaces/HasFieldData';
-import type HasConditionData from "../Interfaces/HasConditionData";
-import type HasHelpData from '../Interfaces/HasHelpData';
+import type HasFieldData from './Interfaces/HasFieldData';
+import type HasHelpData from './Interfaces/HasHelpData';
 import type Fieldset from './Fieldset';
+import type HasChoicesData from './Interfaces/HasChoicesData';
+import CSSElement from './Abstract/CSSElement';
 import Help from './Help';
-import Validator from './Validator';
-import type HasChoicesData from '../Interfaces/HasChoicesData';
-import type HasValidationData from '../Interfaces/HasValidationData';
-import DynamicValue from './DynamicValue';
-import CSSElement from './CSSElement';
-import type HasReplacementData from '$lib/Interfaces/HasReplacementData';
+import valueCallback from './Helpers/valueCallback';
+import Validations from './Helpers/Validations';
+import Conditions from './Helpers/Conditions';
+import Replacements from './Helpers/Replacements';
 
 /**
  * Field class.
@@ -18,26 +17,26 @@ import type HasReplacementData from '$lib/Interfaces/HasReplacementData';
 export default class Field extends CSSElement {
     readonly fieldset: Fieldset;
     readonly fields: Field[] = [];
-    readonly name: string;
+
     readonly type: string;
+    readonly name: string;
     readonly label: string;
     readonly prefix: string;
     readonly suffix: string;
     readonly placeholder: string;
-    readonly required: boolean;
-    readonly defaultValue: any[];
-    readonly dynamicValue: any[];
-    readonly params: any[];
-    readonly help: HasHelpData;
     readonly choices: HasChoicesData[];
-    readonly conditions: HasConditionData[];
-    readonly validations: HasValidationData[];
-    readonly replacements: HasReplacementData[];
+    readonly conditions: Conditions;
+    readonly validations: Validations;
+    readonly replacements: Replacements;
+    readonly help: HasHelpData;
+    readonly params: any;
+    readonly paramsCallback: any;
+    readonly valueDefault: any;
+    readonly valueCallback: any;
 
     public value: any;
 
     private validated: boolean = false;
-    private errors: string[] = [];
     private inputClasses: string[] = [];
 
     /**
@@ -55,126 +54,27 @@ export default class Field extends CSSElement {
         super();
 
         this.fieldset = fieldset;
+
         this.name = field.name;
         this.type = field.type;
         this.label = field.label;
         this.prefix = field.prefix;
         this.suffix = field.suffix;
         this.placeholder = field.placeholder;
-        this.help = field.help === undefined ? undefined : new Help(field.help);
-        this.choices = field.choices === undefined ? [] : field.choices;
-        this.params = field.params === undefined ? [] : field.params;
-        this.required = field.required === undefined ? false : true;
-        this.defaultValue = field.defaultValue === undefined ? undefined : field.defaultValue;
-        this.dynamicValue = field.dynamicValue === undefined ? undefined : field.dynamicValue;
-        this.validations = field.validations === undefined ? [] : field.validations;
-        this.replacements = field.replacements === undefined ? [] : field.replacements;
-        this.conditions = field.conditions === undefined ? [] : field.conditions;
+        this.choices = field.choices;
+        this.value = field.value;
+        this.valueDefault = field.valueDefault === undefined ? undefined : field.valueDefault;
+        this.valueCallback = field.valueCallback === undefined ? undefined : field.valueCallback;
 
-        this.addClass('field-' + this.type);
+        this.validations = field.validations !== undefined ? new Validations(this, field.validations) : new Validations(this);
+        this.replacements = field.replacements !== undefined ? new Replacements(this, field.replacements) : new Replacements(this);
+        this.conditions = field.conditions !== undefined ? new Conditions(this.fieldset.form, field.conditions) : new Conditions(this.fieldset.form);
+        this.help = field.help === undefined ? undefined : new Help(field.help);
 
         field.classes?.forEach(className => this.addClass(className));
-        field.fields?.forEach(field => this.fields.push(new Field(this.fieldset, field)));
+        field.fields?.forEach(subField => this.fields.push(new Field(this.fieldset, subField)));
 
-        this.value = field.value;
-    }
-
-    /**
-     * Set value of field.
-     * 
-     * @param value Value to set.
-     * 
-     * @since 1.0.0
-     */
-    public setValue(value: any) {
-        this.value = value;
-    }
-
-    /**
-     * Get value of field.
-     * 
-     * @return value Value to set.
-     * 
-     * @since 1.0.0
-     */
-    public getValue(): any {
-        return this.value;
-    }
-
-    /**
-     * Is there a prefix?
-     * 
-     * @returns True if field has prefix.
-     * 
-     * @since 1.0.0
-     */
-    public hasPrefix(): boolean {
-        return this.prefix !== undefined;
-    }
-
-    /**
-     * Get prefix.
-     * 
-     * @returns Prefix.
-     * 
-     * @since 1.0.0
-     */
-    public getPrefix(): string {
-        return this.prefix;
-    }
-
-    /**
-     * Get suffix.
-     * 
-     * @returns Suffix.
-     * 
-     * @since 1.0.0
-     */
-    public getSuffix(): string {
-        return this.prefix;
-    }
-
-    /**
-     * Is there a suffix?
-     * 
-     * @returns True if field has suffix.
-     * 
-     * @since 1.0.0
-     */
-    public hasSuffix(): boolean {
-        return this.prefix !== undefined;
-    }
-
-    /**
-     * Get default value.
-     * 
-     * @return value Default value.
-     * 
-     * @since 1.0.0
-     */
-    public getDefaultValue(): any {
-        if (this.defaultValue === undefined) {
-            return;
-        }
-
-        let dynamicValue = new DynamicValue(this.fieldset.form, this.defaultValue);
-        return dynamicValue.getValue();
-    }
-
-    /**
-     * Get default value.
-     * 
-     * @return value Default value.
-     * 
-     * @since 1.0.0
-     */
-    public getDynamicValue(): any {
-        if (this.dynamicValue === undefined) {
-            return;
-        }
-
-        let dynamicValue = new DynamicValue(this.fieldset.form, this.dynamicValue);
-        return dynamicValue.getValue();
+        this.addClass('field-' + this.type);
     }
 
     /**
@@ -184,12 +84,12 @@ export default class Field extends CSSElement {
      */
     public autoValue() {
         if (this.value == undefined) {
-            this.value = this.getDefaultValue();
+            this.value = this.getvalueDefault();
         }
 
-        let dynamicValue = this.getDynamicValue();
-        if (dynamicValue !== undefined) {
-            this.value = dynamicValue;
+        let valueCallback = this.getvalueCallback();
+        if (valueCallback !== undefined) {
+            this.value = valueCallback;
         }
     }
 
@@ -212,14 +112,12 @@ export default class Field extends CSSElement {
      * @since 1.0.0
      */
     public validate(): string[] {
-        if( ! this.conditionsFullfilled() ) return []; // Do not validate if field is not shown.
+        if (!this.conditions.fullfilled()) return []; // Do not validate if field is not shown.
 
-        this.replace();
+        this.replacements.replace();
+        this.validations.validate();
 
-        let validator = new Validator(this.value, this.validations);
-        this.errors = validator.check();
-
-        if (this.errors.length > 0) {
+        if (this.validations.hasErrors()) {
             this.addClass('is-invalid');
             this.removeClass('is-valid');
         } else {
@@ -229,52 +127,7 @@ export default class Field extends CSSElement {
 
         this.validated = true;
 
-        return this.errors;
-    }
-
-    /**
-     * Do replacements.
-     * 
-     * @since 1.0.0
-     */
-    public replace() {
-        if (this.replacements.length === 0) {
-            return;
-        }
-
-        if(this.value == null) {
-            return;
-        }
-
-        this.replacements.forEach(replacement => {
-            this.value = this.value.replace(replacement.from, replacement.to);
-        });
-    }
-
-    /**
-     * Get validation errors.
-     * 
-     * @return Erros which occured while validating.
-     * 
-     * @since 1.0.0
-     */
-    public getValidationErors(): string[] {
-        return this.errors;
-    }
-
-    /**
-     * Has field validation errors.
-     * 
-     * @return True if field has errors, false if not.
-     * 
-     * @since 1.0.0
-     */
-    public hasValidationErrors(): boolean {
-        if (this.errors.length > 0) {
-            return true;
-        }
-
-        return false;
+        return this.validations.getErrors();
     }
 
     /**
@@ -286,49 +139,6 @@ export default class Field extends CSSElement {
      */
     public hasBeenValidated(): boolean {
         return this.validated;
-    }
-
-    /**
-     * Checks if conditions are fullfilled.
-     * 
-     * @returns True if conditions are fullfilled, false if not.
-     * 
-     * @since 1.0.0
-     */
-    public conditionsFullfilled(): boolean {
-        if (this.conditions.length === 0) {
-            return true;
-        }
-
-        let fullfillments = [];
-
-        this.conditions.forEach((condition: HasConditionData) => {
-            let fullfilled = false;
-            let field = this.fieldset.form.getField(condition.field);
-
-            switch (condition.operator) {
-                case '==':
-                    fullfilled = condition.value === field.getValue();
-                    break;
-                case '!=':
-                    fullfilled = condition.value !== field.getValue();
-                    break;
-                case '>':
-                    fullfilled = condition.value !== field.getValue();
-                    break;
-                case '<':
-                    fullfilled = condition.value !== field.getValue();
-                    break;
-                default:
-                    throw new Error('Operator "' + condition.operator + '" does not exist.');
-            }
-
-            fullfillments.push(fullfilled);
-        });
-
-
-
-        return !fullfillments.includes(false);
     }
 
     /**

@@ -1,11 +1,8 @@
 import type Form from './Form';
-import type HasFieldsetData from '../Interfaces/HasFieldsetData';
-import type HasConditionData from '../Interfaces/HasConditionData';
-
+import type HasFieldsetData from './Interfaces/HasFieldsetData';
 import Field from './Field';
-import type HasSubmissionData from '../Interfaces/HasSubmissionData';
-import CSSElement from './CSSElement';
-
+import CSSElement from './Abstract/CSSElement';
+import Conditions from './Helpers/Conditions';
 
 /**
  * Class Fieldset.
@@ -18,8 +15,7 @@ export default class Fieldset extends CSSElement {
     readonly label         : string;
     readonly percentage    : number;
     readonly params        : [];
-    readonly conditions    : HasConditionData[];
-    readonly submission    : HasSubmissionData | undefined;
+    readonly conditions    : Conditions;
 
     readonly nextFieldset: string;
     readonly prevFieldset: string;
@@ -42,57 +38,16 @@ export default class Fieldset extends CSSElement {
         this.label          = fieldset.label;
         this.percentage     = fieldset.percentage;
         this.params         = undefined === fieldset.params ? []: fieldset.params;
-        this.conditions     = undefined === fieldset.conditions ? []: fieldset.conditions;
-        this.submission     = fieldset.submission;
 
         this.nextFieldset = fieldset.nextFieldset;
         this.prevFieldset = fieldset.prevFieldset;
 
-        this.addClass('fieldset-' +  this.name);
+        this.conditions = fieldset.conditions !== undefined ? new Conditions(this.form, fieldset.conditions) : new Conditions(this.form);
 
         fieldset.classes?.forEach( className => this.addClass(className) );
         fieldset.fields.forEach( field => this.fields.push( new Field( this, field ) ) );
-    }
 
-    /**
-     * Checks if conditions are fullfilled.
-     * 
-     * @returns True if conditions are fullfilled, false if not.
-     * 
-     * @since 1.0.0
-     */
-    public conditionsFullfilled() : boolean {
-        if ( this.conditions.length === 0 ) {
-            return true;
-        }
-        
-        let fullfillments = [];
-
-        this.conditions.forEach( ( condition: HasConditionData ) => {
-            let fullfilled = false;
-            let field = this.form.getField( condition.field );
-
-            switch ( condition.operator ) {
-                case '==':
-                    fullfilled = condition.value === field.getValue();
-                    break;
-                case '!=':
-                    fullfilled = condition.value !== field.getValue();
-                    break;
-                case '>':
-                    fullfilled = condition.value !== field.getValue();
-                    break;                    
-                case '<':
-                    fullfilled = condition.value !== field.getValue();
-                    break;
-                default:
-                    throw new Error( 'Operator "' + condition.operator + '" does not exist.');                        
-            }
-
-            fullfillments.push( fullfilled );
-        });
-
-        return ! fullfillments.includes( false );
+        this.addClass('fieldset-' +  this.name);
     }
 
     /**
@@ -157,11 +112,11 @@ export default class Fieldset extends CSSElement {
         this.fields.forEach( ( field: Field ) => {
             if( field.type === 'group') {
                 field.fields.forEach( (field: Field) => {
-                    if( field.hasValidationErrors() && ! foundError  ) {
+                    if( field.validations.hasErrors() && ! foundError  ) {
                         foundError = true;   
                     }
                 });
-            } else if( field.hasValidationErrors() && ! foundError ) {
+            } else if( field.validations.hasErrors() && ! foundError ) {
                 foundError = true;
             }
         });

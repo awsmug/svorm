@@ -1,11 +1,9 @@
-import type HasFormData from '../Interfaces/HasFormData';
-import type HasFieldsetData from '../Interfaces/HasFieldsetData';
+import type HasFormData from './Interfaces/HasFormData';
 import type Field from './Field';
-
+import type Trigger from './Helpers/Trigger';
 import Fieldset from './Fieldset';
 import Navigation from './Navigation';
-import CSSElement from './CSSElement';
-
+import CSSElement from './Abstract/CSSElement';
 
 /**
  * Class Form.
@@ -13,9 +11,10 @@ import CSSElement from './CSSElement';
  * @since 1.0.0
  */
 export default class Form extends CSSElement {
-    readonly name           : string;
-    readonly navigation     : Navigation;
-    readonly fieldsets      : Fieldset[];
+    readonly name       : string;
+    readonly navigation : Navigation;
+    readonly fieldsets  : Fieldset[];
+    readonly triggers   : Trigger[];
 
     /**
      * Initializing form data.

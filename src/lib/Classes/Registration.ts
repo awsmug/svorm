@@ -6,21 +6,52 @@ import ChoiceSelect from '$lib/Components/Inputs/ChoiceSelect.svelte';
 import ChoiceImage from '$lib/Components/Inputs/ChoiceImage.svelte';
 import ChoiceRadio from '$lib/Components/Inputs/ChoiceRadio.svelte';
 
+/**
+ * Navigation class.
+ * 
+ * @since 1.0.0
+ */
 export default class Registration {
     private elements = [];
 
+    /**
+     * Constructor.
+     * 
+     * @since 1.0.0
+     */
     constructor() {
         this.registerDefaults();
     }
     
-    public addElement( name, input ) {
+    /**
+     * Add element to register
+     * 
+     * @param name  Help data.
+     * 
+     * @since 1.0.0
+     */
+    public addElement( name: string, input ) {
         this.elements[ name ] = input;
     }
 
+    /**
+     * Get a specific element.
+     * 
+     * @param name Element name.
+     * 
+     * @returns Svelte component element object.
+     * 
+     * @since 1.0.0
+     */
     public getElement( name ) {
         return this.elements[ name ];
     }
 
+    /**
+     * Register standard Elements.
+     * 
+     * @since 1.0.0
+     */
     private registerDefaults() {
         this.addElement( 'text', Text );
         this.addElement( 'textarea', Textarea );

@@ -131,10 +131,10 @@
             ]
         }       
     ],
-    "actions": [
+    "triggers": [
         {
             "name": "checkBuilding",
-            "on": "change",
+            "type": "change",
             "conditions": [
                 {
                     "field": "wohneinheiten",
@@ -152,7 +152,6 @@
                 "text": "Für vor 1978 errichtete Gebäude mit weniger als 5 Wohneinheiten ohne Wanddämmung darf gemäß GEG kein Verbrauchsausweis erstellt werden. Es ist jedoch möglich einen entsprechenden Bedarfsausweis zu erstellen. Klicken Sie den unten angezeigten Button, um Ihren Ausweis in einen Bedarfsausweis umzuwandeln."
             }
         }
-
     ]
 }
 
