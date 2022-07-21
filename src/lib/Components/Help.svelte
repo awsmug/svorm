@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import type Field from '../Classes/Field';
 
 	export let field: Field;
@@ -17,11 +18,21 @@
 				break;
 		}
 	}
+
+	let showHelp = false;
+
+	const hideTooltip = () => {
+		showHelp = false;
+	}
+
+	const showTooltip = () => {
+		showHelp = true;
+	}
 </script>
 
 {#if field.help !== undefined}
-	<div id="field-{field.name}-help" class={cssClasses.join(' ')}>
-		<span class="tooltiptext">{@html field.help.content}</span>
+	<div id="field-{field.name}-help" class={cssClasses.join(' ')} on:mouseover={showTooltip} on:mouseout={hideTooltip}>
+		{#if showHelp == true }<span class="tooltiptext" transition:fade>{@html field.help.content}</span>{/if}
 	</div>
 {/if}
 
@@ -33,7 +44,6 @@
 	}
 
 	.field-help .tooltiptext {
-		visibility: hidden;
 		width: 250px;
 		bottom: 100%;
 		left: 50%;
@@ -56,9 +66,5 @@
 		border-width: 5px;
 		border-style: solid;
 		border-color: black transparent transparent transparent;
-	}
-
-	.field-help:hover .tooltiptext {
-		visibility: visible;
 	}
 </style>
