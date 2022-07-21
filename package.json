@@ -1,6 +1,6 @@
 {
   "name": "svorm",
-  "version": "0.0.60",
+  "version": "0.0.61",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.19.1",
+    "@rollup/plugin-replace": "^2.4.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
@@ -31,18 +32,18 @@
     "prettier": "^2.5.1",
     "prettier-plugin-svelte": "^2.5.0",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-replace": "^2.2.0",
     "sass": "^1.49.9",
+    "sv-bootstrap-tooltip": "^0.2.1",
     "svelte": "^3.44.0",
     "svelte-check": "^2.2.6",
+    "svelte-popperjs": "^1.2.11",
     "svelte-preprocess": "^4.10.1",
     "svelte2tsx": "^0.5.5",
     "tslib": "^2.3.1",
     "typescript": "~4.5.4",
-    "vite": "^2.9.14",
+    "vite": "^3.0.2",
     "vuepress": "^2.0.0-beta.36"
   },
-  "type": "module",
-  "dependencies": {
-    "sveltejs-tippy": "^3.0.0"
-  }
+  "type": "module"
 }

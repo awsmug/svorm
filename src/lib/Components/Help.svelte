@@ -1,18 +1,14 @@
 <script lang="ts">
-	import tippy from 'sveltejs-tippy';
+    import Tooltip from "sv-bootstrap-tooltip";
 	import type Field from '../Classes/Field';
+
+    let boundElement;
 
 	export let field: Field;
 
 	const cssClasses = ['field-help', 'bi'];
-    let tooltip;
 
 	if (field.help !== undefined) {
-        tooltip = {
-            content: field.help.content,
-            allowHTML: true,
-            placement: 'top'
-        };
 
 		let type = field.help.type !== undefined ? field.help.type : 'info';
 
@@ -28,7 +24,8 @@
 </script>
 
 {#if field.help !== undefined}
-	<span id="field-{field.name}-help" class={cssClasses.join(' ')} use:tippy={tooltip}></span>
+	<span id="field-{field.name}-help" class={cssClasses.join(' ')} bind:this={boundElement}></span>
+    <Tooltip triggerElement={boundElement}>{@html field.help.content}</Tooltip>
 {/if}
 
 <style>

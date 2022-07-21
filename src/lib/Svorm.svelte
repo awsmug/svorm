@@ -6,9 +6,3 @@
 </script>
 
 <Form {data} {customElements} />
-
-<style>
-	:global(.tooltip-inner) {
-		text-align: left;
-	}
-</style>
