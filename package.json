@@ -1,6 +1,6 @@
 {
   "name": "svorm",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
