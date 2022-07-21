@@ -13,17 +13,18 @@
 	};
 </script>
 
-<label for={field.name}>{field.label} <Help {field} /></label>
-
 <div class="input-checkbox-field ">
-	<input
-		type="checkbox"
-		id={field.name}
-		name={field.name}
-		placeholder={field.placeholder}
-		bind:checked={field.value}
-		on:input={setValue}
-		aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
-	/>
+	<label for={field.name}>
+		<input
+			type="checkbox"
+			id={field.name}
+			name={field.name}
+			placeholder={field.placeholder}
+			bind:checked={field.value}
+			on:input={setValue}
+			aria-describedby={field.help !== undefined ? field.name + '-help' : ''}
+		/>
+		{field.label}  <Help {field} />
+	</label>
 	<Errors {field} />
 </div>

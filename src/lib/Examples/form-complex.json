@@ -144,6 +144,12 @@
                             "error": "Der Text muss mindestens 50 Zeichen lang sein."
                         }
                     ]     
+                },
+                {
+                    "name": "canContact",
+                    "label": "Ich stimme der Kontaktaufnahem durch die Firma zu.",
+                    "type": "checkbox",
+                    "value": "no"
                 }
             ]
         }
