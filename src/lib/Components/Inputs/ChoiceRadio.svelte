@@ -16,7 +16,7 @@
 </script>
 
 {#if field.label !== undefined}
-	<legend>{field.label} <Help {field} /></legend>
+	<p>{field.label} <Help {field} /></p>
 {/if}
 
 {#each field.choices as choice, i}
