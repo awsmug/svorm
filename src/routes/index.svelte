@@ -15,7 +15,12 @@
     onMount(() => {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
+            return new bootstrap.Tooltip(tooltipTriggerEl, {
+                delay: {
+                    show: 0,
+                    hide: 0
+                }
+            });
         })
     });
 </script>
