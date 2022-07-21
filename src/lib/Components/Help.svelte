@@ -1,8 +1,6 @@
 <script lang="ts">
-    import Tooltip from "sv-bootstrap-tooltip";
+	import tippy from "sveltejs-tippy";
 	import type Field from '../Classes/Field';
-
-    let boundElement;
 
 	export let field: Field;
 
@@ -21,11 +19,11 @@
 				break;
 		}
 	}
+	
 </script>
 
 {#if field.help !== undefined}
-	<span id="field-{field.name}-help" class={cssClasses.join(' ')} bind:this={boundElement}></span>
-    <Tooltip triggerElement={boundElement}>{@html field.help.content}</Tooltip>
+	<span id="field-{field.name}-help" class={cssClasses.join(' ')}></span>
 {/if}
 
 <style>
