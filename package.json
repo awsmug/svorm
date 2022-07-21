@@ -1,6 +1,6 @@
 {
   "name": "svorm",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -41,5 +41,8 @@
     "vite": "^2.9.14",
     "vuepress": "^2.0.0-beta.36"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "sveltejs-tippy": "^3.0.0"
+  }
 }

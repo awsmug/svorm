@@ -1,163 +1,341 @@
 {
-    "name": "test-form",
-    "start": "kontaktdaten",
+    "name": "bedarfsausweis-wohngebaeude",
+    "start": "basisdaten",
     "fieldsets": [
         {
-            "label": "Kontaktdaten",
-            "name": "kontaktdaten",
+            "label": "Basisdaten",
+            "name": "basisdaten",
+            "nextFieldset": "geometrischeErfassung",
             "fields": [
                 {
-                    "name": "name",
-                    "type": "text",
-                    "classes": ["mb-3"],
-                    "label": "Name",
-                    "validations": [
-                        {
-                            "type": "minLength",
-                            "value": 2,
-                            "error": "Der Name muss aus mindestens zwei Buchstaben bestehen."
-                        },
-                        {
-                            "type": "letters",
-                            "error": "Bitte geben Sie nur Buchstaben an."
-                        }
-                    ]
-                },
-                {
-                    "name": "type",
-                    "type": "choice-radio",
-                    "classes": ["mb-3"],
-                    "label": "Sind Sie bereits Kunde bei uns?",
-                    "choices": [
-                        {
-                            "label": "Ja",
-                            "value": "yes"
-                        },
-                        {
-                            "label": "Nein",
-                            "value": "no"
-                        }
-                    ],
-                    "valueDefault": "no"
-                },
-                {
-                    "name": "email",
-                    "type": "text",
-                    "classes": ["mb-3"],
-                    "label": "Email",
-                    "validations": [
-                        {
-                            "type": "email",
-                            "error": "Bitte geben Sie eine gültige Email-Adresse ein."
-                        }
-                    ]
-                },            
-                {
-                    "name": "reason",
-                    "label": "Grund der Anfrage",
+                    "name": "grund",
+                    "label": "Anlass der Berechnung",
                     "type": "choice-select",
-                    "classes": ["mb-3"],
+                    "classes": ["col-12", "mb-3" ],
+                    "required": true,
                     "choices": [
                         {
                             "label": "Bitte wählen..."
                         },
                         {
-                            "label": "Fragen zu Produkten",
-                            "value": "products"
+                            "label": "Modernisierung / Erweiterung",
+                            "value": "modernisierung"
                         },
                         {
-                            "label": "Defekt eines Produkts",
-                            "value": "defect"
+                            "label": "Vermietung",
+                            "value": "vermietung"
                         },
                         {
-                            "label": "Fragen zum Versand",
-                            "value": "send"
+                            "label": "Verkauf",
+                            "value": "verkauf"
                         },
                         {
                             "label": "Sonstiges",
-                            "value": "Sonstiges"
+                            "value": "sonstiges"
                         }
                     ],
                     "validations": [
                         {
                             "type": "empty",
-                            "error": "Bitte wählen Sie einen Grund der Anfrage aus"
+                            "error": "Bitte wählen Sie einen Grund der Erstellung aus"
                         }
-                    ],
-                    "help": {
-                        "type": "info",
-                        "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
-                    }        
-                },            
+                    ]               
+                },
                 {
-                    "name": "product",
-                    "label": "Um welches Produkt handelt es sich?",
+                    "name": "gebaeudeart",
+                    "label": "Gebäudeart",
                     "type": "choice-select",
-                    "classes": ["mb-3"],
+                    "classes": ["col-12", "mb-3" ],
+                    "required": true,
                     "choices": [
                         {
                             "label": "Bitte wählen..."
+                        },                   
+                        {
+                            "label": "Bestand",
+                            "value": "Bestand"
                         },
                         {
-                            "label": "Hosen",
-                            "value": "pants"
-                        },
-                        {
-                            "label": "T-Shirts",
-                            "value": "t-shirts"
+                            "label": "Neubau",
+                            "value": "Neubau"
                         }
                     ],
                     "validations": [
                         {
                             "type": "empty",
-                            "error": "Bitte wählen Sie einen Grund der Anfrage aus"
+                            "error": "Bitte wählen Sie einen einen Wert aus"
                         }
-                    ],
-                    "conditions": [
-                        {
-                            "field": "reason",
-                            "operator": "==",
-                            "value": "products"
-                        }
-                    ],
-                    "help": {
-                        "type": "info",
-                        "content": "<strong>Geschosshöhe</strong><br /><br /><p>Die anzhal der Vollgeschosse</p>"
-                    }        
+                    ]             
                 },
                 {
-                    "name": "message",
-                    "label": "Ihre Nachricht",
-                    "type": "textarea",
-                    "classes": ["mb-3"],
-                    "conditions": [
+                    "name": "nutzung",
+                    "label": "Nutzung",
+                    "type": "choice-select",
+                    "classes": ["col-12", "mb-3" ],
+                    "required": true,
+                    "choices": [    
                         {
-                            "field": "reason",
-                            "operator": "!=",
-                            "value": "undefined"
+                            "label": "Bitte wählen..."
+                        },                    
+                        {
+                            "label": "Einfamilienhaus",
+                            "value": "Einfamilienhaus"
+                        },
+                        {
+                            "label": "Mehrfamilienhaus",
+                            "value": "Mehrfamilienhaus"
+                        },
+                        {
+                            "label": "Gemischt genutztes Gebäude",
+                            "value": "Gemischt genutztes Gebäude"
                         }
                     ],
                     "validations": [
                         {
-                            "type": "minLength",
-                            "value": 50,
-                            "error": "Der Text muss mindestens 50 Zeichen lang sein."
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        }
+                    ]           
+                },
+                {
+                    "name": "wohnnutzung",
+                    "label": "Flächenanteil Wohnnutzung",
+                    "type": "choice-select",
+                    "classes": ["col-12", "mb-3" ],
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },                     
+                        {
+                            "label": "über 50%",
+                            "value": "majority"
+                        },
+                        {
+                            "label": "unter 50%",
+                            "value": "minority"
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "field": "nutzung",
+                            "value": "Gemischt genutztes Gebäude",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                {
+                    "name": "wohneinheiten",
+                    "label": "Wohneinheiten",
+                    "type": "text",
+                    "classes": ["col-3", "mb-3" ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
+                        },
+                        {
+                            "type": "min",
+                            "value": 1,
+                            "error": "Bitte geben Sie die korrekte Anzahl der Wohneinheiten an."
+                        },
+                        {
+                            "type": "int",
+                            "error": "Bitte geben Sie eine ganze Zahl an."
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "field": "nutzung",
+                            "value": "Mehrfamilienhaus",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                {
+                    "name": "gebaeudetyp",
+                    "label": "Gebäudetyp",
+                    "type": "choice-select",
+                    "classes": ["col-12", "mb-3" ],
+                    "required": true,
+                    "choices": [
+                        {
+                            "label": "Bitte wählen..."
+                        },                   
+                        {
+                            "label": "Freistehendes Haus",
+                            "value": "freistehend"
+                        },
+                        {
+                            "label": "Reihenmittelhaus / beidseitig Angebautes Gebäude",
+                            "value": "reihenmittelhaus"
+                        },
+                        {
+                            "label": "Reihenendhaus / Doppelhaushälfte",
+                            "value": "reihenendhaus"
+                        }
+                    ],
+                    "validations": [
+                        {
+                            "type": "empty",
+                            "error": "Bitte wählen Sie einen einen Wert aus"
                         }
                     ]     
                 },
                 {
-                    "name": "canContact",
-                    "label": "Ich stimme der Kontaktaufnahem durch die Firma zu.",
-                    "type": "checkbox",
-                    "value": "no"
-                }
+                    "name": "baujahr",
+                    "label": "Baujahr",
+                    "type": "text",
+                    "classes": ["col-3", "mb-3"],
+                    "required": true,
+                    "validations": [
+                        {
+                            "type": "int",
+                            "error": "Bitte geben sie ein gültiges Jahr an"
+                        },
+                        {
+                            "type": "min",
+                            "value": 1800,
+                            "error": "Das Baujahr darf nicht vor 1800 liegen."
+                        }
+                    ]
+                },
+                {
+                    "name": "geschosseSpitzboden",
+                    "label": "Spitzböden",
+                    "type": "choice-radio",
+                    "classes": ["col-12", "col-md-6", "mb-3"],
+                    "choices": [
+                        {
+                            "label": "Ja",
+                            "value": "ja"
+                        },
+                        {
+                            "label": "Nein",
+                            "value": "nein"
+                        }
+                    ],
+                    "help": {
+                        "content": "<strong>Was ist ein Spitzboden?</strong><br /><br /><p>Der Spitzboden befindet sich direkt unter dem Dach und ist oft nur über eine Einschubtreppe erreichbar. Meist wird der Dachboden als Lagerfläche genutzt.</p>"
+                    }
+                },
+                {
+                    "name": "geschosseErdgeschoss",
+                    "label": "Erdgeschosse",
+                    "type": "choice-radio",
+                    "classes": ["col-12", "col-md-6", "mb-3" ],
+                    "choices": [
+                        {
+                            "label": "Ja",
+                            "value": "ja"
+                        },
+                        {
+                            "label": "Nein",
+                            "value": "nein"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "fields": [
+                        {
+                            "name": "geschosseDachgeschosse",
+                            "label": "Dachgeschosse",
+                            "type": "text",
+                            "classes": ["col-3", "mb-3"],
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "geschosseObergeschosse",
+                            "label": "Obergeschosse",
+                            "type": "text",
+                            "classes": ["col-3", "mb-3" ],
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "geschossKeller",
+                            "label": "Keller",
+                            "type": "text",
+                            "classes": ["col-3", "mb-3" ],
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ]
+                        }
+                    ]
+                }     
             ]
-        }
+        },
+        {
+            "label": "Geometische Erfassung",
+            "name": "geometrischeErfassung",
+            "nextFieldset": "basisdaten",
+            "fields": [
+                {
+                    "name": "geo-content",
+                    "label": "Geometische Daten",
+                    "type": "geo"
+                },
+                {
+                    "type": "group",
+                    "fields":[
+                        {
+                            "name": "geschosshoehe",
+                            "label": "Geschosshöhe",
+                            "type": "text",
+                            "classes": ["col-12", "col-sm-6", "col-md-4", "mb-3" ],
+                            "suffix": "cm",
+                            "required": true,
+                            "replacements": [
+                                {
+                                    "from": ".",
+                                    "to": ","
+                                }
+                            ],
+                            "validations": [
+                                {
+                                    "type": "number",
+                                    "error": "Bitte geben Sie eine Zahl an."
+                                }
+                            ]
+                        },
+                        {
+                            "name": "geschossanzahl",
+                            "label": "Geschossanzahl",
+                            "type": "text",
+                            "classes": ["col-12", "col-sm-6", "col-md-4", "mb-3" ],
+                            "required": true,
+                            "validations": [
+                                {
+                                    "type": "int",
+                                    "error": "Bitte geben Sie eine ganze Zahl an."
+                                }
+                            ]             
+                        } 
+                    ]
+                }
+                
+            ]
+        }       
     ],
-    "triggers": [
+    "actions": [
         {
             "name": "checkBuilding",
-            "type": "change",
+            "on": "change",
             "conditions": [
                 {
                     "field": "wohneinheiten",
@@ -174,7 +352,14 @@
                 "type": "alert",
                 "text": "Für vor 1978 errichtete Gebäude mit weniger als 5 Wohneinheiten ohne Wanddämmung darf gemäß GEG kein Verbrauchsausweis erstellt werden. Es ist jedoch möglich einen entsprechenden Bedarfsausweis zu erstellen. Klicken Sie den unten angezeigten Button, um Ihren Ausweis in einen Bedarfsausweis umzuwandeln."
             }
+        },
+        {
+            "name": "sendData",
+            "on": "send",
+            "action": {
+                "type": "post",
+                "url": "https://enon.test/energy-certificates"
+            }
         }
     ]
 }
-

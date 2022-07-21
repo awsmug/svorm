@@ -1,8 +1,8 @@
-<script lang="ts">    
-    import Form from './Components/Form.svelte';	
+<script lang="ts">
+    import Form from './Components/Form.svelte';
 	
     export let data;
-	export let customElements = [];	
+	export let customElements = [];
 </script>
 
 <Form {data} {customElements} />
