@@ -19,5 +19,5 @@
 </script>
 
 {#if field.help !== undefined}
-    <i id="field-{field.name}-help" class={cssClasses.join(' ')} data-bs-toggle="tooltip" data-bs-html="true" title={field.help.content}></i>
+    <span id="field-{field.name}-help" class={cssClasses.join(' ')} data-bs-toggle="tooltip" data-bs-html="true" title={field.help.content}></span>
 {/if}
